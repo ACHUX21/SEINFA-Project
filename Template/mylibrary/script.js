@@ -148,3 +148,4 @@ function removeProduct(id, name) {
     
     document.getElementById("div" + id).remove();
 }
+function saveInputs() { localStorage.setItem("clientInputValue", document.querySelector(".clientInput").value); localStorage.setItem("refInputValue", document.querySelector(".refInput").value); localStorage.setItem("dateInputValue", document.querySelector(".kt_ecommerce_edit_order_date").value); } window.onload = function() { restoreInputs(); }; document.querySelector(".clientInput").addEventListener("input", saveInputs); document.querySelector(".refInput").addEventListener("input", saveInputs); document.querySelector(".kt_ecommerce_edit_order_date").addEventListener("input", saveInputs);

@@ -470,6 +470,32 @@
                             <!--end::Close-->
                         </div>
                         {% endif %}
+
+                        {% if success %}
+                        <!--begin::Alert-->
+                        <div class="alert alert-dismissible bg-success d-flex flex-column flex-sm-row p-5 mb-10">
+                            <!--begin::Icon-->
+                            <span class="svg-icon svg-icon-2hx svg-icon-light me-4 mb-5 mb-sm-0"><i class="fa-solid fa-check" style="color: #FFD43B;"></i></span>
+                            <!--end::Icon-->
+
+                            <!--begin::Wrapper-->
+                            <div class="d-flex flex-column pe-0 pe-sm-10">
+                                <!--begin::Title-->
+                                <h4 class="fw-bold">Ceci est une alerte</h4>
+                                <!--end::Title-->
+                                <!--begin::Content-->
+                                <span>{{success}}</span>
+                                <!--end::Content-->
+                            </div>
+                            <!--end::Wrapper-->
+
+                            <!--begin::Close-->
+                            <button type="button" class="position-absolute position-sm-relative m-2 m-sm-0 top-0 end-0 btn btn-icon ms-sm-auto" data-bs-dismiss="alert">
+                                <span class="svg-icon svg-icon-1 svg-icon-light">X</span>
+                            </button>
+                            <!--end::Close-->
+                        </div>
+                        {% endif %}
                         <!--end::Alert-->
                         
 						<!--end::Toolbar-->
@@ -503,34 +529,28 @@
 													</div>
 													<!--end::Input group-->
 													<!--begin::Input group-->
-													<div class="fv-row">
+													<!-- Your HTML input fields -->
+                                                    <div class="fv-row">
                                                         <label class="required form-label">Les information de client</label>
                                                         <div class="mb-10">
                                                             <input name="client" id="clientInput" type="text" class="form-control form-control-solid" placeholder="Sélectionner un client"/>
                                                             <div id="autocompleteList" class="absolute z-10 left-0 mt-2 w-full bg-white max-h-60 overflow-auto rounded-md"></div>
                                                         </div>
                                                     </div>
-													<!--end::Input group-->
-													<!--begin::Input group-->
+
                                                     <div class="fv-row">
-														<!--begin::Label-->
-														<label class="required form-label">Date de devis</label>
-														<!--end::Label-->
-														<!--begin::Editor-->
-														<input id="kt_ecommerce_edit_order_date" name="date" placeholder="Select a date" class="form-control mb-2" value="" />
-														<!--end::Editor-->
-														<!--begin::Description-->
-														<div class="text-muted fs-7">Fixez la date de le devis à traiter.</div>
-														<!--end::Description-->
-													</div>
+                                                        <label class="required form-label">Date de devis</label>
+                                                        <input id="kt_ecommerce_edit_order_date" name="date" placeholder="Select a date" class="form-control mb-2" value="" />
+                                                        <div class="text-muted fs-7">Fixez la date de le devis à traiter.</div>
+                                                    </div>
+
                                                     <div class="fv-row">
-														<!--begin::Label-->
-														<label class="required form-label">La Référence</label>
-														<!--end::Label-->
-														<div class="mb-10">
-															<input name="ref" type="text" class="form-control form-control-solid" placeholder="Taper la Référence" maxlength="17">
-														</div>
-													</div>
+                                                        <label class="required form-label">La Référence</label>
+                                                        <div class="mb-10">
+                                                            <input name="ref" id="refInput" type="text" class="form-control form-control-solid" placeholder="Taper la Référence" maxlength="17">
+                                                        </div>
+                                                    </div>
+
 													<!--end::Input group-->
 												</div>
 											</div>

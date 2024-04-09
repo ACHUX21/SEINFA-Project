@@ -137,5 +137,3 @@ def get_devis_by_id(devis_id):
 
     return details
 
-
-

@@ -1,4 +1,4 @@
-import mysql.connector
+import mysql.connector, time
 
 
 # Database connection
@@ -15,13 +15,21 @@ mydb = mysql.connector.connect(
     database=DBName
 )
 def get_TOTAL(userid):
-    cursor = mydb.cursor()
-    cursor.execute("SELECT SUM(price * qte) FROM tempCart WHERE userid = %s", (userid,))
-    data = cursor.fetchone()
-    cursor.close()
-    data = f"{data[0]:,.2f}"
-    return data
+    # sleep 0.5
+    time.sleep(0.5)
 
+
+    try:
+        cursor = mydb.cursor()
+        cursor.execute("SELECT SUM(price * qte) FROM tempCart WHERE userid = %s", (userid,))
+        data = cursor.fetchone()
+        cursor.close()
+        if data[0] == None:
+            return "0.00"
+        data = f"{data[0]:,.2f}"
+        return data
+    except mysql.connector.Error as error:
+        return None
 
 # Temporary Cart functions
 # REMOVE FROM TEMP CART
@@ -54,6 +62,8 @@ def addTo_tmpCart(data, userid):
 # SELECT TEMP CART
 def select_tmpCart(userid):
     try:
+        if not userid:
+            return None
         cursor = mydb.cursor()
         cursor.execute("SELECT * FROM tempCart WHERE userid = %s", (userid,))
         data = cursor.fetchall()

@@ -37,7 +37,7 @@ def insert_ToEntete(client, date, ref, userid, dateF, devis):
         cursor.close()
         return "Data inserted DocEntete"
     except Exception as e:
-        return None
+        return e
 
 # INSERT INTO DOCLIGNE
 def insert_ToLigne(client, devis, ar_ref, productDescription, quantity, price, dateF, ref, date, total):
@@ -49,7 +49,7 @@ def insert_ToLigne(client, devis, ar_ref, productDescription, quantity, price, d
         cursor.close()
         return "Data inserted DocLigne"
     except Exception as e:
-        return None
+        return e
 
 # INSERT INTO DOCREGL
 def insert_ToDocRegl(devis, date):
@@ -61,7 +61,7 @@ def insert_ToDocRegl(devis, date):
         cursor.close()
         return "Data inserted DocRegl"
     except Exception as e:
-        return None
+        return e
 
   
 # other functions
@@ -74,7 +74,7 @@ def Get_CT_NUM(CT_INTITULE):
         cursor.close()
         return data[0]
     except Exception as e:
-        return None
+        return e
     
 # FETCH PRODUCTS
 def fetch_products(num=20, cat=None):

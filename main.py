@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, redirect, url_for, make_respo
 from jawt import authen,verifyjwt
 from functions import last_dev, fetch_products, get_categories, Get_CT_NUM, insert_ToEntete, insert_ToLigne, insert_ToDocRegl, get_all_devis, get_devis_by_id, Search_Function
 from mysqlDB import select_tmpCart, addTo_tmpCart, removeFrom_tmpCart, clean_tmpCart, get_TOTAL
+from re import match
 
 conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=196.115.28.6,1433;DATABASE=UNIO 2020;UID=sa;PWD=90901504Data;Encrypt=no;TrustServerCertificate=yes;')
 
@@ -61,11 +62,18 @@ def submit():
     payload = verifyjwt(token)
     if not payload:
         return redirect(url_for('index'))
-    client = Get_CT_NUM(request.form['client'])
+    client = request.form['client']
     date = request.form['date']
+    # 05-04-2024
+    if not match(r'\d{2}-\d{2}-\d{4}', date):
+        return render_template('commande.html', last_dev=last_dev() , products=fetch_products(20), categories=get_categories(), tmpCart=select_tmpCart(payload['id']), error='La date doit être au format YYYY-MM-DD')
     ref = request.form['ref']
-    # if not ref or not client:
-    #     return render_template('commande.html', last_dev=last_dev() , products=fetch_products(20), categories=get_categories(), tmpCart=select_tmpCart(payload['id']), error='S\'il vous plaît remplir tous les champs')
+
+    if not client or not date or not ref:
+        return render_template('commande.html', last_dev=last_dev() , products=fetch_products(20), categories=get_categories(), tmpCart=select_tmpCart(payload['id']), error='S\'il vous plaît remplir tous les champs')
+    client = Get_CT_NUM(client)
+    if not client:
+        return render_template("commande.html", last_dev=last_dev() , products=fetch_products(20), categories=get_categories(), tmpCart=select_tmpCart(payload['id']), error='Client introuvable')
     if len(ref) > 17:
         return redirect(url_for('commandes'))
     userid = int(payload['id'])
@@ -89,7 +97,7 @@ def submit():
     if not t:
         return render_template("commande.html", last_dev=last_dev() , products=fetch_products(20), categories=get_categories(), tmpCart=select_tmpCart(userid), error='Erreur lors de l\'enregistrement de la commande DOC_REGL')
     clean_tmpCart(userid)
-    return redirect(url_for('commandes'))
+    return render_template("commande.html", last_dev=last_dev() , products=fetch_products(20), categories=get_categories(), tmpCart=select_tmpCart(userid), success='Commande enregistrée avec succès', total=get_TOTAL(userid))
 
 # Voir devis Route
 @app.route('/voirdevis', methods=['GET'])
