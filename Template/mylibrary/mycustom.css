@@ -1,0 +1,47 @@
+ /* Quantity Selector Styles */
+ .quantity-selector {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+    }
+
+    .quantity-selector button {
+    background-color: #eee;
+    border: 1px solid #ccc;
+    padding: 5px 10px;
+    cursor: pointer;
+    }
+
+    .quantity-selector input {
+    text-align: center;
+    margin: 0 5px;
+    width: 60px; /* Fixed width for consistency */
+    border: 1px solid #ccc;
+    }
+
+    .quantity-selector input:focus {
+    outline: none;
+    border-color: #66afe9;
+    }
+
+    .quantity-selector button:focus {
+    outline: none;
+    }
+
+    .quantity-selector button:active {
+    background-color: #ddd;
+    } 
+    .category-slider {
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    }
+
+    .category-slider .d-flex {
+    flex-wrap: nowrap;
+    }
+
+    .category-slider .btn {
+    white-space: normal; /* This ensures text within buttons doesn't get squeezed. */
+    }
