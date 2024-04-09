@@ -382,6 +382,7 @@
                                         <!--begin::Menu item-->
                                         <!--end::Menu item-->
                                         <!--begin::Menu item-->
+
                                         <div class="menu-item px-5">
                                             <a href="{{ url_for('logout') }}" class="menu-link px-5">Sign Out</a>
                                         </div>
@@ -555,6 +556,9 @@
                                                 <div class="category-slider">
                                                     {% set color_classes = ["primary", "success", "info", "warning", "danger", "dark"] %}
                                                     <div class="d-flex gap-2 mb-3">
+                                                        <a href="{{ url_for('commandes') }}" class="btn btn-active-light-primary category-btn">
+                                                            <i class="fas fa-envelope-open-text fs-4 me-2"></i>Tous les familles
+                                                        </a>
                                                         {% for cat in categories %}
                                                             {% set color_class = color_classes[loop.index0 % color_classes|length] %}
                                                             <a href="{{ url_for('commandes') }}?cat={{ cat }}" class="btn btn-{{ color_class }} category-btn">
@@ -617,7 +621,7 @@
                                                         -->
 														<!--begin::Total price-->
 														<div class="fw-bolder fs-4">Total TTC: DH
-														<span id="kt_ecommerce_edit_order_total_price">0.00</span></div>
+														<span id="kt_ecommerce_edit_order_total_price">{{ total }}</span></div>
 														<!--end::Total price-->
 													</div>
 													<!--end::Input group-->
@@ -634,7 +638,7 @@
 															</svg>
 														</span>
 														<!--end::Svg Icon-->
-														<input id="searchNOW" type="text" data-kt-ecommerce-edit-order-filter="search" class="form-control form-control-solid w-100 w-lg-50 ps-14" placeholder="Recherche produits"/>
+														<input id="searchNOW" type="text" data-kt-ecommerce-edit-order-filter="search" class="form-control form-control-solid w-100 w-lg-50 ps-14" placeholder="Recherche produits" data-cat="{{ request.args.get('cat') }}" list="autocomplete-list" />
                                                         <datalist id="autocomplete-list" style="color: #265AA5;"></datalist>
 													</div>
 													<!--end::Search products-->
@@ -806,7 +810,14 @@
 		<script src="Template/assets/js/widgets.bundle.js"></script>
 		<script src="Template/assets/js/custom/widgets.js"></script>
         <script src="Template/mylibrary/script.js" ></script>
-        <script src="Template/mylibrary/search.js" ></script>
+
+
+    
+        {% if request.args.get('cat') %}
+                <script src="Template/mylibrary/search-cat.js"></script>
+        {% else %}
+            <script scr="Template/mylibrary/search.js"></script>
+        {% endif %}
 
         <script>
               document.getElementById("submitFormBtn").addEventListener("click", function() {

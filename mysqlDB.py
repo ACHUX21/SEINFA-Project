@@ -14,6 +14,14 @@ mydb = mysql.connector.connect(
     password=Password,
     database=DBName
 )
+def get_TOTAL(userid):
+    cursor = mydb.cursor()
+    cursor.execute("SELECT SUM(price * qte) FROM tempCart WHERE userid = %s", (userid,))
+    data = cursor.fetchone()
+    cursor.close()
+    data = f"{data[0]:,.2f}"
+    return data
+
 
 # Temporary Cart functions
 # REMOVE FROM TEMP CART
@@ -33,7 +41,7 @@ def addTo_tmpCart(data, userid):
         cursor = mydb.cursor()
         cursor.execute("SELECT * FROM tempCart WHERE userid = %s AND ref = %s", (userid, data['ref']))
         if cursor.fetchone():
-            cursor.execute("UPDATE tempCart SET qte = qte + 1 WHERE userid = %s AND ref = %s", (userid, data['ref']))
+            cursor.execute("UPDATE tempCart SET qte = qte + %s WHERE userid = %s AND ref = %s", (data['qte'], userid, data['ref']))
         else:
             cursor.execute("INSERT INTO tempCart (name, qte, price, ref, userid) VALUES (%s, %s, %s, %s, %s)", (data['name'], data['qte'], data['price'], data['ref'], userid))
             

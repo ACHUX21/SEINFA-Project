@@ -199,7 +199,21 @@ def get_devis_by_id(devis_id):
     return details
 
 
-def Search_Function(q=None):
+def Search_Function(q=None, cat=None):
+    if cat:
+        query = """ SELECT AR_Ref, AR_Design FROM article_table WHERE categorie = ? """
+        cursor = conn.cursor()
+        cursor.execute(query, cat)
+        data = cursor.fetchall()
+        cursor.close()
+        products = []
+        for row in data:
+            product = {
+                'AR_Ref': row[0],
+                'AR_Design': row[1],
+            }
+            products.append(product)
+        return products
     if q:
         query = """ SELECT * FROM article_table WHERE AR_Ref LIKE ? """
         cursor = conn.cursor()
@@ -233,3 +247,4 @@ def Search_Function(q=None):
         }
         products.append(product)
     return products
+

@@ -2,7 +2,7 @@ import pyodbc
 from flask import Flask, render_template, request, redirect, url_for, make_response, jsonify
 from jawt import authen,verifyjwt
 from functions import last_dev, fetch_products, get_categories, Get_CT_NUM, insert_ToEntete, insert_ToLigne, insert_ToDocRegl, get_all_devis, get_devis_by_id, Search_Function
-from mysqlDB import select_tmpCart, addTo_tmpCart, removeFrom_tmpCart, clean_tmpCart
+from mysqlDB import select_tmpCart, addTo_tmpCart, removeFrom_tmpCart, clean_tmpCart, get_TOTAL
 
 conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=196.115.28.6,1433;DATABASE=UNIO 2020;UID=sa;PWD=90901504Data;Encrypt=no;TrustServerCertificate=yes;')
 
@@ -47,10 +47,10 @@ def commandes():
     
     p = select_tmpCart(payload['id'])
     if not p:
-        return render_template('commande.html', last_dev=last_dev() , products=fetch_products(20, request.args.get('cat')), categories=get_categories(),username=payload['username'],role=payload['role'])
+        return render_template('commande.html', last_dev=last_dev() , products=fetch_products(20, request.args.get('cat')), categories=get_categories(),username=payload['username'],role=payload['role'], total=get_TOTAL(payload['id']))
     if request.args.get('cat'):
-        return render_template('commande.html', last_dev=last_dev() , products=fetch_products(20, request.args.get('cat')), categories=get_categories(), tmpCart=select_tmpCart(payload['id']),username=payload['username'],role=payload['role'])
-    return render_template('commande.html', last_dev=last_dev() , products=fetch_products(20), categories=get_categories(), tmpCart=select_tmpCart(payload['id']),username=payload['username'],role=payload['role'])
+        return render_template('commande.html', last_dev=last_dev() , products=fetch_products(20, request.args.get('cat')), categories=get_categories(), tmpCart=select_tmpCart(payload['id']),username=payload['username'],role=payload['role'], total=get_TOTAL(payload['id']))
+    return render_template('commande.html', last_dev=last_dev() , products=fetch_products(20), categories=get_categories(), tmpCart=select_tmpCart(payload['id']),username=payload['username'],role=payload['role'], total=get_TOTAL(payload['id']))
 
 # Submit Route
 @app.route('/submit', methods=['POST'])
@@ -197,6 +197,9 @@ def search():
     payload = verifyjwt(token)
     if not payload:
         return redirect(url_for('index'))
+    
+    if request.args.get('cat'):
+        return jsonify(Search_Function(None, request.args.get('cat')))
     
     if not request.args.get('q'):
         return jsonify(Search_Function())
