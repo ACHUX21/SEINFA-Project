@@ -7,19 +7,19 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta property="og:locale" content="en_US" />
 		<meta property="og:type" content="article" />
-		<link rel="shortcut icon" href="Template/assets/media/logos/favicon.ico" />
+		<link rel="shortcut icon" href="assets/media/logos/favicon.ico" />
 		<!--begin::Fonts-->
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
 		<!--end::Fonts-->
 		<!--begin::Page Vendor Stylesheets(used by this page)-->
-		<link href="Template/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+		<link href="assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
 		<!--end::Page Vendor Stylesheets-->
 		<!--begin::Global Stylesheets Bundle(used by all pages)-->
-		<link href="Template/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
-		<link href="Template/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
+		<link href="assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
+		<link href="assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
         <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.4/dist/tailwind.min.css" rel="stylesheet">
 
-        <link href="Template/mylibrary/mycustom.css" rel="stylesheet" type="text/css" />
+        <link href="mylibrary/mycustom.css" rel="stylesheet" type="text/css" />
         <script src="https://kit.fontawesome.com/a401a1528d.js" crossorigin="anonymous"></script>
 
         
@@ -65,7 +65,7 @@
                 <div class="aside-logo flex-column-auto" id="kt_aside_logo">
                     <!--begin::Logo-->
                     <a href="{{ url_for('commandes') }}">
-                        <img alt="Logo" src="Template/images/logo.png" class="h-25px logo" />
+                        <img alt="Logo" src="images/logo.png" class="h-25px logo" />
                     </a>
                     <!--end::Logo-->
                     <!--begin::Aside toggler-->
@@ -157,7 +157,7 @@
                         <!--begin::Mobile logo-->
                         <div class="d-flex align-items-center flex-grow-1 flex-lg-grow-0">
                             <a href="{{ url_for('commandes') }}" class="d-lg-none">
-                                <img alt="Logo" src="Template/assets/media/logos/logo-2.svg" class="h-30px" />
+                                <img alt="Logo" src="assets/media/logos/logo-2.svg" class="h-30px" />
                             </a>
                         </div>
                         <!--end::Mobile logo-->
@@ -346,7 +346,7 @@
                                 <div class="d-flex align-items-center ms-1 ms-lg-3" id="kt_header_user_menu_toggle">
                                     <!--begin::Menu wrapper-->
                                     <div class="cursor-pointer symbol symbol-30px symbol-md-40px" data-kt-menu-trigger="click" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end">
-                                        <img src="Template/assets/media/avatars/300-1.jpg" alt="user" />
+                                        <img src="assets/media/avatars/300-1.jpg" alt="user" />
                                     </div>
                                     <!--begin::User account menu-->
                                     <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg menu-state-primary fw-bold py-4 fs-6 w-275px" data-kt-menu="true">
@@ -355,7 +355,7 @@
                                             <div class="menu-content d-flex align-items-center px-3">
                                                 <!--begin::Avatar-->
                                                 <div class="symbol symbol-50px me-5">
-                                                    <img alt="Logo" src="Template/assets/media/avatars/300-1.jpg" />
+                                                    <img alt="Logo" src="assets/media/avatars/300-1.jpg" />
                                                 </div>
                                                 <!--end::Avatar-->
                                                 <!--begin::Username-->
@@ -819,22 +819,22 @@
 		<!--begin::Javascript-->
 		<script>var hostUrl = "assets/";</script>
 		<!--begin::Global Javascript Bundle(used by all pages)-->
-		<script src="Template/assets/plugins/global/plugins.bundle.js"></script>
-		<script src="Template/assets/js/scripts.bundle.js"></script>
+		<script src="assets/plugins/global/plugins.bundle.js"></script>
+		<script src="assets/js/scripts.bundle.js"></script>
 		<!--end::Global Javascript Bundle-->
 		<!--begin::Page Vendors Javascript(used by this page)-->
-		<script src="Template/assets/plugins/custom/datatables/datatables.bundle.js"></script>
+		<script src="assets/plugins/custom/datatables/datatables.bundle.js"></script>
 		<!--end::Page Vendors Javascript-->
 		<!--begin::Page Custom Javascript(used by this page)-->
-		<script src="Template/assets/js/custom/apps/ecommerce/sales/save-order.js"></script>
-		<script src="Template/assets/js/widgets.bundle.js"></script>
-		<script src="Template/assets/js/custom/widgets.js"></script>
-        <script src="Template/mylibrary/script.js" ></script>
+		<script src="assets/js/custom/apps/ecommerce/sales/save-order.js"></script>
+		<script src="assets/js/widgets.bundle.js"></script>
+		<script src="assets/js/custom/widgets.js"></script>
+        <script src="mylibrary/script.js" ></script>
 
 
     
         {% if request.args.get('cat') %}
-                <script src="Template/mylibrary/search-cat.js"></script>
+                <script src="mylibrary/search-cat.js"></script>
         {% else %}
             <script scr="Template/mylibrary/search.js"></script>
         {% endif %}

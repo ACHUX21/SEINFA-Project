@@ -1,4 +1,4 @@
-import jwt,datetime, mysql.connector, hashlib
+import jwt,datetime,hashlib,pyodbc
 import os
 
 # JWT secret key
@@ -7,40 +7,27 @@ SECRET_KEY = 'aopzoefj321'
 
 
 # Database connection
-
-SeverName = "159.8.122.152"
-UserName = "datad02n_userpneu"
-Password = "6A3AKayzuukD&j9eusK^"
-DBName = "datad02n_data"
-# CREATE TABLE users (
-#     id INT AUTO_INCREMENT PRIMARY KEY,
-#     name VARCHAR(255) NOT NULL UNIQUE,
-#     password VARCHAR(255) NOT NULL,
-#     role ENUM('admin', 'user') NOT NULL
-# );
-
-mydb = mysql.connector.connect(
-    host=SeverName,
-    user=UserName,
-    password=Password,
-    database=DBName
-    )
+conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=196.115.28.6,1433;DATABASE=UNIO 2020;UID=sa;PWD=90901504Data;Encrypt=no;TrustServerCertificate=yes;')
 
 # JWT functions
 def authen(username, password):
     try:
         if not username or not password:
             return None
-        cursor = mydb.cursor()
+        cursor = conn.cursor()
         password = hashlib.md5(password.encode()).hexdigest()
-        cursor.execute("SELECT id from users WHERE name = %s AND password = %s", (username, password))
+        cursor.execute("SELECT id from users WHERE name = ? AND password = ?", (username, password))
         id = cursor.fetchone()[0]
+        if not id:
+            return None
         cursor.close()
-        cursor = mydb.cursor()
-        cursor.execute("SELECT role from users WHERE name = %s AND password = %s", (username, password))
+        cursor = conn.cursor()
+        cursor.execute("SELECT role from users WHERE name = ? AND password = ?", (username, password))
         role = cursor.fetchone()[0]
+        if not role:
+            role = 'Utilisateur'
         cursor.close()
-        payload = {'username': username,'role': role, 'id': id, 'exp': datetime.datetime.utcnow() + datetime.timedelta(days=7)}
+        payload = {'username': username,'role': role, 'id': id, 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=15)}
         token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
         return token
     except Exception as e:

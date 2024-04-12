@@ -4,7 +4,7 @@ import pyodbc,datetime
 from flask import jsonify
 
 # Database connection
-conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=196.115.28.6,1433;DATABASE=UNIO 2020;UID=sa;PWD=90901504Data;Encrypt=no;TrustServerCertificate=yes;')
+# conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=196.115.28.6,1433;DATABASE=UNIO 2020;UID=sa;PWD=90901504Data;Encrypt=no;TrustServerCertificate=yes;')
 
 
 SeverName = "159.8.122.152"
@@ -136,4 +136,20 @@ def get_devis_by_id(devis_id):
     details[0]['products'] = products
 
     return details
+
+
+
+
+def users():
+
+    cursor = mydb.cursor()
+    query = "SELECT * FROM users"
+    cursor.execute(query)
+    users = cursor.fetchall()
+    cursor.close()
+    print(users)
+
+
+users()
+
 

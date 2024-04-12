@@ -7,7 +7,7 @@ from re import match
 
 conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=196.115.28.6,1433;DATABASE=UNIO 2020;UID=sa;PWD=90901504Data;Encrypt=no;TrustServerCertificate=yes;')
 
-app = Flask(__name__, static_folder='Template', template_folder='Template')
+app = Flask(__name__, static_folder='static', template_folder='Template')
 
 
 # Login Routes
@@ -31,7 +31,7 @@ def auth():
     password = request.form['password']
     auth = authen(username, password)
     if not username or not password or not auth:
-        return redirect(url_for('index'))
+        return render_template('login.html', error='Nom d\'utilisateur ou mot de passe incorrect')
     response = make_response(redirect(url_for('commandes')))
     response.set_cookie('token', auth, httponly=True, secure=True)
     return response
