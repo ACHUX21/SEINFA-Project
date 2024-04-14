@@ -26,9 +26,9 @@ pip install flask pyodbc mysql.connector pyjwt
 ```
 
 # to install mssql driver 17
-```bash
-apt-get update && apt-get install -y gnupg2 curl unixodbc-dev
-curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
-curl https://packages.microsoft.com/config/debian/10/prod.list > /etc/apt/sources.list.d/mssql-release.list
-apt-get update && ACCEPT_EULA=Y apt-get install -y msodbcsql17
+```shell
+sudo apt-get update && sudo apt-get install -y gnupg2 curl unixodbc-dev
+sudo curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
+sudo curl https://packages.microsoft.com/config/debian/10/prod.list > /etc/apt/sources.list.d/mssql-release.list
+sudo apt-get update && ACCEPT_EULA=Y sudo apt-get install -y msodbcsql17
 ```
