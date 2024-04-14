@@ -31,7 +31,7 @@
 
     .quantity-selector button:active {
     background-color: #ddd;
-    } 
+    }
     .category-slider {
     overflow-x: auto;
     overflow-y: hidden;

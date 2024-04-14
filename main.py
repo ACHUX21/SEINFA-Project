@@ -65,12 +65,12 @@ def submit():
     client = request.form['client']
     date = request.form['date']
     # 05-04-2024
-    if not match(r'\d{2}-\d{2}-\d{4}', date):
-        return render_template('commande.html', last_dev=last_dev() , products=fetch_products(20), categories=get_categories(), tmpCart=select_tmpCart(payload['id']), error='La date doit être au format YYYY-MM-DD')
     ref = request.form['ref']
 
     if not client or not date or not ref:
         return render_template('commande.html', last_dev=last_dev() , products=fetch_products(20), categories=get_categories(), tmpCart=select_tmpCart(payload['id']), error='S\'il vous plaît remplir tous les champs')
+    if not match(r'\d{2}-\d{2}-\d{4}', date):
+        return render_template('commande.html', last_dev=last_dev() , products=fetch_products(20), categories=get_categories(), tmpCart=select_tmpCart(payload['id']), error='La date doit être au format YYYY-MM-DD')
     client = Get_CT_NUM(client)
     if not client:
         return render_template("commande.html", last_dev=last_dev() , products=fetch_products(20), categories=get_categories(), tmpCart=select_tmpCart(payload['id']), error='Client introuvable')
@@ -163,7 +163,8 @@ def voirDevisNum(devis):
     if not payload:
         return redirect(url_for('index'))
     devis = get_devis_by_id(devis)
-
+    if not devis or not devis[0] or not devis[0]['products']:
+        devis = [{'CT_Num': '', 'CT_Intitule': '', 'CT_Telephone': '', 'CT_Adresse': '', 'DO_Piece': '', 'DO_Ref': '', 'DO_Date': '', 'DO_Statut': 0, 'DO_TotalHT': 0, 'DO_TotalTTC': 0, 'products': [{'AR_Ref': '', 'DL_Design': '', 'DL_Qte': 0, 'DL_PUTTC': 0, 'DL_MontantHT': 0, 'DL_MontantTTC': 0}]}]
     return render_template('detail_commande.html',entete=devis[0], lignes=devis[0]['products'], username=payload['username'],role=payload['role'])
 
 # API client Route

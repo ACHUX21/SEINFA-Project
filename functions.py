@@ -128,8 +128,8 @@ def get_all_devis(offset=0, limit=200000):
     cursor = conn.cursor()
     query = """
     SELECT do_piece, FORMAT(do_date, 'yyyy-MM-dd') as short_date, ct_intitule, do_ref, do_totalht, do_totalttc, do_statut
-    FROM f_docentete 
-    INNER JOIN f_comptet ON f_comptet.ct_num = f_docentete.do_tiers 
+    FROM f_docentete
+    INNER JOIN f_comptet ON f_comptet.ct_num = f_docentete.do_tiers
     WHERE do_type = 0
     ORDER BY do_date DESC
     OFFSET ? ROWS FETCH NEXT ? ROWS ONLY
