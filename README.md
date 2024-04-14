@@ -18,7 +18,7 @@ export PATH=$HOME/.venv/bin:$PATH
 echo 'export PATH=$HOME/.venv/bin:$PATH' >> .zshrc
 ```
 
-# For UBUNTU :
+# For DEBIAN BASED :
 
 # to install the python requirments
 ```shell
@@ -32,3 +32,7 @@ sudo curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
 sudo curl https://packages.microsoft.com/config/debian/10/prod.list > /etc/apt/sources.list.d/mssql-release.list
 sudo apt-get update && ACCEPT_EULA=Y sudo apt-get install -y msodbcsql17
 ```
+
+# For DOCKER :
+
+look at the docker file
