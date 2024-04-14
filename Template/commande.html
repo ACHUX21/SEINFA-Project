@@ -65,7 +65,7 @@
                 <div class="aside-logo flex-column-auto" id="kt_aside_logo">
                     <!--begin::Logo-->
                     <a href="{{ url_for('commandes') }}">
-                        <img alt="Logo" src="images/logo.png" class="h-25px logo" />
+                        <img alt="Logo" src="static/images/logo.png" class="h-25px logo" />
                     </a>
                     <!--end::Logo-->
                     <!--begin::Aside toggler-->
@@ -842,11 +842,11 @@
         <script>
               document.getElementById("submitFormBtn").addEventListener("click", function() {
         document.getElementById("myForm").submit();
-    });
-    document.addEventListener('DOMContentLoaded', function() {
-    var currentDate = new Date().toISOString().split('T')[0]; // Get current date in YYYY-MM-DD format
-    document.getElementById('kt_ecommerce_edit_order_date').value = currentDate;
-});
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+        var currentDate = new Date().toISOString().split('T')[0]; // Get current date in YYYY-MM-DD format
+        document.getElementById('kt_ecommerce_edit_order_date').value = currentDate;
+        });
 
         </script>
         <script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.9/dist/l10n/fr.js"></script>

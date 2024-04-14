@@ -148,7 +148,7 @@ function removeAndreplace(AR_Ref) {
                                         <input id="qte-${product.name}" type="number" id="quantity${product.id}" name="quantity${product.id}" min="1" value="1" class="form-control form-control-sm" style="width: 60px;">
                                     </div>
                                     <a class="symbol symbol-50px me-3">
-                                        <span class="symbol-label" style="background-image:url(Template/assets/media//stock/ecommerce/1.gif);"></span>
+                                        <span class="symbol-label" style="background-image:url(static/images/logo.png);"></span>
                                     </a>
                                     <div>
                                         <a class="text-gray-800 text-hover-primary fs-5 fw-bolder">${product.name}</a>

@@ -41,10 +41,10 @@ def auth():
 def commandes():
     token = request.cookies.get('token')
     if not token:
-        return redirect(url_for('index'))
+        return redirect(url_for('logout'))
     payload = verifyjwt(token)
     if not payload:
-        return redirect(url_for('index'))
+        return redirect(url_for('logout'))
     
     p = select_tmpCart(payload['id'])
     if not p:
