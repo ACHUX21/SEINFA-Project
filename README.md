@@ -1,4 +1,4 @@
-# SEINFA-Project
+# SEINFA-Project installation
 
 # to install python-pip
 yay -S python-pip
