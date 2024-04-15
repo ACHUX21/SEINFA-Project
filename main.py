@@ -197,7 +197,7 @@ def clients():
         return redirect(url_for('index'))
     cursor = conn.cursor()
     query = "SELECT CT_INTITULE,CT_NUM from F_COMPTET Where CT_Type = 0 AND CT_Sommeil = 0 and CT_Prospect = 0 ORDER BY CT_INTITULE"
-    cursor.execute(query) 
+    cursor.execute(query)
     clients = cursor.fetchall()
     cursor.close()
     return jsonify([dict(zip(('CT_INTITULE', 'CT_NUM'), row)) for row in clients])
@@ -233,6 +233,17 @@ def search():
         return jsonify(Search_Function())
     return jsonify(Search_Function(request.args.get('q')))
 
+# Categories Route
+@app.route('/api/categories', methods=['GET'])
+def categories():
+    #token = request.cookies.get('token')
+    #if not token:
+    #    return redirect(url_for('index'))
+    #payload = verifyjwt(token)
+    #if not payload:
+    #    return redirect(url_for('index'))
+    categories = get_categories()
+    return jsonify(categories)
 
 
 if __name__ == '__main__':

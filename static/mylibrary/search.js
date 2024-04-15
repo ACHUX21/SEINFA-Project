@@ -168,3 +168,5 @@ function removeAndreplace(AR_Ref) {
 fetchDataFromAPI();
 
 autocomplete(document.getElementById("searchNOW"), products);
+
+

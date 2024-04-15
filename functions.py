@@ -1,5 +1,6 @@
 import pyodbc,datetime
 from flask import jsonify
+import time
 
 
 conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=196.118.25.162,1433;DATABASE=UNIO 2020;UID=sa;PWD=90901504Data;Encrypt=no;TrustServerCertificate=yes;')
@@ -109,6 +110,7 @@ def fetch_products(num=20, cat=None):
 
 # GET CATEGORIES
 def get_categories():
+    time.sleep(2)    
     cursor = conn.cursor()
     query = f"SELECT categorie FROM article_table GROUP BY categorie ORDER BY SUM(AS_QteSto) DESC"
     cursor.execute(query)
@@ -118,8 +120,6 @@ def get_categories():
     for row in data:
         categories.append(row[0])
     return categories
-
-
 
 
 

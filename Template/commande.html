@@ -543,7 +543,6 @@
                                                         <input id="kt_ecommerce_edit_order_date" name="date" placeholder="Select a date" class="form-control mb-2" value="" />
                                                         <div class="text-muted fs-7">Fixez la date de le devis à traiter.</div>
                                                     </div>
-
                                                     <div class="fv-row">
                                                         <label class="required form-label">La Référence</label>
                                                         <div class="mb-10">
@@ -570,6 +569,7 @@
 													<h2>Sélectionner les article</h2>
 												</div>
 											</div>
+
 											<!--end::Card header-->
 											<!--begin::Card body-->
 											<div class="card-body pt-0">
@@ -592,6 +592,8 @@
 													<div>
 														<!--begin::Label-->
 														<label class="form-label">Ajouter les article à ce devis</label>
+                                                        <input id="SearchCategories" type="text" class="form-control form-control-solid" placeholder="Recherche par famille" list="autocomplete-list-cat" />
+                                                        <datalist id="autocomplete-list-cat"></datalist>
 														<!--end::Label-->
 														<!--begin::Selected products
                                                         hna fin kayn la selection des produits
@@ -780,6 +782,7 @@
 							</div>
 							<!--end::Container-->
 						</div>
+                        
 						<!--end::Post-->
 					</div>
 					<!--end::Content-->
@@ -798,6 +801,7 @@
 					</div>
 					<!--end::Footer-->
 				</div>
+                
 				<!--end::Wrapper-->
 			</div>
 			<!--end::Page-->
@@ -814,6 +818,7 @@
 			</span>
 			<!--end::Svg Icon-->
 		</div>
+        
 		<!--end::Modal - Invite Friend-->
 		<!--end::Modals-->
 		<!--begin::Javascript-->
@@ -838,7 +843,7 @@
         {% else %}
             <script src="static/mylibrary/search.js"></script>
         {% endif %}
-
+        <script src="static/mylibrary/catSearch.js"></script>
         <script>
               document.getElementById("submitFormBtn").addEventListener("click", function() {
         document.getElementById("myForm").submit();
