@@ -1,5 +1,6 @@
 import pyodbc
-from flask import Flask, render_template, request, redirect, url_for, make_response, jsonify
+import requests
+from flask import Flask, render_template, request, redirect, url_for, make_response, jsonify, abort
 from jawt import authen,verifyjwt
 from functions import last_dev, fetch_products, get_categories, Get_CT_NUM, insert_ToEntete, insert_ToLigne, insert_ToDocRegl, get_all_devis, get_devis_by_id, Search_Function
 from mysqlDB import select_tmpCart, addTo_tmpCart, removeFrom_tmpCart, clean_tmpCart, get_TOTAL
@@ -8,6 +9,27 @@ from re import match
 conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=196.115.28.6,1433;DATABASE=UNIO 2020;UID=sa;PWD=90901504Data;Encrypt=no;TrustServerCertificate=yes;')
 
 app = Flask(__name__, static_folder='static', template_folder='Template')
+
+def fetch_maintenance_status():
+    url = "https://data-dev.ma/seinfa/config.json"
+    try:
+        response = requests.get(url)
+        response.raise_for_status()  # This will raise an exception for HTTP errors
+        data = response.json()
+        print("Fetched maintenance mode:", data['maintenance_mode'])  # Debugging output
+        return data['maintenance_mode']
+    except requests.RequestException as e:
+        print(f"Error fetching maintenance status: {e}")
+        return False  # default to normal operation if there's an error fetching data
+
+
+# Simple maintenance mode handler
+@app.before_request
+def check_for_maintenance():
+    maintenance_mode = fetch_maintenance_status()
+    if maintenance_mode :
+        abort(503, 'The site is under maintenance!')
+
 
 
 # Login Routes
