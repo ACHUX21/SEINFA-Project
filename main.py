@@ -16,7 +16,6 @@ def fetch_maintenance_status():
         response = requests.get(url)
         response.raise_for_status()  # This will raise an exception for HTTP errors
         data = response.json()
-        print("Fetched maintenance mode:", data['maintenance_mode'])  # Debugging output
         return data['maintenance_mode']
     except requests.RequestException as e:
         print(f"Error fetching maintenance status: {e}")
