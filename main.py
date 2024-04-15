@@ -6,7 +6,7 @@ from functions import last_dev, fetch_products, get_categories, Get_CT_NUM, inse
 from mysqlDB import select_tmpCart, addTo_tmpCart, removeFrom_tmpCart, clean_tmpCart, get_TOTAL
 from re import match
 
-conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=196.115.28.6,1433;DATABASE=UNIO 2020;UID=sa;PWD=90901504Data;Encrypt=no;TrustServerCertificate=yes;')
+conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=196.118.25.162,1433;DATABASE=UNIO 2020;UID=sa;PWD=90901504Data;Encrypt=no;TrustServerCertificate=yes;')
 
 app = Flask(__name__, static_folder='static', template_folder='Template')
 
@@ -84,14 +84,12 @@ def submit():
     if not payload:
         return redirect(url_for('index'))
     client = request.form['client']
-    date = request.form['date']
+    date = "2024-04-15"
     # 05-04-2024
     ref = request.form['ref']
 
     if not client or not date or not ref:
         return render_template('commande.html', last_dev=last_dev() , products=fetch_products(20), categories=get_categories(), tmpCart=select_tmpCart(payload['id']), error='S\'il vous plaît remplir tous les champs')
-    if not match(r'\d{2}-\d{2}-\d{4}', date):
-        return render_template('commande.html', last_dev=last_dev() , products=fetch_products(20), categories=get_categories(), tmpCart=select_tmpCart(payload['id']), error='La date doit être au format YYYY-MM-DD')
     client = Get_CT_NUM(client)
     if not client:
         return render_template("commande.html", last_dev=last_dev() , products=fetch_products(20), categories=get_categories(), tmpCart=select_tmpCart(payload['id']), error='Client introuvable')
