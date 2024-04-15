@@ -84,8 +84,8 @@ def submit():
     if not payload:
         return redirect(url_for('index'))
     client = request.form['client']
-    date = "2024-04-15"
-    # 05-04-2024
+    date = request.form['date']
+    date = '-'.join(date.split('-')[::-1])
     ref = request.form['ref']
 
     if not client or not date or not ref:
