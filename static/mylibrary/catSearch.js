@@ -36,7 +36,14 @@ function redirectToCategory() {
     
     if (selectedOption) {
         const category = encodeURIComponent(selectedOption.dataset.category);
-        window.location.href = `/commandes?cat=${category}`;
+        const slider = document.getElementById('categoryButtons');
+        slider.innerHTML = `<a href="/commandes" class="btn btn-active-light-primary category-btn">
+        <i class="fas fa-envelope-open-text fs-4 me-2"></i>Tous les familles
+    </a>
+    <a href="/commandes?cat=${category}" class="btn btn-success category-btn">
+                                                                <i class="fas fa-envelope-open-text fs-4 me-2"></i>${category}
+                                                            </a>
+    `;
     }
 }
 
