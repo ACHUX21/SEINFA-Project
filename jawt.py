@@ -26,8 +26,13 @@ def authen(username, password):
         role = cursor.fetchone()[0]
         if not role:
             role = 'Utilisateur'
+        cursor = conn.cursor()
+        cursor.execute("SELECT CO_NO from users WHERE name = ? AND password = ?", (username, password))
+        co_no = cursor.fetchone()[0]
+        if not co_no:
+            co_no = 0
         cursor.close()
-        payload = {'username': username,'role': role, 'id': id, 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=15)}
+        payload = {'username': username,'role': role, 'id': id, 'co_no': co_no, 'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=3600)}
         token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
         return token
     except Exception as e:

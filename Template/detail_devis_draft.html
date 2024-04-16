@@ -223,6 +223,57 @@
                                 </div>
                                 <!--end::Menu wrapper-->
                             </div>
+                            {% if error %}
+                        <!--begin::Alert-->
+                        <div class="alert alert-dismissible bg-danger d-flex flex-column flex-sm-row p-5 mb-10">
+                            <!--begin::Icon-->
+                            <span class="svg-icon svg-icon-2hx svg-icon-light me-4 mb-5 mb-sm-0"><i class="fa-solid fa-triangle-exclamation" style="color: #FFD43B;"></i></span>
+                            <!--end::Icon-->
+
+                            <!--begin::Wrapper-->
+                            <div class="d-flex flex-column pe-0 pe-sm-10">
+                                <!--begin::Title-->
+                                <h4 class="fw-bold">Ceci est une alerte</h4>
+                                <!--end::Title-->
+                                <!--begin::Content-->
+                                <span>{{error}}</span>
+                                <!--end::Content-->
+                            </div>
+                            <!--end::Wrapper-->
+
+                            <!--begin::Close-->
+                            <button type="button" class="position-absolute position-sm-relative m-2 m-sm-0 top-0 end-0 btn btn-icon ms-sm-auto" data-bs-dismiss="alert">
+                                <span class="svg-icon svg-icon-1 svg-icon-light">X</span>
+                            </button>
+                            <!--end::Close-->
+                        </div>
+                        {% endif %}
+
+                        {% if success %}
+                        <!--begin::Alert-->
+                        <div class="alert alert-dismissible bg-success d-flex flex-column flex-sm-row p-5 mb-10">
+                            <!--begin::Icon-->
+                            <span class="svg-icon svg-icon-2hx svg-icon-light me-4 mb-5 mb-sm-0"><i class="fa-solid fa-check" style="color: #FFD43B;"></i></span>
+                            <!--end::Icon-->
+
+                            <!--begin::Wrapper-->
+                            <div class="d-flex flex-column pe-0 pe-sm-10">
+                                <!--begin::Title-->
+                                <h4 class="fw-bold">Ceci est une alerte</h4>
+                                <!--end::Title-->
+                                <!--begin::Content-->
+                                <span>{{success}}</span>
+                                <!--end::Content-->
+                            </div>
+                            <!--end::Wrapper-->
+
+                            <!--begin::Close-->
+                            <button type="button" class="position-absolute position-sm-relative m-2 m-sm-0 top-0 end-0 btn btn-icon ms-sm-auto" data-bs-dismiss="alert">
+                                <span class="svg-icon svg-icon-1 svg-icon-light">X</span>
+                            </button>
+                            <!--end::Close-->
+                        </div>
+                        {% endif %}
                             <!--end::Navbar-->
                             <!--begin::Toolbar wrapper-->
                             <div class="d-flex align-items-stretch flex-shrink-0">
@@ -735,7 +786,7 @@
 																				<!--end::Thumbnail-->
 																				<!--begin::Title-->
 																				<div class="ms-5">
-																					<a href="{{url_for('commandes')}}" class="fw-bolder text-gray-600 text-hover-primary">{{ produit.DL_Design }}</a>
+																					<a href="{{url_for('commandes')}}" class="fw-bolder text-gray-600 text-hover-primary">{{ produit.productDescription }}</a>
 																				</div>
 																				<!--end::Title-->
 																			</div>
@@ -765,7 +816,11 @@
 																	<!--begin::Shipping-->
 																	<tr>
 																		<td colspan="4" class="text-end">Montant TTC</td>
-																		<td class="text-end"><b>{{ d_data.total * 1.2 }}</b></td>
+                                                                        {% if d_data.total %}
+																		    <td class="text-end"><b>{{ d_data.total * 1.2 }}</b></td>
+                                                                        {% else %}
+                                                                            <td class="text-end"><b>0</b></td>
+                                                                        {% endif %}
                                                                     </tr>
 																	<!--end::Grand total-->
 																</tbody>
@@ -774,6 +829,12 @@
 															<!--end::Table-->
 														</div>
 													</div>
+                                                    <button type="button" id="submitFormBtn" class="btn btn-primary">
+                                                        <span class="indicator-label"><a href="/api/validerdraft/{{ d_data.devis }}" style="color:white;">Valider</a></span>
+
+                                                        <span class="indicator-progress">S'il vous plaît, attendez...
+                                                        <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+                                                    </button>
 													<!--end::Card body-->
 												</div>
 												<!--end::Product List-->

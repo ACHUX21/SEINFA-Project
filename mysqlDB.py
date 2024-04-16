@@ -165,14 +165,46 @@ def add_devis_draft_details(client, ar_ref, productDescription, quantity, price,
         print(error)
         return None
 
-def get_drafts(id, devis="all"):
+def get_drafts(id="all", devis="all"):
     try:
         mydb = get_connection()
         cursor = mydb.cursor()
-        if devis == "all":
+        if devis == "all" and id != "all":
             cursor.execute("SELECT devis_draft.`id`,devis_draft.`client`,devis_draft.`client_name`,devis_draft.`date`,devis_draft.`ref`,devis_draft.`devis`,devis_draft.`userid`,devis_draft.`draft_confirm`,SUM(devis_draft_details.total) as total FROM devis_draft inner JOIN devis_draft_details on devis_draft_details.devis = devis_draft.devis WHERE devis_draft.userid = %s GROUP by devis_draft.devis", (id,))
-        else:
+        elif devis != "all":
             cursor.execute("SELECT devis_draft.`id`,devis_draft.`client`,devis_draft.`client_name`,devis_draft.`date`,devis_draft.`ref`,devis_draft.`devis`,devis_draft.`userid`,devis_draft.`draft_confirm`,SUM(devis_draft_details.total) as total FROM devis_draft inner JOIN devis_draft_details on devis_draft_details.devis = devis_draft.devis WHERE devis_draft.userid = %s AND devis_draft.devis = %s GROUP by devis_draft.devis", (id, devis))
+        elif id == "all" and devis == "all":
+            cursor.execute("SELECT devis_draft.`id`,devis_draft.`client`,devis_draft.`client_name`,devis_draft.`date`,devis_draft.`ref`,devis_draft.`devis`,devis_draft.`userid`,devis_draft.`draft_confirm`,SUM(devis_draft_details.total) as total FROM devis_draft inner JOIN devis_draft_details on devis_draft_details.devis = devis_draft.devis GROUP by devis_draft.devis")
+        elif id == "all" :
+            cursor.execute("SELECT devis_draft.`id`,devis_draft.`client`,devis_draft.`client_name`,devis_draft.`date`,devis_draft.`ref`,devis_draft.`devis`,devis_draft.`userid`,devis_draft.`draft_confirm`,SUM(devis_draft_details.total) as total FROM devis_draft inner JOIN devis_draft_details on devis_draft_details.devis = devis_draft.devis WHERE devis_draft.devis = %s GROUP by devis_draft.devis", (devis,))
+        data = cursor.fetchall()
+        cursor.close()
+        mydb.close()
+        draft = []
+        for i in data:
+            dra = {
+                "id": i[0],
+                "client": i[1],
+                "client_name": i[2],
+                "date": i[3],
+                "ref": i[4],
+                "devis": i[5],
+                "userid": i[6],
+                "status": i[7],
+                "total": i[8]
+            }
+            draft.append(dra)
+        print(draft)
+        return draft
+    except mysql.connector.Error as error:
+        print(error)
+        return None
+
+def get_draft_devis(devis):
+    try:
+        mydb = get_connection()
+        cursor = mydb.cursor()
+        cursor.execute("SELECT devis_draft.`id`,devis_draft.`client`,devis_draft.`client_name`,devis_draft.`date`,devis_draft.`ref`,devis_draft.`devis`,devis_draft.`userid`,devis_draft.`draft_confirm`,SUM(devis_draft_details.total) as total FROM devis_draft inner JOIN devis_draft_details on devis_draft_details.devis = devis_draft.devis WHERE devis_draft.devis = %s GROUP by devis_draft.devis", (devis,))
         data = cursor.fetchall()
         cursor.close()
         mydb.close()
@@ -195,7 +227,6 @@ def get_drafts(id, devis="all"):
     except mysql.connector.Error as error:
         print(error)
         return None
-
 
 def check_auth(userid, devis):
     try:
@@ -243,6 +274,20 @@ def get_drafts_details(devis):
             draft.append(dra)
         # print(draft)
         return draft
+    except mysql.connector.Error as error:
+        print(error)
+        return None
+    
+def clean_drafts(devis):
+    try:
+        mydb = get_connection()
+        cursor = mydb.cursor()
+        cursor.execute("DELETE FROM devis_draft WHERE devis = %s", (devis,))
+        cursor.execute("DELETE FROM devis_draft_details WHERE devis = %s", (devis,))
+        mydb.commit()
+        cursor.close()
+        mydb.close()
+        return "Data removed"
     except mysql.connector.Error as error:
         print(error)
         return None
