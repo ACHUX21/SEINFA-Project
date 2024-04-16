@@ -129,13 +129,16 @@ function removeAndreplace(AR_Ref) {
         .then(data => {
             product = data[0];
             table.innerHTML = `
+
+
                 <form id="form{{ loop.index0 + 1 }}" method="POST" action="/addToCart">
                     <tbody id="ppp" class="fw-bold text-gray-600">
                         <tr>
                             <td>
                                 <div class="form-check form-check-sm form-check-custom form-check-solid">
-                                    <button type="button" class="btn btn-primary btn-sm" onclick="submitForm('${product.name}', '${product.price}', '${product.ref}', '${product.qte}'); setTimeout(function(){ window.location.reload(); }, 1000);" id="productButton{{ loop.index0 + 1 }}">
+                                    <button type="button" class="btn btn-primary btn-sm" onclick="submitForm('${ product.name }', '${ product.price }', '${ product.ref }');" id="productButton${ product.ref }">
                                         <i class="fas fa-plus"></i>
+                                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
                                     </button>
                                 </div>
                             </td>

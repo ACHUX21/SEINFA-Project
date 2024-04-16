@@ -87,43 +87,63 @@ function initializeAutocomplete(clients) {
 
     
 
-function submitForm(name, price, ref) {
-
-    const qte = document.getElementById('qte-' + name).value;
-    const formData = {
-        name: name,
-        price: price,
-        ref: ref,
-        qte: qte
-    };
-
+    function submitForm(name, price, ref) {
+        const buttonId = 'productButton' + ref; // Make sure this ID is correctly generated.
+        console.log("Looking for button with ID:", buttonId); // Debug to see the actual ID being generated
     
-    fetch('/addToCart', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData)
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
+        const button = document.getElementById(buttonId);
+        if (!button) {
+            console.error('Button not found with ID:', buttonId);
+            return; // Exit the function if the button is not found
         }
-        return response.json();
-    })
-    .then(data => {
-        console.log('Data successfully sent to /addToCart:', data);
+    
+        const spinner = button.querySelector('.spinner-border');
+        if (!spinner) {
+            console.error('Spinner not found in button with ID:', buttonId);
+            return; // Exit the function if spinner is not found
+        }
         
-    })
-    .catch(error => {
-        console.error('Error sending data to /addToCart:', error);
-        
-    });
-
-    setTimeout(populateCart, 1000);
-    fetchTotal();
-}
-
+        spinner.style.display = 'inline-block'; // Show the spinner
+    
+        const qteId = 'qte-' + name;
+        console.log("Looking for quantity input with ID:", qteId); // Debug to confirm the ID
+        const qte = document.getElementById(qteId) ? document.getElementById(qteId).value : '1'; // Default to '1' if not found
+        console.log("Quantity:", qte); // Log the quantity
+    
+        const formData = {
+            name: name,
+            price: price,
+            ref: ref,
+            qte: qte
+        };
+    
+        fetch('/addToCart', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Data successfully sent to /addToCart:', data);
+            spinner.style.display = 'none'; // Hide the spinner
+        })
+        .catch(error => {
+            console.error('Error sending data to /addToCart:', error);
+            spinner.style.display = 'none'; // Hide the spinner
+        });
+    
+        setTimeout(populateCart, 1000);
+        fetchTotal();
+    }
+    
+    
 function removeProduct(id, name) {
     
     fetch(`/removeFromCart`, {

@@ -26,6 +26,11 @@
 		<!--end::Global Stylesheets Bundle-->
 	</head>
     <style>
+
+.spinner-border {
+    display: none;
+    position: absolute;
+}
         .autocomplete-items {
     position: absolute;
     background-color: white;
@@ -656,10 +661,11 @@
                                                                     <!--begin::Checkbox-->
                                                                     <td>
                                                                         <div class="form-check form-check-sm form-check-custom form-check-solid">
-                                                                            <button type="button" class="btn btn-primary btn-sm" onclick="submitForm('{{ product.name }}', '{{ product.price }}', '{{ product.ref }}', '{{ product.qte }}');" id="productButton{{ loop.index0 + 1 }}">
+                                                                            <button type="button" class="btn btn-primary btn-sm" onclick="submitForm('{{ product.name }}', '{{ product.price }}', '{{ product.ref }}');" id="productButton{{ product.ref }}">
                                                                                 <i class="fas fa-plus"></i>
+                                                                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
                                                                             </button>
-                                                                        </div>
+                                                                        </div>                                                                        
                                                                     </td>
                                                                     <!--end::Checkbox-->
                                                                     <!--begin::Product=-->
