@@ -3,10 +3,10 @@ import requests
 from flask import Flask, render_template, request, redirect, url_for, make_response, jsonify, abort
 from jawt import authen,verifyjwt
 from functions import last_dev_mssql, fetch_products, get_categories, Get_CT_NUM, insert_ToEntete, insert_ToLigne, insert_ToDocRegl, get_all_devis, get_devis_by_id, Search_Function
-from mysqlDB import select_tmpCart, addTo_tmpCart, removeFrom_tmpCart, clean_tmpCart, get_TOTAL, last_dev, add_devis_draft
+from mysqlDB import select_tmpCart, addTo_tmpCart, removeFrom_tmpCart, clean_tmpCart, get_TOTAL, last_dev, add_devis_draft, add_devis_draft_details
 from re import match
 
-conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=196.118.25.162,1433;DATABASE=UNIO 2020;UID=sa;PWD=90901504Data;Encrypt=no;TrustServerCertificate=yes;')
+conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=196.118.25.162,1433;DATABASE=ASZPROD;UID=sa;PWD=90901504Data;Encrypt=no;TrustServerCertificate=yes;')
 
 app = Flask(__name__, static_folder='static', template_folder='Template')
 
@@ -75,28 +75,6 @@ def commandes():
     return render_template('commande.html', last_dev=last_dev() , products=fetch_products(20), categories=get_categories(), tmpCart=select_tmpCart(payload['id']),username=payload['username'],role=payload['role'], total=get_TOTAL(payload['id']))
 
 # Submit Route
-# @app.route('/submit', methods=['POST'])
-# def submit():
-#     token = request.cookies.get('token')
-#     if not token:
-#         return redirect(url_for('index'))
-#     payload = verifyjwt(token)
-#     if not payload:
-#         return redirect(url_for('index'))
-#     client = request.form['client']
-#     date = request.form['date']
-#     date = '-'.join(date.split('-')[::-1])
-#     ref = request.form['ref']
-#     if not client or not date or not ref:
-#         return render_template('commande.html', last_dev=last_dev() , products=fetch_products(20), categories=get_categories(), tmpCart=select_tmpCart(payload['id']), error='S\'il vous plaît remplir tous les champs')
-#     client = Get_CT_NUM(client)
-#     f = add_devis_draft(client, date, ref)
-#     if not f:
-#         return render_template("commande.html", last_dev=last_dev() , products=fetch_products(20), categories=get_categories(), tmpCart=select_tmpCart(payload['id']), error='Erreur lors de l\'enregistrement de la commande')
-#     if len(ref) > 17:
-#         return redirect(url_for('commandes'))
-#     devis = last_dev_mssql()
-
 @app.route('/submit', methods=['POST'])
 def submit():
     token = request.cookies.get('token')
@@ -109,36 +87,68 @@ def submit():
     date = request.form['date']
     date = '-'.join(date.split('-')[::-1])
     ref = request.form['ref']
-
     if not client or not date or not ref:
         return render_template('commande.html', last_dev=last_dev() , products=fetch_products(20), categories=get_categories(), tmpCart=select_tmpCart(payload['id']), error='S\'il vous plaît remplir tous les champs')
     client = Get_CT_NUM(client)
-    if not client:
-        return render_template("commande.html", last_dev=last_dev() , products=fetch_products(20), categories=get_categories(), tmpCart=select_tmpCart(payload['id']), error='Client introuvable')
+    var_last_devis = last_dev()
+    f = add_devis_draft(client, date, ref, var_last_devis, payload['id'])
+    if not f:
+        return render_template("commande.html", last_dev=last_dev() , products=fetch_products(20), categories=get_categories(), tmpCart=select_tmpCart(payload['id']), error='Erreur lors de l\'enregistrement de la commande')
     if len(ref) > 17:
         return redirect(url_for('commandes'))
-    userid = int(payload['id'])
-    dateF = "1753-01-01"
-    devis = last_dev()
-    t = insert_ToEntete(client, date, ref, userid, dateF, devis)
-    print(t)
-    if not t:
-        return render_template("commande.html", last_dev=last_dev() , products=fetch_products(20), categories=get_categories(), tmpCart=select_tmpCart(userid), error='Erreur lors de l\'enregistrement de la commande DOC_ENTETE')
-    paniers = select_tmpCart(userid)
+    paniers = select_tmpCart(payload['id'])
     if not paniers:
         return redirect(url_for('commandes'))
     for panier in paniers:
-        t = insert_ToLigne(client, devis, panier['ref'], panier['name'], panier['qte'], panier['price'], dateF, ref, date, panier['qte'] * panier['price'])
-        print(t)
-        if not t:
-            return render_template("commande.html", last_dev=last_dev() , products=fetch_products(20), categories=get_categories(), tmpCart=select_tmpCart(userid), error='Erreur lors de l\'enregistrement de la commande DOC_LIGNE')
+        f = add_devis_draft_details(client, panier['ref'], panier['name'], panier['qte'], panier['price'], "1753-01-01", ref, date, panier['qte'] * panier['price'], var_last_devis, payload['id'])
+        if not f:
+            return render_template("commande.html", last_dev=last_dev() , products=fetch_products(20), categories=get_categories(), tmpCart=select_tmpCart(payload['id']), error='Erreur lors de l\'enregistrement de la commande')
+    clean_tmpCart(payload['id'])
+    return render_template("commande.html", last_dev=last_dev() , products=fetch_products(20), categories=get_categories(), tmpCart=select_tmpCart(payload['id']), success='Commande enregistrée avec succès', total=get_TOTAL(payload['id']))
+
+
+# @app.route('/submit', methods=['POST'])
+# def submit():
+#     token = request.cookies.get('token')
+#     if not token:
+#         return redirect(url_for('index'))
+#     payload = verifyjwt(token)
+#     if not payload:
+#         return redirect(url_for('index'))
+#     client = request.form['client']
+#     date = request.form['date']
+#     date = '-'.join(date.split('-')[::-1])
+#     ref = request.form['ref']
+
+#     if not client or not date or not ref:
+#         return render_template('commande.html', last_dev=last_dev() , products=fetch_products(20), categories=get_categories(), tmpCart=select_tmpCart(payload['id']), error='S\'il vous plaît remplir tous les champs')
+#     client = Get_CT_NUM(client)
+#     if not client:
+#         return render_template("commande.html", last_dev=last_dev() , products=fetch_products(20), categories=get_categories(), tmpCart=select_tmpCart(payload['id']), error='Client introuvable')
+#     if len(ref) > 17:
+#         return redirect(url_for('commandes'))
+#     userid = int(payload['id'])
+#     dateF = "1753-01-01"
+#     devis = last_dev()
+#     t = insert_ToEntete(client, date, ref, userid, dateF, devis)
+#     print(t)
+#     if not t:
+#         return render_template("commande.html", last_dev=last_dev() , products=fetch_products(20), categories=get_categories(), tmpCart=select_tmpCart(userid), error='Erreur lors de l\'enregistrement de la commande DOC_ENTETE')
+#     paniers = select_tmpCart(userid)
+#     if not paniers:
+#         return redirect(url_for('commandes'))
+#     for panier in paniers:
+#         t = insert_ToLigne(client, devis, panier['ref'], panier['name'], panier['qte'], panier['price'], dateF, ref, date, panier['qte'] * panier['price'])
+#         print(t)
+#         if not t:
+#             return render_template("commande.html", last_dev=last_dev() , products=fetch_products(20), categories=get_categories(), tmpCart=select_tmpCart(userid), error='Erreur lors de l\'enregistrement de la commande DOC_LIGNE')
         
-    t = insert_ToDocRegl(devis, date)
-    print(t)
-    if not t:
-        return render_template("commande.html", last_dev=last_dev() , products=fetch_products(20), categories=get_categories(), tmpCart=select_tmpCart(userid), error='Erreur lors de l\'enregistrement de la commande DOC_REGL')
-    clean_tmpCart(userid)
-    return render_template("commande.html", last_dev=last_dev() , products=fetch_products(20), categories=get_categories(), tmpCart=select_tmpCart(userid), success='Commande enregistrée avec succès', total=get_TOTAL(userid))
+#     t = insert_ToDocRegl(devis, date)
+#     print(t)
+#     if not t:
+#         return render_template("commande.html", last_dev=last_dev() , products=fetch_products(20), categories=get_categories(), tmpCart=select_tmpCart(userid), error='Erreur lors de l\'enregistrement de la commande DOC_REGL')
+#     clean_tmpCart(userid)
+#     return render_template("commande.html", last_dev=last_dev() , products=fetch_products(20), categories=get_categories(), tmpCart=select_tmpCart(userid), success='Commande enregistrée avec succès', total=get_TOTAL(userid))
 
 # Voir devis Route
 @app.route('/voirdevis', methods=['GET'])

@@ -120,7 +120,7 @@ def last_dev():
     try:
         mydb = get_connection()
         cursor = mydb.cursor()
-        cursor.execute("SELECT MAX(devis_draft_number) FROM devis_draft")
+        cursor.execute("SELECT MAX(devis) FROM devis_draft")
         data = cursor.fetchone()
         cursor.close()
         mydb.close()
@@ -128,35 +128,40 @@ def last_dev():
         if data[0] is None:
             return "000000"
         
-        data = f"{data[0]:06d}"
+        last = int(data[0])
+        last += 1
+        data = "{:06d}".format(last)
         return data
     except mysql.connector.Error as error:
         print(error)
         return "000000"
     
-def add_devis_draft(client, date, ref, devis):
+
+def add_devis_draft(client, date, ref, devis ,userid):
     try:
         mydb = get_connection()
         cursor = mydb.cursor()
-        cursor.execute("INSERT INTO devis_draft (client, date, ref, devis) VALUES (%s, %s, %s, %s)", (client, date, ref, devis))
+        cursor.execute("INSERT INTO devis_draft (client, date, ref, devis, userid) VALUES (%s, %s, %s, %s, %s)", (client, date, ref, devis, userid))
         mydb.commit()
         cursor.close()
         mydb.close()
+        print("Data added in devis_draft")
         return "Data added"
     except mysql.connector.Error as error:
         print(error)
         return None
     
-def add_devis_draft_details(client, devis, ar_ref, productDescription, quantity, price, dateF, ref, date, total, devis_draft_number):
+def add_devis_draft_details(client, ar_ref, productDescription, quantity, price, dateF, ref, date, total, devis, userid):
     try:
         mydb = get_connection()
         cursor = mydb.cursor()
-        cursor.execute("INSERT INTO devis_draft_details (client, devis, ar_ref, productDescription, quantity, price, dateF, ref, date, total, devis_draft_number) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (client, devis, ar_ref, productDescription, quantity, price, dateF, ref, date, total, devis_draft_number))
+        cursor.execute("INSERT INTO devis_draft_details (client, ar_ref, productDescription, quantity, price, dateF, ref, date, total, devis, userid) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)", (client, ar_ref, productDescription, quantity, price, dateF, ref, date, total, devis, userid))
         mydb.commit()
         cursor.close()
         mydb.close()
+        print("Data added in devis_draft_details")
         return "Data added"
     except mysql.connector.Error as error:
         print(error)
         return None
-    
+
