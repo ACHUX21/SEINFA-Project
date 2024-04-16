@@ -130,7 +130,7 @@
                                 </span>
                                 <div class="menu-sub menu-sub-accordion menu-active-bg">
                                     <div class="menu-item">
-                                        <a class="menu-link active" href="/commandes">
+                                        <a class="menu-link active" href="{{ url_for('commandes') }}">
                                             <span class="menu-bullet">
                                                 <span class="bullet bullet-dot"></span>
                                             </span>
@@ -144,7 +144,17 @@
                                             <span class="menu-bullet">
                                                 <span class="bullet bullet-dot"></span>
                                             </span>
-                                            <span class="menu-title">Voir les Draft</span>
+                                            <span class="menu-title">Valider les commandes</span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="menu-sub menu-sub-accordion menu-active-bg">
+                                    <div class="menu-item">
+                                        <a class="menu-link active" href="{{ url_for('voirDevis') }}">
+                                            <span class="menu-bullet">
+                                                <span class="bullet bullet-dot"></span>
+                                            </span>
+                                            <span class="menu-title">Voir les devis</span>
                                         </a>
                                     </div>
                                 </div>
