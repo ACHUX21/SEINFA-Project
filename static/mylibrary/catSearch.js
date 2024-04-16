@@ -52,3 +52,53 @@ document.getElementById('SearchCategories').addEventListener('input', redirectTo
 
 // Fetch categories and populate datalist when the page loads
 window.onload = fetchCategories;
+
+
+
+// add
+
+function populateCart() {
+    fetch('/api/tmpcart')
+        .then(response => response.json())
+        .then(data => {
+            const tmpCart = data; // Assuming data is an array of panier objects
+
+            const container = document.getElementById('tempproduct');
+            container.innerHTML = ''; // Clear previous content
+
+            tmpCart.forEach((panier, index) => {
+                const div = document.createElement('div');
+                div.id = `div${index + 1}`;
+                div.className = 'd-flex align-items-center border border-dashed rounded p-3 bg-white';
+
+                const thumbnail = document.createElement('a');
+                thumbnail.className = 'symbol symbol-50px';
+                thumbnail.innerHTML = `<span class="symbol-label" style="background-image:url(static/images/logo.png);"></span>`;
+
+                const details = document.createElement('div');
+                details.className = 'ms-5';
+
+                details.innerHTML = `
+                    <a class="text-gray-800 text-hover-primary fs-5 fw-bolder">${panier.name}</a>
+                    <div class="fw-bold fs-7">Prix: DH <span data-kt-ecommerce-edit-order-filter="price">${panier.price}</span></div>
+                    <div class="text-muted fs-7">Ref: ${panier.ref}</div>
+                    <div class="mt-2 d-flex align-items-center">
+                        <label class="me-2">Quantité:</label>
+                        <span class="me-2">${panier.qte}</span>
+                        <button type="button" class="btn btn-danger btn-sm" onclick="removeProduct('${index + 1}', '${panier.name}');">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                `;
+
+                div.appendChild(thumbnail);
+                div.appendChild(details);
+                container.appendChild(div);
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+        });
+}
+
+populateCart();

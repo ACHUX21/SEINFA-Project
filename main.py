@@ -2,8 +2,8 @@ import pyodbc
 import requests
 from flask import Flask, render_template, request, redirect, url_for, make_response, jsonify, abort
 from jawt import authen,verifyjwt
-from functions import last_dev, fetch_products, get_categories, Get_CT_NUM, insert_ToEntete, insert_ToLigne, insert_ToDocRegl, get_all_devis, get_devis_by_id, Search_Function
-from mysqlDB import select_tmpCart, addTo_tmpCart, removeFrom_tmpCart, clean_tmpCart, get_TOTAL
+from functions import last_dev_mssql, fetch_products, get_categories, Get_CT_NUM, insert_ToEntete, insert_ToLigne, insert_ToDocRegl, get_all_devis, get_devis_by_id, Search_Function
+from mysqlDB import select_tmpCart, addTo_tmpCart, removeFrom_tmpCart, clean_tmpCart, get_TOTAL, last_dev, add_devis_draft
 from re import match
 
 conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=196.118.25.162,1433;DATABASE=UNIO 2020;UID=sa;PWD=90901504Data;Encrypt=no;TrustServerCertificate=yes;')
@@ -75,6 +75,28 @@ def commandes():
     return render_template('commande.html', last_dev=last_dev() , products=fetch_products(20), categories=get_categories(), tmpCart=select_tmpCart(payload['id']),username=payload['username'],role=payload['role'], total=get_TOTAL(payload['id']))
 
 # Submit Route
+# @app.route('/submit', methods=['POST'])
+# def submit():
+#     token = request.cookies.get('token')
+#     if not token:
+#         return redirect(url_for('index'))
+#     payload = verifyjwt(token)
+#     if not payload:
+#         return redirect(url_for('index'))
+#     client = request.form['client']
+#     date = request.form['date']
+#     date = '-'.join(date.split('-')[::-1])
+#     ref = request.form['ref']
+#     if not client or not date or not ref:
+#         return render_template('commande.html', last_dev=last_dev() , products=fetch_products(20), categories=get_categories(), tmpCart=select_tmpCart(payload['id']), error='S\'il vous plaît remplir tous les champs')
+#     client = Get_CT_NUM(client)
+#     f = add_devis_draft(client, date, ref)
+#     if not f:
+#         return render_template("commande.html", last_dev=last_dev() , products=fetch_products(20), categories=get_categories(), tmpCart=select_tmpCart(payload['id']), error='Erreur lors de l\'enregistrement de la commande')
+#     if len(ref) > 17:
+#         return redirect(url_for('commandes'))
+#     devis = last_dev_mssql()
+
 @app.route('/submit', methods=['POST'])
 def submit():
     token = request.cookies.get('token')
@@ -236,15 +258,39 @@ def search():
 # Categories Route
 @app.route('/api/categories', methods=['GET'])
 def categories():
-    #token = request.cookies.get('token')
-    #if not token:
-    #    return redirect(url_for('index'))
-    #payload = verifyjwt(token)
-    #if not payload:
-    #    return redirect(url_for('index'))
+    token = request.cookies.get('token')
+    if not token:
+        return redirect(url_for('index'))
+    payload = verifyjwt(token)
+    if not payload:
+        return redirect(url_for('index'))
     categories = get_categories()
     return jsonify(categories)
 
+# temp Cart Route
+@app.route('/api/tmpcart', methods=['GET'])
+def tmpCart():
+    token = request.cookies.get('token')
+    if not token:
+        return redirect(url_for('index'))
+    payload = verifyjwt(token)
+    if not payload:
+        return redirect(url_for('index'))
+    p = select_tmpCart(payload['id'])
+    if not p:
+        return jsonify([])
+    return jsonify(p)
+
+# Total Route
+@app.route('/api/total', methods=['GET'])
+def total():
+    token = request.cookies.get('token')
+    if not token:
+        return redirect(url_for('index'))
+    payload = verifyjwt(token)
+    if not payload:
+        return redirect(url_for('index'))
+    return jsonify({'total': get_TOTAL(payload['id'])})
 
 if __name__ == '__main__':
     app.run(debug=True)

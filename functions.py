@@ -7,7 +7,7 @@ conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=196.118.25.
 
 
 # last devis
-def last_dev():
+def last_dev_mssql():
     cursor = conn.cursor()
     query = "SELECT DO_PIECE from F_DOCENTETE where DO_Type = 0 ORDER BY DO_PIECE DESC"
     cursor.execute(query)

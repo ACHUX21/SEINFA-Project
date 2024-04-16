@@ -112,3 +112,51 @@ def clean_tmpCart(userid):
     except mysql.connector.Error as error:
         print(error)
         return None
+
+
+
+# devis_draft
+def last_dev():
+    try:
+        mydb = get_connection()
+        cursor = mydb.cursor()
+        cursor.execute("SELECT MAX(devis_draft_number) FROM devis_draft")
+        data = cursor.fetchone()
+        cursor.close()
+        mydb.close()
+        
+        if data[0] is None:
+            return "000000"
+        
+        data = f"{data[0]:06d}"
+        return data
+    except mysql.connector.Error as error:
+        print(error)
+        return "000000"
+    
+def add_devis_draft(client, date, ref, devis):
+    try:
+        mydb = get_connection()
+        cursor = mydb.cursor()
+        cursor.execute("INSERT INTO devis_draft (client, date, ref, devis) VALUES (%s, %s, %s, %s)", (client, date, ref, devis))
+        mydb.commit()
+        cursor.close()
+        mydb.close()
+        return "Data added"
+    except mysql.connector.Error as error:
+        print(error)
+        return None
+    
+def add_devis_draft_details(client, devis, ar_ref, productDescription, quantity, price, dateF, ref, date, total, devis_draft_number):
+    try:
+        mydb = get_connection()
+        cursor = mydb.cursor()
+        cursor.execute("INSERT INTO devis_draft_details (client, devis, ar_ref, productDescription, quantity, price, dateF, ref, date, total, devis_draft_number) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (client, devis, ar_ref, productDescription, quantity, price, dateF, ref, date, total, devis_draft_number))
+        mydb.commit()
+        cursor.close()
+        mydb.close()
+        return "Data added"
+    except mysql.connector.Error as error:
+        print(error)
+        return None
+    

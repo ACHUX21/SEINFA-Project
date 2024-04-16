@@ -600,41 +600,10 @@
 														<!--begin::Selected products
                                                         hna fin kayn la selection des produits
                                                         -->
-														<div class="row row-cols-1 row-cols-xl-3 row-cols-md-2 border border-dashed rounded pt-3 pb-1 px-2 mb-5 mh-300px overflow-scroll" id="kt_ecommerce_edit_order_selected_products">
+														<div id="tempproduct" class="row row-cols-1 row-cols-xl-3 row-cols-md-2 border border-dashed rounded pt-3 pb-1 px-2 mb-5 mh-300px overflow-scroll" id="kt_ecommerce_edit_order_selected_products">
                                                             <!--begin::Empty message-->
-                                                            <span class="w-100 text-muted">Sélectionnez un ou plusieurs produits dans la liste ci-dessous en cochant la case.</span>
                                                             <!--end::Empty message-->
-                                                        {% for panier in tmpCart %}
-                                                            <div id="div{{ loop.index }}" class="d-flex align-items-center border border-dashed rounded p-3 bg-white">
-                                                                <!--begin::Thumbnail-->
-                                                                <a class="symbol symbol-50px">
-                                                                    <span class="symbol-label" style="background-image:url(static/images/logo.png);"></span>
-                                                                </a>
-                                                                <!--end::Thumbnail-->
-                                                                <div class="ms-5">
-                                                                    <!--begin::Title-->
-                                                                    <a class="text-gray-800 text-hover-primary fs-5 fw-bolder">{{ panier.name }}</a> <!-- AR_Design -->
-                                                                    <!--end::Title-->
-                                                                    <!--begin::Price-->
-                                                                    <div class="fw-bold fs-7">Prix: DH
-                                                                    <span data-kt-ecommerce-edit-order-filter="price">{{ panier.price }}</span></div><!-- AR_PrixTTC -->
-                                                                    <!--end::Price-->
-                                                                    <!--begin::SKU-->
-                                                                    <div class="text-muted fs-7">Ref: {{ panier.ref }}</div><!-- AR_Ref -->
-                                                                    <!--end::SKU-->
-                                                                    <!--begin::Quantity Display-->
-                                                                    <div class="mt-2 d-flex align-items-center">
-                                                                        <label class="me-2">Quantité:</label>
-                                                                        <span id="quantityDisplay{{ loop.index }}" class="me-2">{{ panier.qte }}</span>
-                                                                        <!-- Delete Button -->
-                                                                        <button type="button" class="btn btn-danger btn-sm" onclick="removeProduct('{{ loop.index }}', '{{ panier.name }}');">
-                                                                            <i class="fas fa-trash-alt"></i>
-                                                                        </button>
-                                                                    </div>
-                                                                    <!--end::Quantity Input-->
-                                                                </div>
-                                                            </div>
-                                                            {% endfor %}
+                                                        
                                                         </div>
                                                         
                                                         
@@ -644,8 +613,9 @@
                                                         hna fin kayn la selection des produits
                                                         -->
 														<!--begin::Total price-->
-														<div class="fw-bolder fs-4">Total TTC: DH
-														<span id="kt_ecommerce_edit_order_total_price">{{ total }}</span></div>
+                                                        <div class="fw-bolder fs-4">Total TTC: DH <span id="totalPrice"></span></div>
+														<!-- <div class="fw-bolder fs-4">Total TTC: DH
+														<span id="kt_ecommerce_edit_order_total_price">{{ total }}</span></div> -->
 														<!--end::Total price-->
 													</div>
 													<!--end::Input group-->
@@ -686,7 +656,7 @@
                                                                     <!--begin::Checkbox-->
                                                                     <td>
                                                                         <div class="form-check form-check-sm form-check-custom form-check-solid">
-                                                                            <button type="button" class="btn btn-primary btn-sm" onclick="submitForm('{{ product.name }}', '{{ product.price }}', '{{ product.ref }}', '{{ product.qte }}'); setTimeout(function(){ window.location.reload(); }, 1000);" id="productButton{{ loop.index0 + 1 }}">
+                                                                            <button type="button" class="btn btn-primary btn-sm" onclick="submitForm('{{ product.name }}', '{{ product.price }}', '{{ product.ref }}', '{{ product.qte }}');" id="productButton{{ loop.index0 + 1 }}">
                                                                                 <i class="fas fa-plus"></i>
                                                                             </button>
                                                                         </div>
@@ -853,6 +823,13 @@
 
         </script>
         <script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.9/dist/l10n/fr.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+              // Call the function when the DOM content is loaded
+              fetchTotal();
+            });
+          </script>
+          
 		<!--end::Page Custom Javascript-->
 		<!--end::Javascript-->
 	</body>

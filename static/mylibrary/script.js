@@ -119,6 +119,9 @@ function submitForm(name, price, ref) {
         console.error('Error sending data to /addToCart:', error);
         
     });
+
+    setTimeout(populateCart, 1000);
+    fetchTotal();
 }
 
 function removeProduct(id, name) {
@@ -147,9 +150,26 @@ function removeProduct(id, name) {
 
     
     document.getElementById("div" + id).remove();
+    fetchTotal();
+
 }
 function saveInputs() { localStorage.setItem("clientInputValue", document.querySelector(".clientInput").value); localStorage.setItem("refInputValue", document.querySelector(".refInput").value); localStorage.setItem("dateInputValue", document.querySelector(".kt_ecommerce_edit_order_date").value); } window.onload = function() { restoreInputs(); }; document.querySelector(".clientInput").addEventListener("input", saveInputs); document.querySelector(".refInput").addEventListener("input", saveInputs); document.querySelector(".kt_ecommerce_edit_order_date").addEventListener("input", saveInputs);
 function restoreInputs() { document.querySelector(".clientInput").value = localStorage.getItem("clientInputValue"); document.querySelector(".refInput").value = localStorage.getItem("refInputValue"); document.querySelector(".kt_ecommerce_edit_order_date").value = localStorage.getItem("dateInputValue"); } window.onload = function() { restoreInputs(); }; document.querySelector(".clientInput").addEventListener("input", saveInputs); document.querySelector(".refInput").addEventListener("input", saveInputs); document.querySelector(".kt_ecommerce_edit_order_date").addEventListener("input", saveInputs);
 
 
 
+
+function fetchTotal() {
+    // Fetch the total price from the backend API
+    fetch('/api/total')
+      .then(response => response.json())
+      .then(data => {
+        console.log('Total price:', data);
+        document.getElementById('totalPrice').textContent = data.total;
+      })
+      .catch(error => {
+        console.error('Error fetching total price:', error);
+      });
+  }
+
+fetchTotal();
