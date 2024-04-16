@@ -155,8 +155,8 @@ def select_devis_draft_details():
     
  
 
-select_devis_draft()
-select_devis_draft_details()
+# select_devis_draft()
+# select_devis_draft_details()
 
 
 def add_devis_draft_details(client, ar_ref, productDescription, quantity, price, dateF, ref, date, total, devis, userid):
@@ -172,4 +172,146 @@ def add_devis_draft_details(client, ar_ref, productDescription, quantity, price,
     except mysql.connector.Error as error:
         print(error)
         return None
+
+
+
+
+def get_drafts(id):
+    try:
+        mydb = get_connection()
+        cursor = mydb.cursor()
+        cursor.execute("SELECT devis_draft.`id`,devis_draft.`client`,devis_draft.`client_name`,devis_draft.`date`,devis_draft.`ref`,devis_draft.`devis`,devis_draft.`userid`,devis_draft.`draft_confirm`,SUM(devis_draft_details.total) as total FROM devis_draft inner JOIN devis_draft_details on devis_draft_details.devis = devis_draft.devis WHERE devis_draft.userid = %s GROUP by devis_draft.devis", (id,))
+        data = cursor.fetchall()
+        cursor.close()
+        mydb.close()
+        draft = []
+        for i in data:
+            dra = {
+                "id": i[0],
+                "client": i[1],
+                "client_name": i[2],
+                "date": i[3],
+                "ref": i[4],
+                "devis": i[5],
+                "userid": i[6],
+                "draft_confirm": i[7],
+                "total": i[8]
+            }
+            draft.append(dra)
+        print(draft)
+        return draft
+    except mysql.connector.Error as error:
+        print(error)
+        return None
     
+    
+def get_draft_details(id, devis):
+    try:
+        mydb = get_connection()
+        cursor = mydb.cursor()
+        cursor.execute("SELECT * FROM devis_draft_details WHERE userid = %s AND devis = %s", (id, devis))
+        data = cursor.fetchall()
+        cursor.close()
+        mydb.close()
+        draft = []
+        for i in data:
+            dra = {
+                "id": i[0],
+                "client": i[1],
+                "ar_ref": i[2],
+                "productDescription": i[3],
+                "quantity": i[4],
+                "price": i[5],
+                "dateF": i[6],
+                "ref": i[7],
+                "date": i[8],
+                "total": i[9],
+                "devis": i[10],
+                "userid": i[11]
+            }
+            draft.append(dra)
+        print(draft)
+        return draft
+    except mysql.connector.Error as error:
+        print(error)
+        return None
+
+def get_available_devis(userid):
+    try:
+        mydb = get_connection()
+        cursor = mydb.cursor()
+        cursor.execute("SELECT devis FROM devis_draft WHERE userid = %s", (userid,))
+        data = cursor.fetchall()
+        cursor.close()
+        mydb.close()
+        devis = []
+        for i in data:
+            devis.append(i[0])
+        print(devis)
+        return devis
+    except mysql.connector.Error as error:
+        print(error)
+        return None
+
+
+# get_drafts('5')
+# print("\n")
+# get_draft_details('1', '000000')
+
+# get_available_devis('5')
+
+
+
+def check_auth(userid, devis):
+    try:
+        mydb = get_connection()
+        cursor = mydb.cursor()
+        cursor.execute("SELECT * FROM devis_draft WHERE userid = %s AND devis = %s", (userid, devis))
+        data = cursor.fetchone()
+        cursor.close()
+        mydb.close()
+        print(data)
+        if data:
+            return True
+        else:
+            return False
+    except mysql.connector.Error as error:
+        print(error)
+        return None
+
+
+# check_auth('5', '000000')
+
+
+def get_drafts_details(devis):
+    try:
+        mydb = get_connection()
+        cursor = mydb.cursor()
+        cursor.execute("SELECT * FROM devis_draft_details WHERE devis = %s", (devis,))
+        data = cursor.fetchall()
+        cursor.close()
+        mydb.close()
+        draft = []
+        for i in data:
+            dra = {
+                "id": i[0],
+                "client": i[1],
+                "devis": i[2],
+                "ar_ref": i[3],
+                "productDescription": i[4],
+                "quantity": i[5],
+                "price": i[6],
+                "dateF": i[7],
+                "ref": i[8],
+                "date": i[9], 
+                "total": i[10],
+                "userid": i[11]
+            }
+            draft.append(dra)
+        print(draft)
+        return draft
+    except mysql.connector.Error as error:
+        print(error)
+        return None
+    
+get_drafts_details('000000')

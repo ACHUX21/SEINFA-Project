@@ -1,10 +1,34 @@
 import pyodbc
 import requests
 from flask import Flask, render_template, request, redirect, url_for, make_response, jsonify, abort
-from jawt import authen,verifyjwt
-from functions import last_dev_mssql, fetch_products, get_categories, Get_CT_NUM, insert_ToEntete, insert_ToLigne, insert_ToDocRegl, get_all_devis, get_devis_by_id, Search_Function
-from mysqlDB import select_tmpCart, addTo_tmpCart, removeFrom_tmpCart, clean_tmpCart, get_TOTAL, last_dev, add_devis_draft, add_devis_draft_details
+from jawt import authen, verifyjwt
 from re import match
+
+from functions import (
+    last_dev_mssql,
+    fetch_products,
+    get_categories,
+    Get_CT_NUM,
+    insert_ToEntete,
+    insert_ToLigne,
+    insert_ToDocRegl,
+    get_all_devis,
+    get_devis_by_id,
+    Search_Function,
+)
+from mysqlDB import (
+    select_tmpCart,
+    addTo_tmpCart,
+    removeFrom_tmpCart,
+    clean_tmpCart,
+    get_TOTAL,
+    last_dev,
+    add_devis_draft,
+    add_devis_draft_details,
+    get_drafts,
+    check_auth,
+    get_drafts_details
+)
 
 conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=196.118.25.162,1433;DATABASE=ASZPROD;UID=sa;PWD=90901504Data;Encrypt=no;TrustServerCertificate=yes;')
 
@@ -91,7 +115,7 @@ def submit():
         return render_template('commande.html', last_dev=last_dev() , products=fetch_products(20), categories=get_categories(), tmpCart=select_tmpCart(payload['id']), error='S\'il vous plaît remplir tous les champs')
     client = Get_CT_NUM(client)
     var_last_devis = last_dev()
-    f = add_devis_draft(client, date, ref, var_last_devis, payload['id'])
+    f = add_devis_draft(client, date, ref, var_last_devis, payload['id'], request.form['client'])
     if not f:
         return render_template("commande.html", last_dev=last_dev() , products=fetch_products(20), categories=get_categories(), tmpCart=select_tmpCart(payload['id']), error='Erreur lors de l\'enregistrement de la commande')
     if len(ref) > 17:
@@ -159,7 +183,10 @@ def voirDevis():
     payload = verifyjwt(token)
     if not payload:
         return redirect(url_for('index'))
-    devis = get_all_devis()
+    if payload['role'] == 'Administrateur':
+        devis = get_all_devis()
+    else:
+        return redirect(url_for('commandes'))
     return render_template('voir_commande.html', devis=devis, username=payload['username'],role=payload['role'])
 
 # Cart Routes
@@ -203,7 +230,40 @@ def logout():
 
 
 
+# Draft Routes
+@app.route('/voirDraft', methods=['GET'])
+def draftDevis():
+    token = request.cookies.get('token')
+    if not token:
+        return redirect(url_for('index'))
+    payload = verifyjwt(token)
+    if not payload:
+        return redirect(url_for('index'))
+    draft = get_drafts(payload['id'])
+    return render_template('voir_draft.html', draft=draft, username=payload['username'],role=payload['role'])
+
 # API Routes
+
+# API Devis Draft Route
+@app.route('/api/voirdraft/<string:devis>', methods=['GET'])
+def voirDraftNum(devis):
+    token = request.cookies.get('token')
+    if not token:
+        return redirect(url_for('index'))
+    payload = verifyjwt(token)
+    if not payload:
+        return redirect(url_for('index'))
+    auth = check_auth(payload['id'], devis)
+    # print(auth)
+    if not auth:
+        return redirect(url_for('index'))
+    data = get_drafts_details(devis)
+    d_data = get_drafts(payload['id'], devis)
+    if not data:
+        return render_template('detail_devis_draft.html', error='Devis introuvable', username=payload['username'],role=payload['role'], data=[])
+    return render_template('detail_devis_draft.html',d_data=d_data[0], data=data, username=payload['username'],role=payload['role'])
+
+
 # API Devis Route
 @app.route('/api/voirdevis/<string:devis>', methods=['GET'])
 def voirDevisNum(devis):

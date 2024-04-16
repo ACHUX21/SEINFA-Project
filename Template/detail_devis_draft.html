@@ -2,7 +2,7 @@
 <html lang="en">
 	<!--begin::Head-->
 	<head><base href="../../../">
-		<title>Détail {{ entete.DO_Piece }}</title>
+		<title>Détail {{ d_data.devis }}</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta property="og:locale" content="en_US" />
@@ -140,11 +140,11 @@
                                 </div>
                                 <div class="menu-sub menu-sub-accordion menu-active-bg">
                                     <div class="menu-item">
-                                        <a class="menu-link active" href="{{ url_for('voirDevis') }}">
+                                        <a class="menu-link active" href="{{ url_for('draftDevis') }}">
                                             <span class="menu-bullet">
                                                 <span class="bullet bullet-dot"></span>
                                             </span>
-                                            <span class="menu-title">Voir les devis</span>
+                                            <span class="menu-title">Voir les Draft</span>
                                         </a>
                                     </div>
                                 </div>
@@ -507,7 +507,7 @@
 											<!--begin::Card header-->
 											<div class="card-header">
 												<div class="card-title">
-													<h2>N° Devis (# {{ entete.DO_Piece }})</h2>
+													<h2>N° Devis (# {{ data.devis }})</h2>
 												</div>
 											</div>
 											<!--end::Card header-->
@@ -531,7 +531,7 @@
 																	</span>
 																	<!--end::Svg Icon-->Date devis</div>
 																</td>
-																<td class="fw-bolder text-end">{{ entete.DO_Date }}</td>
+																<td class="fw-bolder text-end">{{ d_data.date }}</td>
 															</tr>
                                                             <tr>
 																<td class="text-muted">
@@ -545,7 +545,7 @@
 																	</span>
 																	<!--end::Svg Icon-->Réference devis</div>
 																</td>
-																<td class="fw-bolder text-end">{{ entete.DO_Ref }}</td>
+																<td class="fw-bolder text-end">{{ d_data.ref }}</td>
 															</tr>
 															<!--end::Date-->
 															<!--begin::Payment method-->
@@ -562,15 +562,15 @@
 																	Statut de devis</div>
 																</td>
 																<td class="fw-bolder text-end">
-                                                                {% if entete.DO_Statut == 0 %}
+                                                                {% if d_data.status == 0 %}
                                                                     <span class="badge badge-light-primary ">Saisie</span>
-                                                                {% elif entete.DO_Statut == 1 %}
+                                                                {% elif d_data.status == 1 %}
                                                                     <span class="badge badge-light-info">Confirmé</span>
-                                                                {% elif entete.DO_Statut == 2 %}
+                                                                {% elif d_data.status == 2 %}
                                                                     <span class="badge badge-light-success">Accepté</span>
-                                                                {% elif entete.DO_Statut == 3 %}
+                                                                {% elif d_data.status == 3 %}
                                                                     <span class="badge badge-light-danger">Perdu</span>
-                                                                {% elif entete.DO_Statut == 4 %}
+                                                                {% elif d_data.status == 4 %}
                                                                     <span class="badge badge-light-dark">Archivé</span>
                                                                 {% endif %}
                                                                 </td>
@@ -635,7 +635,7 @@
 																		<!--begin:: Avatar -->
 																		<!--end::Avatar-->
 																		<!--begin::Name-->
-																		<a class="text-gray-600 text-hover-primary">{{ entete.CT_Intitule }}</a>
+																		<a class="text-gray-600 text-hover-primary">{{ d_data.client_name }}</a>
 																		<!--end::Name-->
 																	</div>
 																</td>
@@ -658,27 +658,14 @@
 																	<div class="d-flex align-items-center justify-content-end">
 																		<!--end::Avatar-->
 																		<!--begin::Name-->
-																		<a class="text-gray-600 text-hover-primary">{{ entete.CT_Num }}</a>
+																		<a class="text-gray-600 text-hover-primary">{{ d_data.client }}</a>
 																		<!--end::Name-->
 																	</div>
 																</td>
 															</tr>
 															<!--end::Payment method-->
 															<!--begin::Date-->
-															<tr>
-																<td class="text-muted">
-																	<div class="d-flex align-items-center">
-																	<!--begin::Svg Icon | path: icons/duotune/electronics/elc003.svg-->
-																	<span class="svg-icon svg-icon-2 me-2">
-																		<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-																			<path d="M5 20H19V21C19 21.6 18.6 22 18 22H6C5.4 22 5 21.6 5 21V20ZM19 3C19 2.4 18.6 2 18 2H6C5.4 2 5 2.4 5 3V4H19V3Z" fill="currentColor" />
-																			<path opacity="0.3" d="M19 4H5V20H19V4Z" fill="currentColor" />
-																		</svg>
-																	</span>
-																	<!--end::Svg Icon-->Phone</div>
-																</td>
-																<td class="fw-bolder text-end">{{ entete.CT_Telephone }}</td>
-															</tr>
+															
 															<!--end::Date-->
 														</tbody>
 														<!--end::Table body-->
@@ -697,28 +684,7 @@
 										<div class="tab-pane fade show active" id="kt_ecommerce_sales_order_summary" role="tab-panel">
 											<!--begin::Orders-->
 											<div class="d-flex flex-column gap-7 gap-lg-10">
-												<div class="d-flex flex-column flex-xl-row gap-7 gap-lg-10">
-													<!--end::Payment address-->
-													<!--begin::Shipping address-->
-													<div class="card card-flush py-4 flex-row-fluid overflow-hidden">
-														<!--begin::Background-->
-														<div class="position-absolute top-0 end-0 opacity-10 pe-none text-end">
-															<img src="static/assets/media/icons/duotune/ecommerce/ecm006.svg" class="w-175px" />
-														</div>
-														<!--end::Background-->
-														<!--begin::Card header-->
-														<div class="card-header">
-															<div class="card-title">
-																<h2>Adresse de client</h2>
-															</div>
-														</div>
-														<!--end::Card header-->
-														<!--begin::Card body-->
-														<div class="card-body pt-0">{{ entete.CT_Adresse }}</div>
-														<!--end::Card body-->
-													</div>
-													<!--end::Shipping address-->
-												</div>
+												
 												<!--begin::Product List-->
 												<div class="card card-flush py-4 flex-row-fluid overflow-hidden">
 													<!--begin::Card header-->
@@ -746,7 +712,7 @@
 																<!--end::Table head-->
 																<!--begin::Table body-->
 																<tbody class="fw-bold text-gray-600">
-                                                                {% for produit in lignes %}
+                                                                {% for produit in data %}
 																	<!--begin::Products-->
 																	<tr>
 																		<!--begin::Product-->
@@ -766,16 +732,16 @@
 																		</td>
 																		<!--end::Product-->
 																		<!--begin::SKU-->
-																		<td class="text-end">{{ produit.AR_Ref }}</td>
+																		<td class="text-end">{{ produit.ar_ref }}</td>
 																		<!--end::SKU-->
 																		<!--begin::Quantity-->
-																		<td class="text-end">{{ produit.DL_Qte }}</td>
+																		<td class="text-end">{{ produit.quantity }}</td>
 																		<!--end::Quantity-->
 																		<!--begin::Price-->
-																		<td class="text-end">{{ produit.DL_PUTTC }}</td>
+																		<td class="text-end">{{ produit.price }}</td>
 																		<!--end::Price-->
 																		<!--begin::Total-->
-																		<td class="text-end">{{ produit.DL_MontantTTC }}</td>
+																		<td class="text-end">{{ produit.total }}</td>
 																		<!--end::Total-->
 																	</tr>
                                                                     {% endfor %}
@@ -783,14 +749,14 @@
 																	<!--begin::Subtotal-->
 																	<tr>
 																		<td colspan="4" class="text-end">Total HT</td>
-																		<td class="text-end">{{ entete.DO_TotalHT }}</td>
+																		<td class="text-end">{{ d_data.total }}</td>
 																	</tr>
 																	<!--end::VAT-->
 																	<!--begin::Shipping-->
 																	<tr>
 																		<td colspan="4" class="text-end">Montant TTC</td>
-																		<td class="text-end"><b>{{ entete.DO_TotalTTC }} MAD</b></td>
-																	</tr>
+																		<td class="text-end"><b>{{ d_data.total * 1.2 }}</b></td>
+                                                                    </tr>
 																	<!--end::Grand total-->
 																</tbody>
 																<!--end::Table head-->
