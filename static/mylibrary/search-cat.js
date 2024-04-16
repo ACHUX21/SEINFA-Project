@@ -148,9 +148,15 @@ function removeAndreplace(AR_Ref) {
                                     <div class="me-3">
                                         <input id="qte-${product.name}" type="number" id="quantity${product.id}" name="quantity${product.id}" min="1" value="1" class="form-control form-control-sm" style="width: 60px;">
                                     </div>
-                                    <a class="symbol symbol-50px me-3">
-                                        <span class="symbol-label" style="background-image:url(static/images/logo.png);"></span>
-                                    </a>
+                                    {% if product.category in ["GOBLETS", "EMBALLAGE", "ELASTIQUE", "TAPIS"] %}
+                                                                            <a class="symbol symbol-50px me-3">
+                                                                                <span class="symbol-label" style="background-image:url(static/images_seinfa_app/{{ product.category | lower }}.jpg);"></span>
+                                                                            </a>
+                                                                            {% else %}
+                                                                            <a class="symbol symbol-50px me-3">
+                                                                                <span class="symbol-label" style="background-image:url(static/images_seinfa_app/noimageavailable.jpg);"></span>
+                                                                            </a>
+                                                                            {% endif %}
                                     <div>
                                         <a class="text-gray-800 text-hover-primary fs-5 fw-bolder">${product.name}</a>
                                         <div class="fw-bold fs-7">Prix: DH <span data-kt-ecommerce-edit-order-filter="price">${product.price}</span></div>

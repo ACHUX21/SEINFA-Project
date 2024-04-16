@@ -579,6 +579,7 @@
 											<!--begin::Card body-->
 											<div class="card-body pt-0">
                                                 <input id="SearchCategories" type="text" class="form-control form-control-solid" placeholder="Recherche par famille" list="autocomplete-list-cat" />
+                                                <br>
                                                 <datalist id="autocomplete-list-cat"></datalist>
 
                                                 <div class="category-slider">
@@ -595,6 +596,7 @@
                                                         {% endfor %}
                                                     </div>
                                                   </div>
+                                                  <br>
 												<div class="d-flex flex-column gap-10">
 													<!--begin::Input group-->
 													<div>
@@ -676,9 +678,17 @@
                                                                                 <input id="qte-{{ product.name }}" type="number" id="quantity{{ product.id }}" name="quantity{{ product.id }}" min="1" value="1" class="form-control form-control-sm" style="width: 60px;">
                                                                             </div>
                                                                             <!--begin::Thumbnail-->
+                                                                            {% if product.category in ["GOBLETS", "EMBALLAGE", "ELASTIQUE", "TAPIS"] %}
                                                                             <a class="symbol symbol-50px me-3">
-                                                                                <span class="symbol-label" style="background-image:url(static/images/logo.png);"></span>
+                                                                                <span class="symbol-label" style="background-image:url(static/images_seinfa_app/{{ product.category | lower }}.jpg);"></span>
                                                                             </a>
+                                                                            {% else %}
+                                                                            <a class="symbol symbol-50px me-3">
+                                                                                <span class="symbol-label" style="background-image:url(static/images_seinfa_app/noimageavailable.jpg);"></span>
+                                                                            </a>
+                                                                            {% endif %}
+
+
                                                                             <!--end::Thumbnail-->
                                                                             <div>
                                                                                 <!--begin::Title-->
@@ -690,6 +700,7 @@
                                                                                 <!--end::Price-->
                                                                                 <!--begin::SKU-->
                                                                                 <div class="text-muted fs-7">Ref: {{ product.ref }}</div><!-- AR_Ref -->
+                                                                                <div class="text-muted fs-7">Famille: {{ product.category }}</div><!-- AR_Ref -->
                                                                                 <!--end::SKU-->
                                                                             </div>
                                                                         </div>
