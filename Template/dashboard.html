@@ -785,32 +785,30 @@
                                                                     <th class="ps-0 w-50px">Article</th>
                                                                     <th class="min-w-140px"></th>
                                                                     <th class="text-end min-w-140px">QTY VENDUE</th>
-                                                                    <th class="pe-0 text-end min-w-120px">Moyen prix unitaire</th>
                                                                     <th class="pe-0 text-end min-w-120px">CA TTC</th>
                                                                 </tr>
                                                             </thead>
                                                             <!--end::Table head-->
                                                             <!--begin::Table body-->
                                                             <tbody>
+                                                                {% for p in data_product %}
                                                                 <tr>
                                                                     <td>
                                                                         <img src="static/assets/media/stock/ecommerce/210.gif" class="w-50px ms-n1" alt="" />
                                                                     </td>
                                                                     <td class="ps-0">
-                                                                        <a href="#" class="text-gray-800 fw-bolder text-hover-primary mb-1 fs-6 text-start pe-0">Designation</a>
-                                                                        <span class="text-gray-400 fw-bold fs-7 d-block text-start ps-0">Reference</span>
-                                                                        <span class="text-gray-400 fw-bold fs-7 d-block text-start ps-0">Categorie</span>
+                                                                        <a href="#" class="text-gray-800 fw-bolder text-hover-primary mb-1 fs-6 text-start pe-0">{{ p.ar_design }}</a>
+                                                                        <span class="text-gray-400 fw-bold fs-7 d-block text-start ps-0">{{ p.ar_ref }}</span>
+                                                                        <span class="text-gray-400 fw-bold fs-7 d-block text-start ps-0">{{ p.famille }}</span>
                                                                     </td>
                                                                     <td>
-                                                                        <span class="text-gray-800 fw-bolder d-block fs-6 ps-0 text-end">qv</span>
+                                                                        <span class="text-gray-800 fw-bolder d-block fs-6 ps-0 text-end">{{ p.dl_qte }}</span>
                                                                     </td>
                                                                     <td class="text-end pe-0">
-                                                                        <span class="text-gray-800 fw-bolder d-block fs-6">pu</span>
-                                                                    </td>
-                                                                    <td class="text-end pe-0">
-                                                                        <span class="text-gray-800 fw-bolder d-block fs-6">tca</span>
+                                                                        <span class="text-gray-800 fw-bolder d-block fs-6">{{ p.dl_montantttc }}</span>
                                                                     </td>
                                                                 </tr>
+                                                                {% endfor %}
                                                             </tbody>
                                                             <!--end::Table body-->
                                                         </table>
@@ -858,22 +856,24 @@
                                                             <!--end::Table head-->
                                                             <!--begin::Table body-->
                                                             <tbody>
+                                                                {% for c in data_client %}
                                                                 <tr>
                                                                     <td>
                                                                         <img src="static/assets/media/stock/ecommerce/210.gif" class="w-50px ms-n1" alt="" />
                                                                     </td>
                                                                     <td class="ps-0">
-                                                                        <a href="#" class="text-gray-800 fw-bolder text-hover-primary mb-1 fs-6 text-start pe-0">intitule</a>
-                                                                        <span class="text-gray-400 fw-bold fs-7 d-block text-start ps-0">ct_num</span>
+                                                                        <a href="#" class="text-gray-800 fw-bolder text-hover-primary mb-1 fs-6 text-start pe-0">{{ c.client }}</a>
+                                                                        <span class="text-gray-400 fw-bold fs-7 d-block text-start ps-0">{{ c.ct_num }}</span>
                                                                         <!-- <span class="text-gray-400 fw-bold fs-7 d-block text-start ps-0">Categorie</span> -->
                                                                     </td>
                                                                     <td class="text-end pe-0">
-                                                                        <span class="text-gray-800 fw-bolder d-block fs-6">can</span>
+                                                                        <span class="text-gray-800 fw-bolder d-block fs-6">{{ c.dl_montantttc }}</span>
                                                                     </td>
                                                                     <td class="text-end pe-0">
-                                                                        <span class="text-gray-800 fw-bolder d-block fs-6">can-1</span>
+                                                                        <span class="text-gray-800 fw-bolder d-block fs-6">{{ c.dl_montantttc }}</span>
                                                                     </td>
                                                                 </tr>
+                                                                {% endfor %}
                                                             </tbody>
                                                             <!--end::Table body-->
                                                         </table>

@@ -124,41 +124,47 @@ function fetchDataFromAPI() {
 var products = [];
 
 function removeAndreplace(AR_Ref) {
-
     var table = document.getElementById("kt_ecommerce_edit_order_product_table");
 
     fetch(`/api/search?q=${AR_Ref}`)
         .then(response => response.json())
         .then(data => {
-            product = data[0];
+            const product = data[0];
+            // Determine the background image based on the product category
+            const categoriesWithImages = ["GOBLET", "EMBALLAGE", "ELASTIQUE", "TAPIS"];
+            const imageUrl = categoriesWithImages.includes(product.category)
+                             ? `static/images_seinfa_app/${product.category.toLowerCase()}.jpg`
+                             : 'static/images_seinfa_app/noimageavailable.jpg';
+
+            // Build the table inner HTML dynamically
             table.innerHTML = `
-                <form id="form{{ loop.index0 + 1 }}" method="POST" action="/addToCart">
+                <form id="form${product.ref}" method="POST" action="/addToCart">
                     <tbody id="ppp" class="fw-bold text-gray-600">
                         <tr>
                             <td>
-                            <div class="form-check form-check-sm form-check-custom form-check-solid">
-                                <button type="button" class="btn btn-primary btn-sm" onclick="submitForm('${ product.name }', '${ product.price }', '${ product.ref }');" id="productButton${ product.ref }">
-                                    <i class="fas fa-plus"></i>
-                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
-                                </button>
-                            </div>
+                                <div class="form-check form-check-sm form-check-custom form-check-solid">
+                                    <button type="button" class="btn btn-primary btn-sm" onclick="submitForm('${product.name}', '${product.price}', '${product.ref}');" id="productButton${product.ref}">
+                                        <i class="fas fa-plus"></i>
+                                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
+                                    </button>
+                                </div>
                             </td>
                             <td>
-                                <div class="d-flex align-items-center" data-kt-ecommerce-edit-order-filter="product" data-kt-ecommerce-edit-order-id="product_1">
+                                <div class="d-flex align-items-center">
                                     <div class="me-3">
-                                        <input id="qte-${product.name}" type="number" id="quantity${product.id}" name="quantity${product.id}" min="1" value="1" class="form-control form-control-sm" style="width: 60px;">
+                                        <input type="number" name="quantity${product.id}" min="1" value="1" class="form-control form-control-sm" style="width: 60px;">
                                     </div>
                                     <a class="symbol symbol-50px me-3">
-                                        <span class="symbol-label" style="background-image:url(static/images/logo.png);"></span>
+                                        <span class="symbol-label" style="background-image:url(${imageUrl});"></span>
                                     </a>
                                     <div>
                                         <a class="text-gray-800 text-hover-primary fs-5 fw-bolder">${product.name}</a>
-                                        <div class="fw-bold fs-7">Prix: DH <span data-kt-ecommerce-edit-order-filter="price">${product.price}</span></div>
+                                        <div class="fw-bold fs-7">Prix: DH <span>${product.price}</span></div>
                                         <div class="text-muted fs-7">Ref: ${product.ref}</div>
                                     </div>
                                 </div>
                             </td>
-                            <td class="text-end pe-5" data-order="0">
+                            <td class="text-end pe-5">
                                 ${product.qte > 0 && product.qte < 10 ? `<span class="badge badge-light-danger" style="color: orange;">Presque épuisé ${product.qte}</span>` : (product.qte == 0 ? `<span class="badge badge-light-danger" style="color: red;">Épuisé ${product.qte}</span>` : `<span class="badge badge-light-danger" style="color: green;">Disponible ${product.qte}</span>`)}
                             </td>
                         </tr>
@@ -167,6 +173,7 @@ function removeAndreplace(AR_Ref) {
         })
         .catch(error => console.error('Error fetching data:', error));
 }
+
 
 fetchDataFromAPI();
 

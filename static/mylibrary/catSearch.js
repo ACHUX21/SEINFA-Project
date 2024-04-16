@@ -73,15 +73,7 @@ function populateCart() {
 
                 const thumbnail = document.createElement('a');
                 thumbnail.className = 'symbol symbol-50px';
-                thumbnail.innerHTML = `{% if product.category in ["GOBLETS", "EMBALLAGE", "ELASTIQUE", "TAPIS"] %}
-                <a class="symbol symbol-50px me-3">
-                    <span class="symbol-label" style="background-image:url(static/images_seinfa_app/{{ product.category | lower }}.jpg);"></span>
-                </a>
-                {% else %}
-                <a class="symbol symbol-50px me-3">
-                    <span class="symbol-label" style="background-image:url(static/images_seinfa_app/noimageavailable.jpg);"></span>
-                </a>
-                {% endif %}`;
+                thumbnail.innerHTML = `<span class="symbol-label" style="background-image:url(static/images/logo.png);"></span>`;
 
                 const details = document.createElement('div');
                 details.className = 'ms-5';

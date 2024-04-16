@@ -314,4 +314,45 @@ def get_drafts_details(devis):
         print(error)
         return None
     
-get_drafts_details('000000')
+# get_drafts_details('000000')
+
+
+
+
+def get_ca_products_co_no_2024():
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM ca_products_co_no_2024")
+        data = cursor.fetchall()
+        cursor.close()
+        for i in data:
+            print(i)
+        return data
+    except mysql.connector.Error as error:
+        print(error)
+        return None
+
+
+def get_ca_client_co_no_2024(co_no):
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM ca_client_co_no_2024 WHERE Co_no = %s", (co_no,))
+        data = cursor.fetchall()
+        cursor.close()
+        info = []
+        for i in data:
+            inf = {
+                "client": i[0],
+                "Dl_MontantTTC": i[1],
+                "Co_no": i[2],
+            }
+            info.append(inf)
+        print(info)
+        return info
+    except mysql.connector.Error as error:
+        print(error)
+        return None
+    
+    
+get_ca_client_co_no_2024()
+# get_ca_products_co_no_2024()

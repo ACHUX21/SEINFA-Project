@@ -32,6 +32,10 @@ from mysqlDB import (
     get_draft_devis,
     clean_drafts
 )
+from dash import (
+    get_ca_client_co_no_2024,
+    get_ca_products_co_no_2024
+)
 
 conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=196.118.25.162,1433;DATABASE=ASZPROD;UID=sa;PWD=90901504Data;Encrypt=no;TrustServerCertificate=yes;')
 
@@ -63,14 +67,26 @@ def check_for_maintenance():
 def index():
     token = request.cookies.get('token')
     if token:
-        return redirect(url_for('commandes'))
+        return redirect(url_for('dashboard'))
     return redirect(url_for('login'))
+
+
+# dashboard Route
+@app.route('/dashboard')
+def dashboard():
+    token = request.cookies.get('token')
+    if not token:
+        return redirect(url_for('login'))
+    payload = verifyjwt(token)
+    if not payload:
+        return redirect(url_for('login'))
+    return render_template('dashboard.html', username=payload['username'],role=payload['role'], data_client=get_ca_client_co_no_2024(payload['co_no'], payload['role']), data_product=get_ca_products_co_no_2024(payload['co_no'], payload['role']))
 
 @app.route('/login', methods=['GET'])
 def login():
     token = request.cookies.get('token')
     if token:
-        return redirect(url_for('commandes'))
+        return redirect(url_for('dashboard'))
     return render_template('login.html')
 
 @app.route('/login', methods=['POST'])
@@ -287,7 +303,7 @@ def validerDraftNum(devis):
     if not f:
         return redirect(url_for('draftDevis'))
     clean_drafts(devis)
-    return render_template("commande.html", last_dev=last_dev() , products=fetch_products(20), categories=get_categories(), tmpCart=select_tmpCart(userid), success='Commande enregistrée avec succès', total=get_TOTAL(userid))
+    return render_template("commande.html", last_dev=last_dev() , products=fetch_products(20), categories=get_categories(), tmpCart=select_tmpCart(userid), success=f"Commande enregistrée avec succès: pour devis {var_last_devis}", total=get_TOTAL(userid))
 
 # API Devis Draft Route
 @app.route('/api/voirdraft/<string:devis>', methods=['GET'])
