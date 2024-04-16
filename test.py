@@ -29,14 +29,15 @@ def get_connection():
 #     devis_draft_number INT AUTO_INCREMENT PRIMARY KEY,
 #     client VARCHAR(255) NOT NULL,
 #     date DATE NOT NULL,
-#     ref VARCHAR(255)
+#     ref VARCHAR(255),
+#     userid INT NOT NULL,
 # );
 
 def create_devis_draft():
     try:
         mydb = get_connection()
         cursor = mydb.cursor()
-        cursor.execute("CREATE TABLE devis_draft (devis_draft_number INT AUTO_INCREMENT PRIMARY KEY, client VARCHAR(255) NOT NULL, date DATE NOT NULL, ref VARCHAR(255))")
+        cursor.execute("CREATE TABLE devis_draft (devis_draft_number INT AUTO_INCREMENT PRIMARY KEY, client VARCHAR(255) NOT NULL, date DATE NOT NULL, ref VARCHAR(255), userid INT NOT NULL)")
         mydb.commit()
         cursor.close()
         mydb.close()
@@ -102,13 +103,14 @@ def get_devis_draft():
 #     ref VARCHAR(255),
 #     date DATE NOT NULL,
 #     total DECIMAL(10, 2) NOT NULL
+#     userid INT NOT NULL,
 # );
 
 def create_devis_draft_details():
     try:
         mydb = get_connection()
         cursor = mydb.cursor()
-        cursor.execute("CREATE TABLE devis_draft_details (devis_draft_number INT NOT NULL, client VARCHAR(255) NOT NULL, devis VARCHAR(255), ar_ref VARCHAR(255), productDescription TEXT, quantity INT NOT NULL, price DECIMAL(10, 2) NOT NULL, dateF DATE, ref VARCHAR(255), date DATE NOT NULL, total DECIMAL(10, 2) NOT NULL)")
+        cursor.execute("CREATE TABLE devis_draft_details (devis_draft_number INT NOT NULL, client VARCHAR(255) NOT NULL, devis VARCHAR(255), ar_ref VARCHAR(255), productDescription TEXT, quantity INT NOT NULL, price DECIMAL(10, 2) NOT NULL, dateF DATE, ref VARCHAR(255), date DATE NOT NULL, total DECIMAL(10, 2) NOT NULL, userid INT NOT NULL)")
         mydb.commit()
         cursor.close()
         mydb.close()
@@ -144,3 +146,5 @@ def add_devis_draft_details(client, devis, ar_ref, productDescription, quantity,
         return None
     
 
+remove_devis_draft()
+create_devis_draft()
