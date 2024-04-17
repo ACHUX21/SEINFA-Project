@@ -20,7 +20,6 @@ def get_connection():
 def get_TOTAL(userid):
     try:
         mydb = get_connection()
-        time.sleep(0.5)
         cursor = mydb.cursor()
         cursor.execute("SELECT SUM(price * qte) FROM tempCart WHERE userid = %s", (userid,))
         data = cursor.fetchone()
@@ -60,7 +59,7 @@ def addTo_tmpCart(data, userid):
         if cursor.fetchone():
             cursor.execute("UPDATE tempCart SET qte = qte + %s WHERE userid = %s AND ref = %s", (data['qte'], userid, data['ref']))
         else:
-            cursor.execute("INSERT INTO tempCart (name, qte, price, ref, userid) VALUES (%s, %s, %s, %s, %s)", (data['name'], data['qte'], data['price'], data['ref'], userid))
+            cursor.execute("INSERT INTO tempCart (name, qte, price, ref, userid,famille) VALUES (%s, %s, %s, %s, %s,%s)", (data['name'], data['qte'], data['price'], data['ref'], userid, data['category']))
         
         mydb.commit()
         cursor.close()
@@ -77,7 +76,6 @@ def select_tmpCart(userid):
         if not userid:
             mydb.close()
             return None
-
         cursor = mydb.cursor()
         cursor.execute("SELECT * FROM tempCart WHERE userid = %s", (userid,))
         data = cursor.fetchall()
@@ -91,7 +89,8 @@ def select_tmpCart(userid):
                 'name': product[0],
                 'price': round(product[2], 2),
                 'ref': product[4],
-                'qte': product[1]
+                'qte': product[1],
+                'famille': product[5]
             })
 
         return products

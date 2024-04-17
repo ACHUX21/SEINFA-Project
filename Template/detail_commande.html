@@ -130,6 +130,16 @@
                                 </span>
                                 <div class="menu-sub menu-sub-accordion menu-active-bg">
                                     <div class="menu-item">
+                                        <a class="menu-link active" href="{{ url_for('dashboard') }}">
+                                            <span class="menu-bullet">
+                                                <span class="bullet bullet-dot"></span>
+                                            </span>
+                                            <span class="menu-title">Tableau de board</span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="menu-sub menu-sub-accordion menu-active-bg">
+                                    <div class="menu-item">
                                         <a class="menu-link active" href="{{ url_for('commandes') }}">
                                             <span class="menu-bullet">
                                                 <span class="bullet bullet-dot"></span>
@@ -762,10 +772,6 @@
 																		<!--begin::Product-->
 																		<td>
 																			<div class="d-flex align-items-center">
-																				<!--begin::Thumbnail-->
-																				<a href="{{url_for('commandes')}}" class="symbol symbol-50px">
-																					<span class="symbol-label" style="background-image:url(static/images/logo.png);"></span>
-																				</a>
 																				<!--end::Thumbnail-->
 																				<!--begin::Title-->
 																				<div class="ms-5">

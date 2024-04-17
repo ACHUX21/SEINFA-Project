@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 	<!--begin::Head-->
-	<head><base href="../../../">
+	<head>
 		<title>Créer un devis - DATADEV</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -110,6 +110,16 @@
                                     <span class="menu-title">DEVIS</span>
                                     <span class="menu-arrow"></span>
                                 </span>
+                                <div class="menu-sub menu-sub-accordion menu-active-bg">
+                                    <div class="menu-item">
+                                        <a class="menu-link active" href="{{ url_for('dashboard') }}">
+                                            <span class="menu-bullet">
+                                                <span class="bullet bullet-dot"></span>
+                                            </span>
+                                            <span class="menu-title">Tableau de board</span>
+                                        </a>
+                                    </div>
+                                </div>
                                 <div class="menu-sub menu-sub-accordion menu-active-bg">
                                     <div class="menu-item">
                                         <a class="menu-link active" href="{{ url_for('commandes') }}">
@@ -673,7 +683,7 @@
                                                                     <!--begin::Checkbox-->
                                                                     <td>
                                                                         <div class="form-check form-check-sm form-check-custom form-check-solid">
-                                                                            <button type="button" class="btn btn-primary btn-sm" onclick="submitForm('{{ product.name }}', '{{ product.price }}', '{{ product.ref }}');" id="productButton{{ product.ref }}">
+                                                                            <button type="button" class="btn btn-primary btn-sm" onclick="submitForm('{{ product.name }}', '{{ product.price }}', '{{ product.ref }}','{{ product.category }}');" id="productButton{{ product.ref }}">
                                                                                 <i class="fas fa-plus"></i>
                                                                                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
                                                                             </button>
@@ -688,7 +698,7 @@
                                                                                 <input id="qte-{{ product.name }}" type="number" id="quantity{{ product.id }}" name="quantity{{ product.id }}" min="1" value="1" class="form-control form-control-sm" style="width: 60px;">
                                                                             </div>
                                                                             <!--begin::Thumbnail-->
-                                                                            {% if product.category in ["GOBLET", "EMBALLAGE", "ELASTIQUE", "TAPIS"] %}
+                                                                            {% if product.category in ["GOBLET", "EMBALLAGE", "ELASTIQUE", "TAPIS","PRODUITSFINIS"] %}
                                                                             <a class="symbol symbol-50px me-3">
                                                                                 <span class="symbol-label" style="background-image:url(static/images_seinfa_app/{{ product.category | lower }}.jpg);"></span>
                                                                             </a>

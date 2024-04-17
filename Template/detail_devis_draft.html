@@ -2,7 +2,7 @@
 <html lang="en">
 	<!--begin::Head-->
 	<head><base href="../../../">
-		<title>Détail {{ d_data.devis }}</title>
+		<title>Détail {{ data.devis }}</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta property="og:locale" content="en_US" />
@@ -128,6 +128,16 @@
                                     <span class="menu-title">DEVIS</span>
                                     <span class="menu-arrow"></span>
                                 </span>
+                                <div class="menu-sub menu-sub-accordion menu-active-bg">
+                                    <div class="menu-item">
+                                        <a class="menu-link active" href="{{ url_for('dashboard') }}">
+                                            <span class="menu-bullet">
+                                                <span class="bullet bullet-dot"></span>
+                                            </span>
+                                            <span class="menu-title">Tableau de board</span>
+                                        </a>
+                                    </div>
+                                </div>
                                 <div class="menu-sub menu-sub-accordion menu-active-bg">
                                     <div class="menu-item">
                                         <a class="menu-link active" href="{{ url_for('commandes') }}">
@@ -751,7 +761,7 @@
 													<!--begin::Card header-->
 													<div class="card-header">
 														<div class="card-title">
-															<h2>Détails de devis</h2>
+															<h2>Détails du commande</h2>
 														</div>
 													</div>
 													<!--end::Card header-->
@@ -779,10 +789,6 @@
 																		<!--begin::Product-->
 																		<td>
 																			<div class="d-flex align-items-center">
-																				<!--begin::Thumbnail-->
-																				<a href="{{url_for('commandes')}}" class="symbol symbol-50px">
-																					<span class="symbol-label" style="background-image:url(static/images/logo.png);"></span>
-																				</a>
 																				<!--end::Thumbnail-->
 																				<!--begin::Title-->
 																				<div class="ms-5">
@@ -828,15 +834,26 @@
 															</table>
 															<!--end::Table-->
 														</div>
+
+										                
+                                                        
 													</div>
+                                                    
+                                                    
+													<!--end::Card body-->
+												</div>
+
+                                                <div class="d-flex justify-content-end">
+                                                    <!--begin::Button-->
+                                                    <a href="{{ url_for('commandes') }}" id="kt_ecommerce_edit_order_cancel" class="btn btn-light me-5">Annuler</a>
                                                     <button type="button" id="submitFormBtn" class="btn btn-primary">
                                                         <span class="indicator-label"><a href="/api/validerdraft/{{ d_data.devis }}" style="color:white;">Valider</a></span>
 
                                                         <span class="indicator-progress">S'il vous plaît, attendez...
                                                         <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
                                                     </button>
-													<!--end::Card body-->
-												</div>
+                                                </div>
+
 												<!--end::Product List-->
 											</div>
 											<!--end::Orders-->

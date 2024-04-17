@@ -125,7 +125,7 @@ function removeAndreplace(AR_Ref) {
         .then(response => response.json())
         .then(data => {
             const product = data[0];
-            const imageUrl = ["GOBLET", "EMBALLAGE", "ELASTIQUE", "TAPIS"].includes(product.category) 
+            const imageUrl = ["GOBLET", "EMBALLAGE", "ELASTIQUE", "TAPIS","PRODUITSFINIS"].includes(product.category) 
                              ? `static/images_seinfa_app/${product.category.toLowerCase()}.jpg`
                              : 'static/images_seinfa_app/noimageavailable.jpg';
 

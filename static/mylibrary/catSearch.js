@@ -61,7 +61,7 @@ function populateCart() {
     fetch('/api/tmpcart')
         .then(response => response.json())
         .then(data => {
-            const tmpCart = data; // Assuming data is an array of panier objects
+            const tmpCart = data; // Assuming data is an array of products
 
             const container = document.getElementById('tempproduct');
             container.innerHTML = ''; // Clear previous content
@@ -71,17 +71,24 @@ function populateCart() {
                 div.id = `div${index + 1}`;
                 div.className = 'd-flex align-items-center border border-dashed rounded p-3 bg-white';
 
+                // Set image URL based on product category
+                const categoriesWithImages = ["GOBLET", "EMBALLAGE", "ELASTIQUE", "TAPIS","PRODUITSFINIS"];
+                const imageUrl = categoriesWithImages.includes(panier.famille) 
+                                 ? `static/images_seinfa_app/${panier.famille.toLowerCase()}.jpg`
+                                 : 'static/images_seinfa_app/noimageavailable.jpg';
+
                 const thumbnail = document.createElement('a');
-                thumbnail.className = 'symbol symbol-50px';
-                thumbnail.innerHTML = `<span class="symbol-label" style="background-image:url(static/images/logo.png);"></span>`;
+                thumbnail.className = 'symbol symbol-50px me-3';
+                thumbnail.innerHTML = `<span class="symbol-label" style="background-image:url(${imageUrl});"></span>`;
 
                 const details = document.createElement('div');
                 details.className = 'ms-5';
 
                 details.innerHTML = `
                     <a class="text-gray-800 text-hover-primary fs-5 fw-bolder">${panier.name}</a>
-                    <div class="fw-bold fs-7">Prix: DH <span data-kt-ecommerce-edit-order-filter="price">${panier.price}</span></div>
+                    <div class="fw-bold fs-7"><b>Prix: <span data-kt-ecommerce-edit-order-filter="price">${panier.price} DH</b></span></div>
                     <div class="text-muted fs-7">Ref: ${panier.ref}</div>
+                    <div class="text-muted fs-7">Ref: ${panier.famille}</div>
                     <div class="mt-2 d-flex align-items-center">
                         <label class="me-2">Quantité:</label>
                         <span class="me-2">${panier.qte}</span>
@@ -100,5 +107,6 @@ function populateCart() {
             console.error('Error fetching data:', error);
         });
 }
+
 
 populateCart();

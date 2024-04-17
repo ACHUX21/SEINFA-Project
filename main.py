@@ -34,7 +34,12 @@ from mysqlDB import (
 )
 from dash import (
     get_ca_client_co_no_2024,
-    get_ca_products_co_no_2024
+    get_ca_products_co_no_2024,
+    get_all_client_by_co_no,
+    get_ca_by_co_no,
+    get_all_ca,
+    get_products_en_promotions
+    
 )
 
 conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=196.118.25.162,1433;DATABASE=ASZPROD;UID=sa;PWD=90901504Data;Encrypt=no;TrustServerCertificate=yes;')
@@ -80,7 +85,7 @@ def dashboard():
     payload = verifyjwt(token)
     if not payload:
         return redirect(url_for('login'))
-    return render_template('dashboard.html', username=payload['username'],role=payload['role'], data_client=get_ca_client_co_no_2024(payload['co_no'], payload['role']), data_product=get_ca_products_co_no_2024(payload['co_no'], payload['role']))
+    return render_template('dashboard.html', username=payload['username'],role=payload['role'], data_client=get_ca_client_co_no_2024(payload['co_no'], payload['role']), data_product=get_ca_products_co_no_2024(payload['co_no'], payload['role']),count_client=get_all_client_by_co_no(payload['co_no'], payload['role']), ca=get_ca_by_co_no(payload['co_no'], payload['role']),ca_all=get_all_ca( payload['co_no'] ,payload['role'] ),products_en_promotions=get_products_en_promotions())
 
 @app.route('/login', methods=['GET'])
 def login():
@@ -96,7 +101,7 @@ def auth():
     auth = authen(username, password)
     if not username or not password or not auth:
         return render_template('login.html', error='Nom d\'utilisateur ou mot de passe incorrect')
-    response = make_response(redirect(url_for('commandes')))
+    response = make_response(redirect(url_for('dashboard')))
     response.set_cookie('token', auth, httponly=True, secure=True)
     return response
 
@@ -303,8 +308,7 @@ def validerDraftNum(devis):
     if not f:
         return redirect(url_for('draftDevis'))
     clean_drafts(devis)
-    return render_template("commande.html", last_dev=last_dev() , products=fetch_products(20), categories=get_categories(), tmpCart=select_tmpCart(userid), success=f"Commande enregistrée avec succès: pour devis {var_last_devis}", total=get_TOTAL(userid))
-
+    return redirect(url_for('commandes'))
 # API Devis Draft Route
 @app.route('/api/voirdraft/<string:devis>', methods=['GET'])
 def voirDraftNum(devis):
@@ -431,4 +435,4 @@ def total():
     return jsonify({'total': get_TOTAL(payload['id'])})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True,threaded=True)

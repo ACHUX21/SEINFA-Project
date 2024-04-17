@@ -118,8 +118,7 @@ def fetch_products(num=20, cat=None):
     return products
 
 # GET CATEGORIES
-def get_categories():
-    time.sleep(2)    
+def get_categories():   
     cursor = conn.cursor()
     query = f"SELECT categorie FROM article_table GROUP BY categorie ORDER BY SUM(AS_QteSto) DESC"
     cursor.execute(query)

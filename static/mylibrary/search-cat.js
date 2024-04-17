@@ -131,7 +131,7 @@ function removeAndreplace(AR_Ref) {
         .then(data => {
             const product = data[0];
             // Determine the background image based on the product category
-            const categoriesWithImages = ["GOBLET", "EMBALLAGE", "ELASTIQUE", "TAPIS"];
+            const categoriesWithImages = ["GOBLET", "EMBALLAGE", "ELASTIQUE", "TAPIS","PRODUITSFINIS"];
             const imageUrl = categoriesWithImages.includes(product.category)
                              ? `static/images_seinfa_app/${product.category.toLowerCase()}.jpg`
                              : 'static/images_seinfa_app/noimageavailable.jpg';

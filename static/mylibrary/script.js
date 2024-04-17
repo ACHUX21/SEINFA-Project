@@ -87,7 +87,7 @@ function initializeAutocomplete(clients) {
 
     
 
-    function submitForm(name, price, ref) {
+    function submitForm(name, price, ref,category) {
         const buttonId = 'productButton' + ref; // Make sure this ID is correctly generated.
         console.log("Looking for button with ID:", buttonId); // Debug to see the actual ID being generated
     
@@ -114,7 +114,8 @@ function initializeAutocomplete(clients) {
             name: name,
             price: price,
             ref: ref,
-            qte: qte
+            qte: qte,
+            category: category
         };
     
         fetch('/addToCart', {
@@ -193,3 +194,4 @@ function fetchTotal() {
   }
 
 fetchTotal();
+
