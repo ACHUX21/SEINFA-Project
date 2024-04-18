@@ -102,7 +102,7 @@ def auth():
     if not username or not password or not auth:
         return render_template('login.html', error='Nom d\'utilisateur ou mot de passe incorrect')
     response = make_response(redirect(url_for('dashboard')))
-    response.set_cookie('token', auth, httponly=True, secure=True)
+    response.set_cookie('token', auth)
     return response
 
 # Commandes Route
