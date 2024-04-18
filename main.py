@@ -148,6 +148,8 @@ def users():
     if not token:
         return redirect(url_for('index'))
     payload = verifyjwt(token)
+    if payload['role'] != 'Administrateur':
+        return redirect(url_for('index'))
     if not payload:
         return redirect(url_for('index'))
     return render_template('users.html', username=payload['username'],role=payload['role'], users=Get_All_Users())
