@@ -332,7 +332,7 @@ def removeFromCart():
 @app.route('/logout')
 def logout():
     r = make_response(redirect(url_for('index')))
-    r.set_cookie('token', '', expires=0, httponly=True, secure=True)
+    r.set_cookie('token', '', expires=0)
     return r
 
 
