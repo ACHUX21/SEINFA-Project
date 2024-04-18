@@ -3,7 +3,7 @@ from flask import jsonify
 import time
 
 
-conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=196.118.25.162,1433;DATABASE=ASZPROD;UID=sa;PWD=90901504Data;Encrypt=no;TrustServerCertificate=yes;')
+conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER= 196.115.135.114,1433;DATABASE=ASZPROD;UID=sa;PWD=90901504Data;Encrypt=no;TrustServerCertificate=yes;')
 
 
 # last devis
