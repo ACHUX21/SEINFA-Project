@@ -562,7 +562,6 @@
                                                             <div id="autocompleteList" class="absolute z-10 left-0 mt-2 w-full bg-white max-h-60 overflow-auto rounded-md"></div>
                                                         </div>
                                                     </div>
-
                                                     <div class="fv-row">
                                                         <label class="required form-label">Date de devis</label>
                                                         <input id="kt_ecommerce_edit_order_date" name="date" placeholder="Select a date" class="form-control mb-2" value="" />
@@ -574,7 +573,41 @@
                                                             <input name="ref" id="refInput" type="text" class="form-control form-control-solid" placeholder="Taper la Référence" maxlength="17">
                                                         </div>
                                                     </div>
+                                                    <!--begin:Option-->
+                                                    {% for depot in depot %}
+                                                    <label class="d-flex flex-stack mb-5 cursor-pointer">
+                                                        <!--begin:Label-->
+                                                        <span class="d-flex align-items-center me-2">
+                                                            <!--begin:Icon-->
+                                                            <span class="symbol symbol-50px me-6">
+                                                                <span class="symbol-label bg-light-primary">
+                                                                    <!--begin::Svg Icon | path: icons/duotune/maps/map004.svg-->
+                                                                    <span class="svg-icon svg-icon-1 svg-icon-primary">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                                        ....
+                                                                        </svg>
+                                                                    </span>
+                                                                    <!--end::Svg Icon-->
+                                                                </span>
+                                                            </span>
+                                                            <!--end:Icon-->
 
+                                                            <!--begin:Info-->
+                                                            <span class="d-flex flex-column">
+                                                                <span class="fw-bolder fs-6">{{ depot.DE_Intitule }}</span>
+                                                            </span>
+                                                            <!--end:Info-->
+                                                        </span>
+                                                        <!--end:Label-->
+
+                                                        <!--begin:Input-->
+                                                        <span class="form-check form-check-custom form-check-solid">
+                                                            <input class="form-check-input" type="radio"  name="category" value="1"/>
+                                                        </span>
+                                                        <!--end:Input-->
+                                                    </label>
+                                                    {% endfor %}
+                                                    <!--end::Option-->
 													<!--end::Input group-->
 												</div>
 											</div>

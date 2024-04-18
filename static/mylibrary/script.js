@@ -140,8 +140,15 @@ function initializeAutocomplete(clients) {
             spinner.style.display = 'none'; // Hide the spinner
         });
     
-        setTimeout(populateCart, 1000);
-        fetchTotal();
+        setTimeout(() => {
+            populateCart();
+        }, 500);
+        
+        
+        setTimeout(() => {
+            fetchTotal();
+        }, 500);
+        
     }
     
     
@@ -171,7 +178,11 @@ function removeProduct(id, name) {
 
     
     document.getElementById("div" + id).remove();
-    fetchTotal();
+
+    setTimeout(() => {
+        fetchTotal();
+    }, 100);
+    
 
 }
 function saveInputs() { localStorage.setItem("clientInputValue", document.querySelector(".clientInput").value); localStorage.setItem("refInputValue", document.querySelector(".refInput").value); localStorage.setItem("dateInputValue", document.querySelector(".kt_ecommerce_edit_order_date").value); } window.onload = function() { restoreInputs(); }; document.querySelector(".clientInput").addEventListener("input", saveInputs); document.querySelector(".refInput").addEventListener("input", saveInputs); document.querySelector(".kt_ecommerce_edit_order_date").addEventListener("input", saveInputs);
@@ -193,5 +204,8 @@ function fetchTotal() {
       });
   }
 
-fetchTotal();
+  setTimeout(() => {
+    fetchTotal();
+}, 500);
+
 

@@ -1,8 +1,6 @@
-import pyodbc
-import requests
-from flask import Flask, render_template, request, redirect, url_for, make_response, jsonify, abort
+import pyodbc, requests
+from flask import Flask, render_template, request, redirect, url_for, make_response, jsonify, render_template_string
 from jawt import authen, verifyjwt
-from re import match
 
 from functions import (
     last_dev_mssql,
@@ -15,7 +13,9 @@ from functions import (
     get_all_devis,
     get_devis_by_id,
     Search_Function,
-    get_all_devis_by_co_no
+    get_all_devis_by_co_no,
+    Get_All_Depot,
+    Get_All_Users
 )
 from mysqlDB import (
     select_tmpCart,
@@ -25,12 +25,12 @@ from mysqlDB import (
     get_TOTAL,
     last_dev,
     add_devis_draft,
-    add_devis_draft_details,
     get_drafts,
     check_auth,
     get_drafts_details,
     get_draft_devis,
-    clean_drafts
+    clean_drafts,
+    add_devis_draft_details_batch
 )
 from dash import (
     get_ca_client_co_no_2024,
@@ -39,10 +39,9 @@ from dash import (
     get_ca_by_co_no,
     get_all_ca,
     get_products_en_promotions
-    
 )
 
-conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER= 196.115.135.114,1433;DATABASE=ASZPROD;UID=sa;PWD=90901504Data;Encrypt=no;TrustServerCertificate=yes;')
+conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=196.115.135.114,1433;DATABASE=ASZPROD;UID=sa;PWD=90901504Data;Encrypt=no;TrustServerCertificate=yes;MARS_Connection=Yes;MultipleActiveResultSets=True;')
 
 app = Flask(__name__, static_folder='static', template_folder='Template')
 
@@ -63,9 +62,10 @@ def fetch_maintenance_status():
 def check_for_maintenance():
     maintenance_mode = fetch_maintenance_status()
     if maintenance_mode :
-        abort(503, 'The site is under maintenance!')
-
-
+        return render_template_string('''
+        <h1>Site en maintenance</h1>
+        <p>Le site est actuellement en maintenance, veuillez réessayer plus tard</p>
+        '''), 503
 
 # Login Routes
 @app.route('/')
@@ -81,10 +81,10 @@ def index():
 def dashboard():
     token = request.cookies.get('token')
     if not token:
-        return redirect(url_for('login'))
+        return redirect(url_for('logout'))
     payload = verifyjwt(token)
     if not payload:
-        return redirect(url_for('login'))
+        return redirect(url_for('logout'))
     return render_template('dashboard.html', username=payload['username'],role=payload['role'], data_client=get_ca_client_co_no_2024(payload['co_no'], payload['role']), data_product=get_ca_products_co_no_2024(payload['co_no'], payload['role']),count_client=get_all_client_by_co_no(payload['co_no'], payload['role']), ca=get_ca_by_co_no(payload['co_no'], payload['role']),ca_all=get_all_ca( payload['co_no'] ,payload['role'] ),products_en_promotions=get_products_en_promotions())
 
 @app.route('/login', methods=['GET'])
@@ -98,7 +98,7 @@ def login():
 def auth():
     username = request.form['username']
     password = request.form['password']
-    auth = authen(username, password)
+    auth = authen(username, password, request.remote_addr)
     if not username or not password or not auth:
         return render_template('login.html', error='Nom d\'utilisateur ou mot de passe incorrect')
     response = make_response(redirect(url_for('dashboard')))
@@ -108,21 +108,83 @@ def auth():
 # Commandes Route
 @app.route('/commandes', methods=['GET'])
 def commandes():
+    # Retrieve the token and validate it
     token = request.cookies.get('token')
     if not token:
         return redirect(url_for('logout'))
     payload = verifyjwt(token)
     if not payload:
         return redirect(url_for('logout'))
-    
-    p = select_tmpCart(payload['id'])
-    if not p:
-        return render_template('commande.html', last_dev=last_dev() , products=fetch_products(20, request.args.get('cat')), categories=get_categories(),username=payload['username'],role=payload['role'], total=get_TOTAL(payload['id']))
-    if request.args.get('cat'):
-        return render_template('commande.html', last_dev=last_dev() , products=fetch_products(20, request.args.get('cat')), categories=get_categories(), tmpCart=select_tmpCart(payload['id']),username=payload['username'],role=payload['role'], total=get_TOTAL(payload['id']))
-    return render_template('commande.html', last_dev=last_dev() , products=fetch_products(20), categories=get_categories(), tmpCart=select_tmpCart(payload['id']),username=payload['username'],role=payload['role'], total=get_TOTAL(payload['id']))
 
-# Submit Route
+    # Fetch necessary data based on the user's token and query parameters
+    user_id = payload['id']
+    category = request.args.get('cat')
+    tmp_cart = select_tmpCart(user_id)
+    categories = get_categories()
+    last_device = last_dev()
+    depot = Get_All_Depot()
+    # Determine the number of products to fetch based on category presence
+    if category:
+        products = fetch_products(20, category)
+    else:
+        products = fetch_products(20)
+
+    # Render the template with all necessary data
+    return render_template(
+        'commande.html',
+        last_dev=last_device,
+        products=products,
+        categories=categories,
+        tmpCart=tmp_cart,
+        username=payload['username'],
+        role=payload['role'],
+        total=get_TOTAL(user_id),
+        depot=depot
+    )
+
+@app.route('/users', methods=['GET'])
+def users():
+    token = request.cookies.get('token')
+    if not token:
+        return redirect(url_for('index'))
+    payload = verifyjwt(token)
+    if not payload:
+        return redirect(url_for('index'))
+    return render_template('users.html', username=payload['username'],role=payload['role'], users=Get_All_Users())
+
+# # Submit Route
+# @app.route('/submit', methods=['POST'])
+# def submit():
+#     token = request.cookies.get('token')
+#     if not token:
+#         return redirect(url_for('index'))
+#     payload = verifyjwt(token)
+#     if not payload:
+#         return redirect(url_for('index'))
+#     client = request.form['client']
+#     date = request.form['date']
+#     date = '-'.join(date.split('-')[::-1])
+#     ref = request.form['ref']
+#     if not client or not date or not ref:
+#         return render_template('commande.html', last_dev=last_dev() , products=fetch_products(20), categories=get_categories(), tmpCart=select_tmpCart(payload['id']), error='S\'il vous plaît remplir tous les champs')
+#     client = Get_CT_NUM(client)
+#     var_last_devis = last_dev()
+#     f = add_devis_draft(client, date, ref, var_last_devis, payload['id'], request.form['client'])
+#     if not f:
+#         return render_template("commande.html", last_dev=last_dev() , products=fetch_products(20), categories=get_categories(), tmpCart=select_tmpCart(payload['id']), error='Erreur lors de l\'enregistrement de la commande')
+#     if len(ref) > 17:
+#         return redirect(url_for('commandes'))
+#     paniers = select_tmpCart(payload['id'])
+#     if not paniers:
+#         return redirect(url_for('commandes'))
+#     for panier in paniers:
+#         f = add_devis_draft_details(client, panier['ref'], panier['name'], panier['qte'], panier['price'], "1753-01-01", ref, date, panier['qte'] * panier['price'], var_last_devis, payload['id'])
+#         if not f:
+#             return render_template("commande.html", last_dev=last_dev() , products=fetch_products(20), categories=get_categories(), tmpCart=select_tmpCart(payload['id']), error='Erreur lors de l\'enregistrement de la commande')
+#     clean_tmpCart(payload['id'])
+#     return render_template("commande.html", last_dev=last_dev() , products=fetch_products(20), categories=get_categories(), tmpCart=select_tmpCart(payload['id']), success='Commande enregistrée avec succès', total=get_TOTAL(payload['id']))
+
+
 @app.route('/submit', methods=['POST'])
 def submit():
     token = request.cookies.get('token')
@@ -131,28 +193,50 @@ def submit():
     payload = verifyjwt(token)
     if not payload:
         return redirect(url_for('index'))
+
     client = request.form['client']
     date = request.form['date']
-    date = '-'.join(date.split('-')[::-1])
+    date = '-'.join(date.split('-')[::-1])  # Reformatting date if necessary
     ref = request.form['ref']
     if not client or not date or not ref:
-        return render_template('commande.html', last_dev=last_dev() , products=fetch_products(20), categories=get_categories(), tmpCart=select_tmpCart(payload['id']), error='S\'il vous plaît remplir tous les champs')
-    client = Get_CT_NUM(client)
+        return render_template('commande.html', last_dev=last_dev(), products=fetch_products(20), categories=get_categories(), tmpCart=select_tmpCart(payload['id']), error="S'il vous plaît remplir tous les champs")
+
+    client_id = Get_CT_NUM(client)  # Get client ID based on name
     var_last_devis = last_dev()
-    f = add_devis_draft(client, date, ref, var_last_devis, payload['id'], request.form['client'])
+    f = add_devis_draft(client_id, date, ref, var_last_devis, payload['id'], request.form['client'])
     if not f:
-        return render_template("commande.html", last_dev=last_dev() , products=fetch_products(20), categories=get_categories(), tmpCart=select_tmpCart(payload['id']), error='Erreur lors de l\'enregistrement de la commande')
+        return render_template("commande.html", last_dev=last_dev(), products=fetch_products(20), categories=get_categories(), tmpCart=select_tmpCart(payload['id']), error='Erreur lors de l\'enregistrement de la commande')
+
     if len(ref) > 17:
         return redirect(url_for('commandes'))
+
     paniers = select_tmpCart(payload['id'])
     if not paniers:
         return redirect(url_for('commandes'))
+
+    details = []
     for panier in paniers:
-        f = add_devis_draft_details(client, panier['ref'], panier['name'], panier['qte'], panier['price'], "1753-01-01", ref, date, panier['qte'] * panier['price'], var_last_devis, payload['id'])
-        if not f:
-            return render_template("commande.html", last_dev=last_dev() , products=fetch_products(20), categories=get_categories(), tmpCart=select_tmpCart(payload['id']), error='Erreur lors de l\'enregistrement de la commande')
+        detail = {
+            'client': client_id,
+            'ar_ref': panier['ref'],
+            'productDescription': panier['name'],
+            'quantity': panier['qte'],
+            'price': panier['price'],
+            'dateF': "1753-01-01",
+            'ref': ref,
+            'date': date,
+            'total': panier['qte'] * panier['price'],
+            'devis': var_last_devis,
+            'userid': payload['id']
+        }
+        details.append(detail)
+
+    result = add_devis_draft_details_batch(details)
+    if not result:
+        return render_template("commande.html", last_dev=last_dev(), products=fetch_products(20), categories=get_categories(), tmpCart=select_tmpCart(payload['id']), error='Erreur lors de l\'enregistrement de la commande')
+
     clean_tmpCart(payload['id'])
-    return render_template("commande.html", last_dev=last_dev() , products=fetch_products(20), categories=get_categories(), tmpCart=select_tmpCart(payload['id']), success='Commande enregistrée avec succès', total=get_TOTAL(payload['id']))
+    return render_template("commande.html", last_dev=last_dev(), products=fetch_products(20), categories=get_categories(), tmpCart=select_tmpCart(payload['id']), success='Commande enregistrée avec succès', total=get_TOTAL(payload['id']))
 
 
 # @app.route('/submit', methods=['POST'])
@@ -308,7 +392,12 @@ def validerDraftNum(devis):
     if not f:
         return redirect(url_for('draftDevis'))
     clean_drafts(devis)
-    return redirect(url_for('commandes'))
+    return redirect(url_for('draftDevis'))
+
+
+
+
+
 # API Devis Draft Route
 @app.route('/api/voirdraft/<string:devis>', methods=['GET'])
 def voirDraftNum(devis):
@@ -330,7 +419,7 @@ def voirDraftNum(devis):
         d_data = get_draft_devis(devis)
     else:
         d_data = get_drafts(payload['id'], devis)
-    print(d_data)
+    # print(d_data)
     if not data:
         return render_template('detail_devis_draft.html', error='Devis introuvable', username=payload['username'],role=payload['role'], data=[])
     return render_template('detail_devis_draft.html',d_data=d_data[0], data=data, username=payload['username'],role=payload['role'])
@@ -435,4 +524,4 @@ def total():
     return jsonify({'total': get_TOTAL(payload['id'])})
 
 if __name__ == '__main__':
-    app.run(debug=True,threaded=True)
+    app.run(debug=True, host='0.0.0.0', port=5000)

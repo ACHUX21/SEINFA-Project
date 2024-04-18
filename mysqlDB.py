@@ -1,55 +1,55 @@
+from contextlib import contextmanager
 import mysql.connector
-import time
+from mysql.connector import Error
 
-# Database connection details
-SeverName = "159.8.122.152"
-UserName = "datad02n_userpneu"
-Password = "6A3AKayzuukD&j9eusK^"
-DBName = "datad02n_data"
-
-# Get a new database connection
 def get_connection():
+    # Returns a database connection
     return mysql.connector.connect(
-        host=SeverName,
-        user=UserName,
-        password=Password,
-        database=DBName
+        host="159.8.122.152",
+        user="datad02n_userpneu",
+        password="6A3AKayzuukD&j9eusK^",
+        database="datad02n_data"
     )
 
-# Get total from tempCart
-def get_TOTAL(userid):
+@contextmanager
+def managed_cursor():
+    conn = get_connection()
+    cursor = conn.cursor()
     try:
-        mydb = get_connection()
-        cursor = mydb.cursor()
-        cursor.execute("SELECT SUM(price * qte) FROM tempCart WHERE userid = %s", (userid,))
-        data = cursor.fetchone()
+        yield cursor
+        conn.commit()  # Ensure transaction is committed here.
+    finally:
         cursor.close()
-        mydb.close()
+        conn.close()
+
+def get_TOTAL(userid):
+    query = "SELECT SUM(price * qte) FROM tempCart WHERE userid = %s"
+    try:
+        with managed_cursor() as cursor:
+            cursor.execute(query, (userid,))
+            data = cursor.fetchone()
         
-        if data[0] is None:
-            return "0.00"
-        
-        data = f"{data[0]:,.2f}"
-        return data
-    except mysql.connector.Error as error:
-        print(error)
+        if data and data[0] is not None:
+            total = f"{data[0]:,.2f}"
+            return total
+        return "0.00"
+    except Error as error:
+        print(f"Error: {error}")
         return "0.00"
 
-# Remove from tempCart
+
 def removeFrom_tmpCart(name):
     try:
-        mydb = get_connection()
-        cursor = mydb.cursor()
-        cursor.execute("DELETE FROM tempCart WHERE name = %s", (name,))
-        mydb.commit()
-        cursor.close()
-        mydb.close()
+        with managed_cursor() as cursor:
+            cursor.execute("DELETE FROM tempCart WHERE name = %s", (name,))
         return "Data removed"
-    except mysql.connector.Error as error:
-        print(error)
+    except Error as error:
+        print(f"Error: {error}")
         return None
 
+
 # Add to tempCart
+
 def addTo_tmpCart(data, userid):
     try:
         mydb = get_connection()
@@ -59,7 +59,7 @@ def addTo_tmpCart(data, userid):
         if cursor.fetchone():
             cursor.execute("UPDATE tempCart SET qte = qte + %s WHERE userid = %s AND ref = %s", (data['qte'], userid, data['ref']))
         else:
-            cursor.execute("INSERT INTO tempCart (name, qte, price, ref, userid,famille) VALUES (%s, %s, %s, %s, %s,%s)", (data['name'], data['qte'], data['price'], data['ref'], userid, data['category']))
+            cursor.execute("INSERT INTO tempCart (name, qte, price, ref, userid) VALUES (%s, %s, %s, %s, %s)", (data['name'], data['qte'], data['price'], data['ref'], userid))
         
         mydb.commit()
         cursor.close()
@@ -69,119 +69,132 @@ def addTo_tmpCart(data, userid):
         print(error)
         return None
 
-# Select from tempCart
+
 def select_tmpCart(userid):
+    if not userid:
+        return None
+
+    query = "SELECT name, qte, price, ref, famille FROM tempCart WHERE userid = %s"
     try:
-        mydb = get_connection()
-        if not userid:
-            mydb.close()
-            return None
-        cursor = mydb.cursor()
-        cursor.execute("SELECT * FROM tempCart WHERE userid = %s", (userid,))
-        data = cursor.fetchall()
-        cursor.close()
-        mydb.close()
+        with managed_cursor() as cursor:
+            cursor.execute(query, (userid,))
+            data = cursor.fetchall()
 
         products = []
-
         for product in data:
             products.append({
                 'name': product[0],
-                'price': round(product[2], 2),
-                'ref': product[4],
                 'qte': product[1],
-                'famille': product[5]
+                'price': round(product[2], 2),
+                'ref': product[3],
+                'famille': product[4]
             })
 
         return products
-    except mysql.connector.Error as error:
-        print(error)
+    except Error as error:
+        print(f"Error: {error}")
         return None
 
 # Clean tempCart
 def clean_tmpCart(userid):
+    query = "DELETE FROM tempCart WHERE userid = %s"
     try:
-        mydb = get_connection()
-        cursor = mydb.cursor()
-        cursor.execute("DELETE FROM tempCart WHERE userid = %s", (userid,))
-        mydb.commit()
-        cursor.close()
-        mydb.close()
+        with managed_cursor() as cursor:
+            cursor.execute(query, (userid,))
         return "Data removed"
-    except mysql.connector.Error as error:
-        print(error)
+    except Error as error:
+        print(f"Error: {error}")
         return None
 
 
 
 # devis_draft
 def last_dev():
+    query = "SELECT MAX(devis) FROM devis_draft"
     try:
-        mydb = get_connection()
-        cursor = mydb.cursor()
-        cursor.execute("SELECT MAX(devis) FROM devis_draft")
-        data = cursor.fetchone()
-        cursor.close()
-        mydb.close()
+        with managed_cursor() as cursor:
+            cursor.execute(query)
+            data = cursor.fetchone()
         
         if data[0] is None:
-            return "000000"
+            return "000000"  # Return default if no records exist
         
-        last = int(data[0])
-        last += 1
-        data = "{:06d}".format(last)
-        return data
-    except mysql.connector.Error as error:
-        print(error)
+        last = int(data[0]) + 1  # Increment the last devis number
+        return "{:06d}".format(last)  # Format as a six-digit number, padded with zeros
+    except Error as error:
+        print(f"Error: {error}")
         return "000000"
-    
 
-def add_devis_draft(client, date, ref, devis ,userid, client_name):
+
+
+def add_devis_draft(client, date, ref, devis, userid, client_name):
+    query = """
+    INSERT INTO devis_draft (client, date, ref, devis, userid, client_name)
+    VALUES (%s, %s, %s, %s, %s, %s)
+    """
+    values = (client, date, ref, devis, userid, client_name)
     try:
-        mydb = get_connection()
-        cursor = mydb.cursor()
-        cursor.execute("INSERT INTO devis_draft (client, date, ref, devis, userid, client_name) VALUES (%s, %s, %s, %s, %s, %s)", (client, date, ref, devis, userid, client_name))
-        mydb.commit()
-        cursor.close()
-        mydb.close()
+        with managed_cursor() as cursor:
+            cursor.execute(query, values)
         print("Data added in devis_draft")
         return "Data added"
-    except mysql.connector.Error as error:
-        print(error)
+    except Error as error:
+        print(f"Error: {error}")
         return None
     
-def add_devis_draft_details(client, ar_ref, productDescription, quantity, price, dateF, ref, date, total, devis, userid):
-    try:
-        mydb = get_connection()
-        cursor = mydb.cursor()
-        cursor.execute("INSERT INTO devis_draft_details (client, ar_ref, productDescription, quantity, price, dateF, ref, date, total, devis, userid) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)", (client, ar_ref, productDescription, quantity, price, dateF, ref, date, total, devis, userid))
-        mydb.commit()
-        cursor.close()
-        mydb.close()
-        print("Data added in devis_draft_details")
-        return "Data added"
-    except mysql.connector.Error as error:
-        print(error)
-        return None
+# def add_devis_draft_details(client, ar_ref, productDescription, quantity, price, dateF, ref, date, total, devis, userid):
+#     try:
+#         with managed_cursor() as cursor:
+#             query = """
+#             INSERT INTO devis_draft_details (client, ar_ref, productDescription, quantity, price, dateF, ref, date, total, devis, userid)
+#             VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+#             """
+#             values = (client, ar_ref, productDescription, quantity, price, dateF, ref, date, total, devis, userid)
+#             cursor.execute(query, values)
+#             print("Data added in devis_draft_details")
+#             return "Data added"
+#     except Error as error:
+#         print(f"Error: {error}")
+#         return None
+
 
 def get_drafts(id="all", devis="all"):
+    query = """
+    SELECT 
+        devis_draft.`id`,
+        devis_draft.`client`,
+        devis_draft.`client_name`,
+        devis_draft.`date`,
+        devis_draft.`ref`,
+        devis_draft.`devis`,
+        devis_draft.`userid`,
+        devis_draft.`draft_confirm`,
+        SUM(devis_draft_details.total) as total
+    FROM devis_draft 
+    INNER JOIN devis_draft_details 
+    ON devis_draft_details.devis = devis_draft.devis
+    """
+    params = ()
+
+    if devis == "all" and id != "all":
+        query += " WHERE devis_draft.userid = %s GROUP BY devis_draft.devis"
+        params = (id,)
+    elif devis != "all" and id != "all":
+        query += " WHERE devis_draft.userid = %s AND devis_draft.devis = %s GROUP BY devis_draft.devis"
+        params = (id, devis)
+    elif devis == "all" and id == "all":
+        query += " GROUP BY devis_draft.devis"
+    else: # If id is "all" but devis is not "all"
+        query += " WHERE devis_draft.devis = %s GROUP BY devis_draft.devis"
+        params = (devis,)
+
     try:
-        mydb = get_connection()
-        cursor = mydb.cursor()
-        if devis == "all" and id != "all":
-            cursor.execute("SELECT devis_draft.`id`,devis_draft.`client`,devis_draft.`client_name`,devis_draft.`date`,devis_draft.`ref`,devis_draft.`devis`,devis_draft.`userid`,devis_draft.`draft_confirm`,SUM(devis_draft_details.total) as total FROM devis_draft inner JOIN devis_draft_details on devis_draft_details.devis = devis_draft.devis WHERE devis_draft.userid = %s GROUP by devis_draft.devis", (id,))
-        elif devis != "all":
-            cursor.execute("SELECT devis_draft.`id`,devis_draft.`client`,devis_draft.`client_name`,devis_draft.`date`,devis_draft.`ref`,devis_draft.`devis`,devis_draft.`userid`,devis_draft.`draft_confirm`,SUM(devis_draft_details.total) as total FROM devis_draft inner JOIN devis_draft_details on devis_draft_details.devis = devis_draft.devis WHERE devis_draft.userid = %s AND devis_draft.devis = %s GROUP by devis_draft.devis", (id, devis))
-        elif id == "all" and devis == "all":
-            cursor.execute("SELECT devis_draft.`id`,devis_draft.`client`,devis_draft.`client_name`,devis_draft.`date`,devis_draft.`ref`,devis_draft.`devis`,devis_draft.`userid`,devis_draft.`draft_confirm`,SUM(devis_draft_details.total) as total FROM devis_draft inner JOIN devis_draft_details on devis_draft_details.devis = devis_draft.devis GROUP by devis_draft.devis")
-        elif id == "all" :
-            cursor.execute("SELECT devis_draft.`id`,devis_draft.`client`,devis_draft.`client_name`,devis_draft.`date`,devis_draft.`ref`,devis_draft.`devis`,devis_draft.`userid`,devis_draft.`draft_confirm`,SUM(devis_draft_details.total) as total FROM devis_draft inner JOIN devis_draft_details on devis_draft_details.devis = devis_draft.devis WHERE devis_draft.devis = %s GROUP by devis_draft.devis", (devis,))
-        data = cursor.fetchall()
-        cursor.close()
-        mydb.close()
-        draft = []
-        for i in data:
-            dra = {
+        with managed_cursor() as cursor:
+            cursor.execute(query, params)
+            data = cursor.fetchall()
+
+        drafts = [
+            {
                 "id": i[0],
                 "client": i[1],
                 "client_name": i[2],
@@ -190,26 +203,39 @@ def get_drafts(id="all", devis="all"):
                 "devis": i[5],
                 "userid": i[6],
                 "status": i[7],
-                "total": i[8]
-            }
-            draft.append(dra)
-        print(draft)
-        return draft
-    except mysql.connector.Error as error:
-        print(error)
+                "total": float(i[8]) if i[8] is not None else 0.00
+            } for i in data
+        ]
+        return drafts
+    except Error as error:
+        print(f"Error: {error}")
         return None
+
 
 def get_draft_devis(devis):
+    query = """
+    SELECT 
+        devis_draft.`id`,
+        devis_draft.`client`,
+        devis_draft.`client_name`,
+        devis_draft.`date`,
+        devis_draft.`ref`,
+        devis_draft.`devis`,
+        devis_draft.`userid`,
+        devis_draft.`draft_confirm`,
+        SUM(devis_draft_details.total) as total
+    FROM devis_draft
+    INNER JOIN devis_draft_details ON devis_draft_details.devis = devis_draft.devis
+    WHERE devis_draft.devis = %s
+    GROUP BY devis_draft.devis
+    """
     try:
-        mydb = get_connection()
-        cursor = mydb.cursor()
-        cursor.execute("SELECT devis_draft.`id`,devis_draft.`client`,devis_draft.`client_name`,devis_draft.`date`,devis_draft.`ref`,devis_draft.`devis`,devis_draft.`userid`,devis_draft.`draft_confirm`,SUM(devis_draft_details.total) as total FROM devis_draft inner JOIN devis_draft_details on devis_draft_details.devis = devis_draft.devis WHERE devis_draft.devis = %s GROUP by devis_draft.devis", (devis,))
-        data = cursor.fetchall()
-        cursor.close()
-        mydb.close()
-        draft = []
-        for i in data:
-            dra = {
+        with managed_cursor() as cursor:
+            cursor.execute(query, (devis,))
+            data = cursor.fetchall()
+
+        drafts = [
+            {
                 "id": i[0],
                 "client": i[1],
                 "client_name": i[2],
@@ -218,75 +244,93 @@ def get_draft_devis(devis):
                 "devis": i[5],
                 "userid": i[6],
                 "status": i[7],
-                "total": i[8]
-            }
-            draft.append(dra)
-        # print(draft)
-        return draft
-    except mysql.connector.Error as error:
-        print(error)
+                "total": float(i[8]) if i[8] is not None else 0.00
+            } for i in data
+        ]
+        return drafts
+    except Error as error:
+        print(f"Error: {error}")
         return None
+
 
 def check_auth(userid, devis):
+    query = "SELECT 1 FROM devis_draft WHERE userid = %s AND devis = %s"
     try:
-        mydb = get_connection()
-        cursor = mydb.cursor()
-        cursor.execute("SELECT * FROM devis_draft WHERE userid = %s AND devis = %s", (userid, devis))
-        data = cursor.fetchone()
-        cursor.close()
-        mydb.close()
-        if data:
-            return True
-        else:
-            return False
-    except mysql.connector.Error as error:
-        print(error)
+        with managed_cursor() as cursor:
+            cursor.execute(query, (userid, devis))
+            data = cursor.fetchone()
+        return bool(data)  # Returns True if data is found, False otherwise
+    except Error as error:
+        print(f"Error: {error}")
         return None
-
-
-
 
 def get_drafts_details(devis):
+    query = """
+    SELECT 
+        id, client, devis, ar_ref, productDescription, quantity,
+        price, dateF, ref, date, total, userid
+    FROM devis_draft_details 
+    WHERE devis = %s
+    """
     try:
-        mydb = get_connection()
-        cursor = mydb.cursor()
-        cursor.execute("SELECT * FROM devis_draft_details WHERE devis = %s", (devis,))
-        data = cursor.fetchall()
-        cursor.close()
-        mydb.close()
-        draft = []
-        for i in data:
-            dra = {
-                "id": i[0],
-                "client": i[1],
-                "devis": i[2],
-                "ar_ref": i[3],
-                "productDescription": i[4],
-                "quantity": i[5],
-                "price": i[6],
-                "dateF": i[7],
-                "ref": i[8],
-                "date": i[9],
-                "total": i[10],
-                "userid": i[11]
-            }
-            draft.append(dra)
-        # print(draft)
-        return draft
-    except mysql.connector.Error as error:
-        print(error)
+        with managed_cursor() as cursor:
+            cursor.execute(query, (devis,))
+            data = cursor.fetchall()
+
+        drafts_details = [
+            {
+                "id": row[0],
+                "client": row[1],
+                "devis": row[2],
+                "ar_ref": row[3],
+                "productDescription": row[4],
+                "quantity": row[5],
+                "price": row[6],
+                "dateF": row[7],
+                "ref": row[8],
+                "date": row[9],
+                "total": row[10],
+                "userid": row[11]
+            } for row in data
+        ]
+        return drafts_details
+    except Error as error:
+        print(f"Error: {error}")
         return None
+
     
 def clean_drafts(devis):
+    queries = [
+        "DELETE FROM devis_draft WHERE devis = %s",
+        "DELETE FROM devis_draft_details WHERE devis = %s"
+    ]
     try:
-        mydb = get_connection()
-        cursor = mydb.cursor()
-        cursor.execute("DELETE FROM devis_draft WHERE devis = %s", (devis,))
-        cursor.execute("DELETE FROM devis_draft_details WHERE devis = %s", (devis,))
-        mydb.commit()
-        cursor.close()
-        mydb.close()
+        with managed_cursor() as cursor:
+            for query in queries:
+                cursor.execute(query, (devis,))
         return "Data removed"
-    except mysql.connector.Error as error:
-        print(error)
+    except Error as error:
+        print(f"Error: {error}")
         return None
+
+
+def add_devis_draft_details_batch(details):
+    query = """
+    INSERT INTO devis_draft_details (client, ar_ref, productDescription, quantity, price, dateF, ref, date, total, devis, userid)
+    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+    """
+    values = []
+    for detail in details:
+        values.append((detail['client'], detail['ar_ref'], detail['productDescription'], detail['quantity'],
+                       detail['price'], detail['dateF'], detail['ref'], detail['date'], detail['total'],
+                       detail['devis'], detail['userid']))
+
+    try:
+        with managed_cursor() as cursor:
+            cursor.executemany(query, values)
+            print("Data added in devis_draft_details")
+            return "Data added"
+    except Error as error:
+        print(f"Error: {error}")
+        return None
+
