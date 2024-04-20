@@ -237,7 +237,7 @@ def Get_All_Users():
     users.role, 
     FORMAT(users.user_create_date, 'dd MMM yyyy, HH:mm', 'fr-FR') as user_create_date_formatted,
     FORMAT(MAX(login_hist.LOGINDATTIM), 'dd MMM yyyy, HH:mm', 'fr-FR') as last_login_date_formatted,
-    users.user_mail,users.image,users.actif
+    users.user_mail,users.image_base64,users.actif
     FROM 
     users 
     LEFT JOIN 
@@ -252,7 +252,7 @@ def Get_All_Users():
 
 def add_user(name,password,role,user_mail,status):
     password = hashlib.md5(password.encode()).hexdigest()
-    query = "INSERT INTO users(name,password,role,user_mail,image,actif) VALUES (?,?,?,?,?,?)"
+    query = "INSERT INTO users(name,password,role,user_mail,image_base64,actif) VALUES (?,?,?,?,?,?)"
     params = (name,password,role,user_mail,"image",status)
     return execute_query(query, params)
 
