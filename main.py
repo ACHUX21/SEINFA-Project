@@ -157,9 +157,10 @@ def commandes():
 def users():
     token = request.cookies.get('token')
     if not token:
-        return redirect(url_for('index'))
+        return redirect(url_for('logout'))
     payload = verifyjwt(token)
     if payload['role'] != 'Administrateur':
+        print(payload['role'])
         return redirect(url_for('index'))
     if not payload:
         return redirect(url_for('index'))
@@ -169,8 +170,12 @@ def users():
 def add_users():
     token = request.cookies.get('token')
     if not token:
-        return redirect(url_for('index'))
+        return redirect(url_for('logout'))
     payload = verifyjwt(token)
+    if not payload:
+        return redirect(url_for('logout'))
+    if not payload['role']:
+        return redirect(url_for('logout'))
     if payload['role'] != 'Administrateur':
         return redirect(url_for('index'))
     if not payload:
@@ -206,12 +211,16 @@ def upload_pic():
     return jsonify('success')
 
 
-@app.route('/users_depot', methods=['GET'])
+@app.route('/users_depot', methods=['GET','POST'])
 def users_depot():
     token = request.cookies.get('token')
     if not token:
-        return redirect(url_for('index'))
+        return redirect(url_for('logout'))
     payload = verifyjwt(token)
+    if not payload:
+        return redirect(url_for('logout'))
+    if not payload['role']:
+        return redirect(url_for('logout'))
     if payload['role'] != 'Administrateur':
         return redirect(url_for('index'))
     if not payload:
@@ -220,11 +229,12 @@ def users_depot():
     if not users:
         print("No users fetched. Check the database and query.")
     return render_template('users_depot.html', users=users,depots = get_all_depots(),all_users=Get_All_Users())
-
+# api/user_depots
 @app.route('/api/user_depots/<int:user_id>', methods=['POST'])
 def update_user_depots(user_id):
     # Retrieve depot IDs from the form data
-    depots = request.form.getlist('user_roles[]')  # This should match the name attribute of your checkbox inputs
+    data = request.get_json()
+    depots = data['depots']
     cursor = conn.cursor()
     
     # Delete existing user-depot relations
@@ -237,7 +247,6 @@ def update_user_depots(user_id):
     # Commit transaction and close connections
     conn.commit()
     cursor.close()
-    conn.close()
     
     # Return a success message
     return jsonify({'status': 'success'})
@@ -280,7 +289,7 @@ def update_user_depots(user_id):
 def submit():
     token = request.cookies.get('token')
     if not token:
-        return redirect(url_for('index'))
+        return redirect(url_for('logout'))
     payload = verifyjwt(token)
     if not payload:
         return redirect(url_for('index'))
@@ -378,7 +387,7 @@ def submit():
 def voirDevis():
     token = request.cookies.get('token')
     if not token:
-        return redirect(url_for('index'))
+        return redirect(url_for('logout'))
     payload = verifyjwt(token)
     if not payload:
         return redirect(url_for('index'))
@@ -393,7 +402,7 @@ def voirDevis():
 def addToCart():
     token = request.cookies.get('token')
     if not token:
-        return redirect(url_for('index'))
+        return redirect(url_for('logout'))
     payload = verifyjwt(token)
     if not payload:
         return redirect(url_for('index'))
@@ -407,7 +416,7 @@ def addToCart():
 def removeFromCart():
     token = request.cookies.get('token')
     if not token:
-        return redirect(url_for('index'))
+        return redirect(url_for('logout'))
     payload = verifyjwt(token)
     if not payload:
         return redirect(url_for('index'))
@@ -434,7 +443,7 @@ def logout():
 def draftDevis():
     token = request.cookies.get('token')
     if not token:
-        return redirect(url_for('index'))
+        return redirect(url_for('logout'))
     payload = verifyjwt(token)
     if not payload:
         return redirect(url_for('index'))
@@ -451,7 +460,7 @@ def draftDevis():
 def validerDraftNum(devis):
     token = request.cookies.get('token')
     if not token:
-        return redirect(url_for('index'))
+        return redirect(url_for('logout'))
     payload = verifyjwt(token)
     if not payload:
         return redirect(url_for('index'))
@@ -494,7 +503,7 @@ def validerDraftNum(devis):
 def voirDraftNum(devis):
     token = request.cookies.get('token')
     if not token:
-        return redirect(url_for('index'))
+        return redirect(url_for('logout'))
     payload = verifyjwt(token)
     if not payload:
         return redirect(url_for('index'))
@@ -521,7 +530,7 @@ def voirDraftNum(devis):
 def voirDevisNum(devis):
     token = request.cookies.get('token')
     if not token:
-        return redirect(url_for('index'))
+        return redirect(url_for('logout'))
     payload = verifyjwt(token)
     if not payload:
         return redirect(url_for('index'))
@@ -535,7 +544,7 @@ def voirDevisNum(devis):
 def clients():
     token = request.cookies.get('token')
     if not token:
-        return redirect(url_for('index'))
+        return redirect(url_for('logout'))
     payload = verifyjwt(token)
     if not payload:
         return redirect(url_for('index'))
@@ -551,7 +560,7 @@ def clients():
 def products(num):
     token = request.cookies.get('token')
     if not token:
-        return redirect(url_for('index'))
+        return redirect(url_for('logout'))
     payload = verifyjwt(token)
     if not payload:
         return redirect(url_for('index'))
@@ -565,7 +574,7 @@ def products(num):
 def search():
     token = request.cookies.get('token')
     if not token:
-        return redirect(url_for('index'))
+        return redirect(url_for('logout'))
     payload = verifyjwt(token)
     if not payload:
         return redirect(url_for('index'))
@@ -582,7 +591,7 @@ def search():
 def categories():
     token = request.cookies.get('token')
     if not token:
-        return redirect(url_for('index'))
+        return redirect(url_for('logout'))
     payload = verifyjwt(token)
     if not payload:
         return redirect(url_for('index'))
@@ -594,7 +603,7 @@ def categories():
 def tmpCart():
     token = request.cookies.get('token')
     if not token:
-        return redirect(url_for('index'))
+        return redirect(url_for('logout'))
     payload = verifyjwt(token)
     if not payload:
         return redirect(url_for('index'))
@@ -608,7 +617,7 @@ def tmpCart():
 def total():
     token = request.cookies.get('token')
     if not token:
-        return redirect(url_for('index'))
+        return redirect(url_for('logout'))
     payload = verifyjwt(token)
     if not payload:
         return redirect(url_for('index'))
@@ -619,8 +628,12 @@ def total():
 def update_user_actif(username):
     token = request.cookies.get('token')
     if not token:
-        return redirect(url_for('index'))
+        return redirect(url_for('logout'))
     payload = verifyjwt(token)
+    if not payload:
+        return redirect(url_for('logout'))
+    if not payload['role']:
+        return redirect(url_for('logout'))
     if payload['role'] != 'Administrateur':
         return redirect(url_for('index'))
     if not payload:
@@ -639,8 +652,12 @@ def update_user_actif(username):
 def delete_user(username):
     token = request.cookies.get('token')
     if not token:
-        return redirect(url_for('index'))
+        return redirect(url_for('logout'))
     payload = verifyjwt(token)
+    if not payload:
+        return redirect(url_for('logout'))
+    if not payload['role']:
+        return redirect(url_for('logout'))
     if payload['role'] != 'Administrateur':
         return redirect(url_for('index'))
     if not payload:

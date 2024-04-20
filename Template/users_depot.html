@@ -829,7 +829,7 @@
 														<!--begin::Modal body-->
 														<div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
 															<!--begin::Form-->
-															<form id="kt_modal_add_user_form" class="form" method="POST" onsubmit="return setFormAction();">
+															<form id="kt_modal_add_user_form" class="form" action="#" method="post">
 																<!--begin::Scroll-->
 																<div class="d-flex flex-column scroll-y me-n7 pe-7" id="kt_modal_add_user_scroll" data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#kt_modal_add_user_header" data-kt-scroll-wrappers="#kt_modal_add_user_scroll" data-kt-scroll-offset="300px">
 																	<!--begin::Input group-->
@@ -850,24 +850,25 @@
 																	<div class="mb-7">
 																		<label class="required fw-bold fs-6 mb-5">Depôts</label>
 																		{% for depot in depots %}
-																		<div class="d-flex fv-row">
-																			<div class="form-check form-check-custom form-check-solid">
-																				<input class="form-check-input me-3" name="user_depot[]" type="checkbox" value="{{depot.DE_No}}" id="kt_modal_update_role_option_{{ loop.index }}">
-																				<label class="form-check-label" for="kt_modal_update_role_option_{{ loop.index }}">
-																					<div class="fw-bolder text-gray-800">{{depot.DE_Intitule}}</div>
-																				</label>
-																			</div>
-																		</div>
-																		<div class='separator separator-dashed my-5'></div>
-																		{% endfor %}
+<div class="d-flex fv-row">
+    <div class="form-check form-check-custom form-check-solid">
+        <input class="form-check-input me-3 depot-checkbox" type="checkbox" value="{{depot.DE_No}}" id="kt_modal_update_role_option_{{ loop.index }}">
+        <label class="form-check-label" for="kt_modal_update_role_option_{{ loop.index }}">
+            <div class="fw-bolder text-gray-800">{{depot.DE_Intitule}}</div>
+        </label>
+    </div>
+</div>
+<div class='separator separator-dashed my-5'></div>
+{% endfor %}
+
 																	</div>
 																</div>
 																<!-- Actions -->
 																<div class="text-center pt-15">
-																	<button type="reset" class="btn btn-light me-3" data-kt-users-modal-action="cancel">Discard</button>
-																	<button type="submit" class="btn btn-primary" data-kt-users-modal-action="submit">
+																	<button type="button" class="btn btn-light me-3" data-kt-users-modal-action="cancel">Discard</button>
+																	<button id="SubBtn" type="submit" class="btn btn-primary">
 																		<span class="indicator-label">Submit</span>
-																		<span class="indicator-progress">Please wait...
+																		<span class="indicator-progress d-none">Please wait...
 																		<span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
 																	</button>
 																</div>
@@ -1041,17 +1042,55 @@
           </script>
 
 <script>
-	function setFormAction() {
-		var form = document.getElementById('kt_modal_add_user_form');
-		var selectedUserId = document.querySelector('select[name="user_id"]').value; // Correct the select name if needed
-		if (selectedUserId) {
-			form.action = '/api/user_depots/' + selectedUserId;
-			return true; // Allow the form to submit
-		}
-		alert('Please select a user before submitting.');
-		return false; // Prevent the form from submitting without a selected user
-	}
-	</script>
+document.getElementById("SubBtn").addEventListener("click", function(event) {
+    event.preventDefault(); // Prevent the default form submission
+
+    var userid = document.getElementById("user_id_select").value;
+    var checkedDepots = []; // Array to store checked depot values
+
+    // Get all checkboxes with class "depot-checkbox"
+    var checkboxes = document.querySelectorAll('.depot-checkbox');
+
+    // Iterate over each checkbox
+    checkboxes.forEach(function(checkbox) {
+        // If checkbox is checked, add its value to checkedDepots array
+        if (checkbox.checked) {
+            checkedDepots.push(checkbox.value);
+        }
+    });
+
+    // Now checkedDepots array contains all the checked checkbox values
+    fetch('/api/user_depots/' + userid, { // Corrected endpoint URL
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            depots: checkedDepots
+        })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        // Handle successful response here
+        console.log(data);
+        
+        // Reload the page after fetch operation is completed
+        window.location.reload();
+    })
+    .catch(error => {
+        // Handle errors here
+        console.error('There was a problem with the fetch operation:', error);
+    });
+});
+
+
+
+</script>
 	
 	
 

@@ -260,7 +260,7 @@ def add_user(name,password,role,user_mail,status):
 def get_all_depot_users():
     query = "SELECT name, DE_Intitule FROM user_sel_depots ORDER BY name"  # Sorting helps with grouping
     data = fetch_all(query)
-    print("Data fetched from database:", data)  # Debug print to verify data is fetched
+    # print("Data fetched from database:", data)  # Debug print to verify data is fetched
     user_depot_map = {}
     for name, depot in data:
         if name in user_depot_map:
