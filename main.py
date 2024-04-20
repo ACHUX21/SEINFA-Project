@@ -1,6 +1,7 @@
 import pyodbc, requests
 from flask import Flask, render_template, request, redirect, url_for, make_response, jsonify, render_template_string
 from jawt import authen, verifyjwt
+import time
 
 from functions import (
     last_dev_mssql,
@@ -187,6 +188,21 @@ def add_users():
         return render_template('users.html', username=payload['username'],role=payload['role'], users=Get_All_Users(), error='Erreur lors de l\'enregistrement de l\'utilisateur')
     print(name,password,user_mail)
     return redirect(url_for('users'))
+
+@app.route('/upload_pic', methods=['POST'])
+def upload_pic():
+    data = request.get_json()
+    username = data['username']
+    image = data['image']
+    print(username, image)
+    time.sleep(2)
+
+    cursor = conn.cursor()
+    query = "UPDATE users SET image_base64 = ? WHERE name = ?"
+    cursor.execute(query, image, username)
+    cursor.commit()
+    cursor.close()
+    return jsonify('success')
 
 
 @app.route('/users_depot', methods=['GET'])
