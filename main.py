@@ -576,5 +576,26 @@ def total():
         return redirect(url_for('index'))
     return jsonify({'total': get_TOTAL(payload['id'])})
 
+# update actif Route
+@app.route('/api/update_actif/<string:username>', methods=['GET'])
+def update_user_actif(username):
+    token = request.cookies.get('token')
+    if not token:
+        return redirect(url_for('index'))
+    payload = verifyjwt(token)
+    if payload['role'] != 'Administrateur':
+        return redirect(url_for('index'))
+    if not payload:
+        return redirect(url_for('index'))
+
+    cursor = conn.cursor()
+    query = "UPDATE users SET actif = (CASE WHEN actif = 1 THEN 0 ELSE 1 END) WHERE name = ?"
+    cursor.execute(query, username)
+    cursor.commit()
+    cursor.close()
+    return redirect(url_for('users'))
+
+
+
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)
