@@ -891,10 +891,10 @@
 																			<!--begin::Radio-->
 																			<div class="form-check form-check-custom form-check-solid">
 																				<!--begin::Input-->
-																				<input class="form-check-input me-3" name="user_statut" type="radio" value="1" id="kt_modal_update_role_option_0" checked='checked' />
+																				<input class="form-check-input me-3" name="user_statut" type="radio" value="1" id="kt_modal_update_status_option_0" checked='checked' />
 																				<!--end::Input-->
 																				<!--begin::Label-->
-																				<label class="form-check-label" for="kt_modal_update_role_option_0">
+																				<label class="form-check-label" for="kt_modal_update_status_option_0">
 																					<div class="fw-bolder text-gray-800">Actif</div>
 																				</label>
 																				<!--end::Label-->
@@ -908,10 +908,10 @@
 																			<!--begin::Radio-->
 																			<div class="form-check form-check-custom form-check-solid">
 																				<!--begin::Input-->
-																				<input class="form-check-input me-3" name="user_statut" type="radio" value="0" id="kt_modal_update_role_option_1" />
+																				<input class="form-check-input me-3" name="user_statut" type="radio" value="0" id="kt_modal_update_status_option_1" />
 																				<!--end::Input-->
 																				<!--begin::Label-->
-																				<label class="form-check-label" for="kt_modal_update_role_option_1">
+																				<label class="form-check-label" for="kt_modal_update_status_option_1">
 																					<div class="fw-bolder text-gray-800">Inactif</div>
 																				</label>
 																				<!--end::Label-->
@@ -1188,6 +1188,41 @@
               fetchTotal();
             });
           </script>
+
+			<script>
+				document.addEventListener('DOMContentLoaded', function() {
+					// Select all delete links
+					var deleteLinks = document.querySelectorAll('a[href*="/api/delete_user/"]');
+					
+					deleteLinks.forEach(function(link) {
+						link.addEventListener('click', function(event) {
+							// Prevent the link from immediately navigating
+							event.preventDefault();
+				
+							// Confirmation dialog
+							Swal.fire({
+								title: 'Are you sure?',
+								text: "Do you really want to delete this user? This action cannot be undone.",
+								icon: 'warning',
+								showCancelButton: true,
+								confirmButtonColor: '#3085d6',
+								cancelButtonColor: '#d33',
+								confirmButtonText: 'Yes, delete it!',
+								cancelButtonText: 'No, cancel!'
+							}).then((result) => {
+								if (result.isConfirmed) {
+									// If confirmed, proceed with the action by manually setting the window location
+									window.location.href = this.href;
+								}
+							});
+						});
+					});
+				});
+				</script>
+				<!-- Include SweetAlert2 from CDN -->
+				<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+	
           
 		<!--end::Page Custom Javascript-->
 		<!--end::Javascript-->
