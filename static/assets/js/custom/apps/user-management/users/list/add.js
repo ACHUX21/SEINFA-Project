@@ -1,1 +1,105 @@
-"use strict";var KTUsersAddUser=function(){const t=document.getElementById("kt_modal_add_user"),e=t.querySelector("#kt_modal_add_user_form"),n=new bootstrap.Modal(t);return{init:function(){(()=>{var o=FormValidation.formValidation(e,{fields:{user_name:{validators:{notEmpty:{message:"Full name is required"}}},user_email:{validators:{notEmpty:{message:"Valid email address is required"}}}},plugins:{trigger:new FormValidation.plugins.Trigger,bootstrap:new FormValidation.plugins.Bootstrap5({rowSelector:".fv-row",eleInvalidClass:"",eleValidClass:""})}});const i=t.querySelector('[data-kt-users-modal-action="submit"]');i.addEventListener("click",(t=>{t.preventDefault(),o&&o.validate().then((function(t){console.log("validated!"),"Valid"==t?(i.setAttribute("data-kt-indicator","on"),i.disabled=!0,setTimeout((function(){i.removeAttribute("data-kt-indicator"),i.disabled=!1,Swal.fire({text:"Form has been successfully submitted!",icon:"success",buttonsStyling:!1,confirmButtonText:"Ok, got it!",customClass:{confirmButton:"btn btn-primary"}}).then((function(t){t.isConfirmed&&n.hide()}))}),2e3)):Swal.fire({text:"Sorry, looks like there are some errors detected, please try again.",icon:"error",buttonsStyling:!1,confirmButtonText:"Ok, got it!",customClass:{confirmButton:"btn btn-primary"}})}))})),t.querySelector('[data-kt-users-modal-action="cancel"]').addEventListener("click",(t=>{t.preventDefault(),Swal.fire({text:"Are you sure you would like to cancel?",icon:"warning",showCancelButton:!0,buttonsStyling:!1,confirmButtonText:"Yes, cancel it!",cancelButtonText:"No, return",customClass:{confirmButton:"btn btn-primary",cancelButton:"btn btn-active-light"}}).then((function(t){t.value?(e.reset(),n.hide()):"cancel"===t.dismiss&&Swal.fire({text:"Your form has not been cancelled!.",icon:"error",buttonsStyling:!1,confirmButtonText:"Ok, got it!",customClass:{confirmButton:"btn btn-primary"}})}))})),t.querySelector('[data-kt-users-modal-action="close"]').addEventListener("click",(t=>{t.preventDefault(),Swal.fire({text:"Are you sure you would like to cancel?",icon:"warning",showCancelButton:!0,buttonsStyling:!1,confirmButtonText:"Yes, cancel it!",cancelButtonText:"No, return",customClass:{confirmButton:"btn btn-primary",cancelButton:"btn btn-active-light"}}).then((function(t){t.value?(e.reset(),n.hide()):"cancel"===t.dismiss&&Swal.fire({text:"Your form has not been cancelled!.",icon:"error",buttonsStyling:!1,confirmButtonText:"Ok, got it!",customClass:{confirmButton:"btn btn-primary"}})}))}))})()}}}();KTUtil.onDOMContentLoaded((function(){KTUsersAddUser.init()}));
+"use strict";
+var KTUsersAddUser = (function () {
+  const modalElement = document.getElementById("kt_modal_add_user"),
+        form = modalElement.querySelector("#kt_modal_add_user_form"),
+        modal = new bootstrap.Modal(modalElement);
+
+  return {
+    init: function () {
+      var validator = FormValidation.formValidation(form, {
+        fields: {
+          user_name: {
+            validators: { notEmpty: { message: "Full name is required" } }
+          },
+          user_email: {
+            validators: {
+              notEmpty: { message: "Valid email address is required" }
+            }
+          }
+        },
+        plugins: {
+          trigger: new FormValidation.plugins.Trigger(),
+          bootstrap: new FormValidation.plugins.Bootstrap5({
+            rowSelector: ".fv-row",
+            eleInvalidClass: "",
+            eleValidClass: ""
+          })
+        }
+      });
+
+      const submitButton = modalElement.querySelector('[data-kt-users-modal-action="submit"]');
+      submitButton.addEventListener("click", function (event) {
+        event.preventDefault();
+        validator.validate().then(function (status) {
+          if (status === "Valid") {
+            Swal.fire({
+              text: "Are you sure you want to submit the form?",
+              icon: "question",
+              showCancelButton: true,
+              buttonsStyling: false,
+              confirmButtonText: "Yes, submit it!",
+              cancelButtonText: "No, cancel",
+              customClass: {
+                confirmButton: "btn btn-primary",
+                cancelButton: "btn btn-default"
+              }
+            }).then((result) => {
+              if (result.isConfirmed) {
+                form.submit(); // Form submission
+              }
+            });
+          } else {
+            Swal.fire({
+              text: "Sorry, looks like there are some errors detected, please try again.",
+              icon: "error",
+              buttonsStyling: false,
+              confirmButtonText: "Ok, got it!",
+              customClass: { confirmButton: "btn btn-primary" }
+            });
+          }
+        });
+      });
+
+      // Bind cancel and close button actions
+      const bindCancelAndCloseActions = function(actionSelector, messageText) {
+        const actionElement = modalElement.querySelector(actionSelector);
+        actionElement.addEventListener("click", function (event) {
+          event.preventDefault();
+          Swal.fire({
+            text: messageText,
+            icon: "warning",
+            showCancelButton: true,
+            buttonsStyling: false,
+            confirmButtonText: "Yes, cancel it!",
+            cancelButtonText: "No, return",
+            customClass: {
+              confirmButton: "btn btn-primary",
+              cancelButton: "btn btn-active-light"
+            }
+          }).then(function (result) {
+            if (result.value) {
+              form.reset();
+              modal.hide();
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+              Swal.fire({
+                text: "Your form has not been cancelled!",
+                icon: "error",
+                buttonsStyling: false,
+                confirmButtonText: "Ok, got it!",
+                customClass: { confirmButton: "btn btn-primary" }
+              });
+            }
+          });
+        });
+      };
+
+      // Apply to both cancel and close actions
+      bindCancelAndCloseActions('[data-kt-users-modal-action="cancel"]', "Are you sure you would like to cancel?");
+      bindCancelAndCloseActions('[data-kt-users-modal-action="close"]', "Are you sure you would like to close?");
+    }
+  };
+})();
+
+KTUtil.onDOMContentLoaded(function () {
+  KTUsersAddUser.init();
+});

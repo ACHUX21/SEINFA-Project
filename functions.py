@@ -1,6 +1,6 @@
 import pyodbc,datetime
 from flask import jsonify
-import time
+import hashlib
 
 def get_cursor():
     return pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=196.115.135.114,1433;DATABASE=ASZPROD;UID=sa;PWD=90901504Data;Encrypt=no;TrustServerCertificate=yes;MARS_Connection=Yes;MultipleActiveResultSets=True;').cursor()
@@ -236,7 +236,8 @@ def Get_All_Users():
     users.name, 
     users.role, 
     FORMAT(users.user_create_date, 'dd MMM yyyy, HH:mm', 'fr-FR') as user_create_date_formatted,
-    FORMAT(MAX(login_hist.LOGINDATTIM), 'dd MMM yyyy, HH:mm', 'fr-FR') as last_login_date_formatted
+    FORMAT(MAX(login_hist.LOGINDATTIM), 'dd MMM yyyy, HH:mm', 'fr-FR') as last_login_date_formatted,
+    users.user_mail,users.image,users.actif
     FROM 
     users 
     LEFT JOIN 
@@ -244,12 +245,37 @@ def Get_All_Users():
     ON 
     users.id = login_hist.IDUSER
     GROUP BY 
-    users.id, users.name, users.role, users.user_create_date
+    users.id, users.name, users.role, users.user_create_date,users.user_mail,users.image,users.actif
     """
     data = fetch_all(query)
-    return [{'name': row[0], 'role': row[1], 'user_create_date': row[2],'LOGINDATTIM':row[3] } for row in data]
+    return [{'name': row[0], 'role': row[1], 'user_create_date': row[2],'LOGINDATTIM':row[3] ,'user_mail': row[4],'image':row[5],'actif':row[6]} for row in data]
 
+def add_user(name,password,role,user_mail,status):
+    password = hashlib.md5(password.encode()).hexdigest()
+    query = "INSERT INTO users(name,password,role,user_mail,image,actif) VALUES (?,?,?,?,?,?)"
+    params = (name,password,role,user_mail,"image",status)
+    return execute_query(query, params)
 
+def get_all_depot_users():
+    query = "SELECT name, DE_Intitule,user_mail FROM user_sel_depots ORDER BY name"  # Sorting helps with grouping
+    data = fetch_all(query)
+    print("Data fetched from database:", data)  # Debug print to verify data is fetched
+    user_depot_map = {}
+    for name, depot in data:
+        if name in user_depot_map:
+            user_depot_map[name].append(depot)
+        else:
+            user_depot_map[name] = [depot]
+
+    formatted_data = [{'name': name, 'DE_Intitule': ', '.join(depots), 'user_mail': user_mail} for name, depots,user_mail in user_depot_map.items()]
+    return formatted_data
+
+def get_depots_by_user(userid):
+    #select * from user_sel_depots where userid = 1
+    query = "SELECT DE_Intitule FROM user_sel_depots WHERE userid = ?"
+    data = fetch_all(query, (userid,))
+    print(data)
+    return data
 
 # Updated function using the new execute_query
 def insert_ToEntete(client, date, ref, userid, dateF, devis, co_no):

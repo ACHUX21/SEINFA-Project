@@ -15,7 +15,10 @@ from functions import (
     Search_Function,
     get_all_devis_by_co_no,
     Get_All_Depot,
-    Get_All_Users
+    Get_All_Users,
+    get_all_depot_users,
+    get_depots_by_user,
+    add_user
 )
 from mysqlDB import (
     select_tmpCart,
@@ -123,6 +126,7 @@ def commandes():
     categories = get_categories()
     last_device = last_dev()
     depot = Get_All_Depot()
+    depot_per_user =get_depots_by_user(user_id)
     # Determine the number of products to fetch based on category presence
     if category:
         products = fetch_products(20, category)
@@ -139,9 +143,14 @@ def commandes():
         username=payload['username'],
         role=payload['role'],
         total=get_TOTAL(user_id),
-        depot=depot
-    )
+        depot=depot,
+        user_depot=depot_per_user
 
+    )
+# #def add_user(name,password,role,user_mail,image):
+#     query = "INSERT INTO users(name,password,role,user_create_date,user_mail,image,1) VALUES (?,?,?,?,?,?)"
+#     params = (name,password,role,datetime.datetime.now(),user_mail,image)
+#     return execute_query(query, params)
 @app.route('/users', methods=['GET'])
 def users():
     token = request.cookies.get('token')
@@ -153,6 +162,48 @@ def users():
     if not payload:
         return redirect(url_for('index'))
     return render_template('users.html', username=payload['username'],role=payload['role'], users=Get_All_Users())
+
+@app.route('/add_user', methods=['POST'])
+def add_users():
+    token = request.cookies.get('token')
+    if not token:
+        return redirect(url_for('index'))
+    payload = verifyjwt(token)
+    if payload['role'] != 'Administrateur':
+        return redirect(url_for('index'))
+    if not payload:
+        return redirect(url_for('index'))
+    name = request.form['user_name']
+    password = request.form['user_password']
+    role = request.form['user_role']
+    user_mail = request.form['user_email']
+    image = ""
+    statut = request.form['user_statut']
+    # if not name or not password or not role or not user_mail or not image:
+    #     return render_template('users.html', username=payload['username'],role=payload['role'], users=Get_All_Users(), error='S\'il vous plaît remplir tous les champs')
+    f = add_user(name, password,role, user_mail,statut)
+    print(f)
+    if not f:
+        return render_template('users.html', username=payload['username'],role=payload['role'], users=Get_All_Users(), error='Erreur lors de l\'enregistrement de l\'utilisateur')
+    print(name,password,user_mail)
+    return redirect(url_for('users'))
+
+
+@app.route('/users_depot', methods=['GET'])
+def users_depot():
+    token = request.cookies.get('token')
+    if not token:
+        return redirect(url_for('index'))
+    payload = verifyjwt(token)
+    if payload['role'] != 'Administrateur':
+        return redirect(url_for('index'))
+    if not payload:
+        return redirect(url_for('index'))
+    users = get_all_depot_users()  # Fetches the list of users
+    if not users:
+        print("No users fetched. Check the database and query.")
+    return render_template('users_depot.html', users=users)
+
 
 # # Submit Route
 # @app.route('/submit', methods=['POST'])

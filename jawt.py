@@ -31,6 +31,11 @@ def authen(username, password, ip):
             return None
         cursor.close()
         cursor = conn.cursor()
+        cursor.execute("SELECT actif from users WHERE name = ? AND password = ?", (username, password))
+        statut = cursor.fetchone()[0]
+        if statut == 0:
+            return None
+        cursor = conn.cursor()
         cursor.execute("SELECT role from users WHERE name = ? AND password = ?", (username, password))
         role = cursor.fetchone()[0]
         if not role:
