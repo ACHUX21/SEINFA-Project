@@ -1071,7 +1071,11 @@
 													<td>{{user.role}}</td>
 													<!--end::Role=-->
 													<!--begin::Last login=-->
-													<td>{{user.last_login_date}}</td>
+													{% if user.last_login_date == None %}
+														<td> Jamais </td>
+													{% else %}
+														<td>{{user.last_login_date}}</td>
+													{% endif %}
 
 													<!--end::Last login=-->
 													<!--begin::Two step=-->
