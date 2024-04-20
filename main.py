@@ -20,7 +20,8 @@ from functions import (
     get_all_depot_users,
     get_depots_by_user,
     add_user,
-    get_all_depots
+    get_all_depots,
+    get_product_by_ref
 )
 from mysqlDB import (
     select_tmpCart,
@@ -212,7 +213,19 @@ def upload_pic():
 
 @app.route('/products', methods=['GET'])
 def products_images():
-    return render_template('products.html',articles=fetch_products(100))
+    return render_template('products.html', articles=fetch_products(500))
+
+@app.route('/product_details/<string:ref>', methods=['GET'])
+def product_images(ref):
+    token = request.cookies.get('token')
+    if not token:
+        return redirect(url_for('logout'))
+    payload = verifyjwt(token)
+    if not payload:
+        return redirect(url_for('logout'))
+    product = get_product_by_ref(ref)
+    return render_template('product_details.html',product=product, username=payload['username'],role=payload['role'])
+
 
 @app.route('/users_depot', methods=['GET','POST'])
 def users_depot():

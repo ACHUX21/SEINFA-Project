@@ -94,6 +94,21 @@ def fetch_products(num=4000, cat=None):
 
     return products
 
+
+
+def get_product_by_ref(ref):
+    query = "SELECT * FROM article_table WHERE AR_Ref = ?"
+    data = fetch_first(query, (ref,))
+    if data:
+        product = {
+            'name': data[1],
+            'price': round(data[2], 2),
+            'qte': int(data[3]) if data[3] else 0,
+            'category': data[4],
+            'ref': data[0],
+        }
+        return product
+    return None
 # Use fetch_all in the get_categories function
 def get_categories():
     query = "SELECT categorie FROM article_table GROUP BY categorie ORDER BY SUM(AS_QteSto) DESC"
