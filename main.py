@@ -210,7 +210,6 @@ def upload_pic():
     cursor.close()
     return jsonify('success')
 
-
 @app.route('/users_depot', methods=['GET','POST'])
 def users_depot():
     token = request.cookies.get('token')
@@ -228,7 +227,7 @@ def users_depot():
     users = get_all_depot_users()  # Fetches the list of users
     if not users:
         print("No users fetched. Check the database and query.")
-    return render_template('users_depot.html', users=users,depots = get_all_depots(),all_users=Get_All_Users())
+    return render_template('users_depot.html', users=users,depots = get_all_depots(),all_users=Get_All_Users(), username=payload['username'],role=payload['role'])
 # api/user_depots
 @app.route('/api/user_depots/<int:user_id>', methods=['POST'])
 def update_user_depots(user_id):
@@ -669,5 +668,25 @@ def delete_user(username):
     cursor.close()
     return redirect(url_for('users'))
 
+@app.route('/api/delete_depots_user/<int:user_id>', methods=['GET'])
+def delete_depots_user(user_id):
+    token = request.cookies.get('token')
+    if not token:
+        return redirect(url_for('logout'))
+    payload = verifyjwt(token)
+    if not payload:
+        return redirect(url_for('logout'))
+    if not payload['role']:
+        return redirect(url_for('logout'))
+    if payload['role'] != 'Administrateur':
+        return redirect(url_for('index'))
+    if not payload:
+        return redirect(url_for('index'))
+    cursor = conn.cursor()
+    cursor.execute('DELETE FROM user_depots WHERE userid = ?', (user_id))
+    conn.commit()
+    cursor.close()
+    return redirect(url_for('users_depot'))
+
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run(debug=True, host='0.0.0.0', port=5000,threaded=True)

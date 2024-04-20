@@ -150,6 +150,28 @@
                                         </a>
                                     </div>
                                 </div>
+                                {% if role == 'Administrateur' %}
+                                <div class="menu-sub menu-sub-accordion menu-active-bg">
+                                    <div class="menu-item">
+                                        <a class="menu-link active" href="{{ url_for('users') }}">
+                                            <span class="menu-bullet">
+                                                <span class="bullet bullet-dot"></span>
+                                            </span>
+                                            <span class="menu-title">Utilisateurs</span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="menu-sub menu-sub-accordion menu-active-bg">
+                                    <div class="menu-item">
+                                        <a class="menu-link active" href="{{ url_for('users_depot') }}">
+                                            <span class="menu-bullet">
+                                                <span class="bullet bullet-dot"></span>
+                                            </span>
+                                            <span class="menu-title">Affecter les dépots</span>
+                                        </a>
+                                    </div>
+                                </div>
+                                {% endif %}
                             </div>
                         </div>
                         <!--end::Menu-->
@@ -960,36 +982,6 @@
 																		</div>
 																		<!--end::Roles-->
 																	</div>
-																	<div class="mb-7">
-																		<!--begin::Label-->
-																		<label class="required fw-bold fs-6 mb-5">Depôts</label>
-																		<!--end::Label-->
-																		<!--begin::Roles-->
-																		{% for depot in depots %}
-																		<!--begin::Input row for Administrateur-->
-																		<div class="d-flex fv-row">
-																			<!--begin::Checkbox-->
-																			<div class="form-check form-check-custom form-check-solid">
-																				<!--begin::Input-->
-																				<input class="form-check-input me-3" name="user_roles[]" type="checkbox" value="{{depot.DE_No}}" id="kt_modal_update_role_option_0"/>
-																				<!--end::Input-->
-																				<!--begin::Label-->
-																				<label class="form-check-label" for="kt_modal_update_role_option_0">
-																					<div class="fw-bolder text-gray-800">{{depot.DE_Intitule}}</div>
-																				</label>
-																				<!--end::Label-->
-																			</div>
-																			<!--end::Checkbox-->
-																		</div>
-																		<!--end::Input row-->																	
-																		<div class='separator separator-dashed my-5'></div>
-																		{% endfor %}
-
-																		<!--end::Input row-->
-																	
-																		<!-- Add more roles as needed -->
-																	
-																	</div>
 																	
 																	
 																	<!--end::Input group-->
@@ -1079,7 +1071,7 @@
 													<td>{{user.role}}</td>
 													<!--end::Role=-->
 													<!--begin::Last login=-->
-													<td>{{user.LOGINDATTIM}}</td>
+													<td>{{user.last_login_date}}</td>
 
 													<!--end::Last login=-->
 													<!--begin::Two step=-->

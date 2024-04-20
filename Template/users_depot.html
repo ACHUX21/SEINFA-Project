@@ -18,6 +18,11 @@
 		<link href="static/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
 		<link href="static/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
         <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.4/dist/tailwind.min.css" rel="stylesheet">
+		<link href="static/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+		<!--end::Pagstatic/e Vendor Stylesheets-->
+		<!--begin::Gstatic/lobal Stylesheets Bundle(used by all pages)-->
+		<link href="static/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
+		<link href="static/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
 
         <link href="static/mylibrary/mycustom.css" rel="stylesheet" type="text/css" />
         <script src="https://kit.fontawesome.com/a401a1528d.js" crossorigin="anonymous"></script>
@@ -150,6 +155,28 @@
                                         </a>
                                     </div>
                                 </div>
+                                {% if role == 'Administrateur' %}
+                                <div class="menu-sub menu-sub-accordion menu-active-bg">
+                                    <div class="menu-item">
+                                        <a class="menu-link active" href="{{ url_for('users') }}">
+                                            <span class="menu-bullet">
+                                                <span class="bullet bullet-dot"></span>
+                                            </span>
+                                            <span class="menu-title">Utilisateurs</span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="menu-sub menu-sub-accordion menu-active-bg">
+                                    <div class="menu-item">
+                                        <a class="menu-link active" href="{{ url_for('users_depot') }}">
+                                            <span class="menu-bullet">
+                                                <span class="bullet bullet-dot"></span>
+                                            </span>
+                                            <span class="menu-title">Affecter les dépots</span>
+                                        </a>
+                                    </div>
+                                </div>
+                                {% endif %}
                             </div>
                         </div>
                         <!--end::Menu-->
@@ -850,16 +877,16 @@
 																	<div class="mb-7">
 																		<label class="required fw-bold fs-6 mb-5">Depôts</label>
 																		{% for depot in depots %}
-<div class="d-flex fv-row">
-    <div class="form-check form-check-custom form-check-solid">
-        <input class="form-check-input me-3 depot-checkbox" type="checkbox" value="{{depot.DE_No}}" id="kt_modal_update_role_option_{{ loop.index }}">
-        <label class="form-check-label" for="kt_modal_update_role_option_{{ loop.index }}">
-            <div class="fw-bolder text-gray-800">{{depot.DE_Intitule}}</div>
-        </label>
-    </div>
-</div>
-<div class='separator separator-dashed my-5'></div>
-{% endfor %}
+																	<div class="d-flex fv-row">
+																		<div class="form-check form-check-custom form-check-solid">
+																			<input class="form-check-input me-3 depot-checkbox" type="checkbox" value="{{depot.DE_No}}" id="kt_modal_update_role_option_{{ loop.index }}">
+																			<label class="form-check-label" for="kt_modal_update_role_option_{{ loop.index }}">
+																				<div class="fw-bolder text-gray-800">{{depot.DE_Intitule}}</div>
+																			</label>
+																		</div>
+																	</div>
+																	<div class='separator separator-dashed my-5'></div>
+																	{% endfor %}
 
 																	</div>
 																</div>
@@ -896,9 +923,8 @@
 											<thead>
 												<!--begin::Table row-->
 												<tr class="text-start text-gray-400 fw-bolder fs-7 text-uppercase gs-0">
-													<th class="min-w-125px">Name</th>
-													<th class="min-w-250px">Assigned to</th>
-													<th class="min-w-125px">Created Date</th>
+													<th class="min-w-125px">Utilisateur</th>
+													<th class="min-w-250px">Dépôt Assignée</th>
 													<th class="text-end min-w-100px">Actions</th>
 												</tr>
 												<!--end::Table row-->
@@ -918,9 +944,6 @@
 
 													</td>
 													<!--end::Assigned to=-->
-													<!--begin::Created Date-->
-													<td>20 Dec 2022, 11:30 am</td>
-													<!--end::Created Date-->
 													<!--begin::Action=-->
 													<td class="text-end">
 														<!--begin::Update-->
@@ -936,7 +959,7 @@
 														</button>
 														<!--end::Update-->
 														<!--begin::Delete-->
-														<button class="btn btn-icon btn-active-light-primary w-30px h-30px" data-kt-permissions-table-filter="delete_row">
+														<a href="/api/delete_depots_user/{{user.userid}}" class="btn btn-icon btn-active-light-primary w-30px h-30px" data-kt-permissions-table-filter="delete_row">
 															<!--begin::Svg Icon | path: icons/duotune/general/gen027.svg-->
 															<span class="svg-icon svg-icon-3">
 																<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -946,7 +969,7 @@
 																</svg>
 															</span>
 															<!--end::Svg Icon-->
-														</button>
+														</a>
 														<!--end::Delete-->
 													</td>
 													<!--end::Action=-->
@@ -1002,7 +1025,7 @@
 		<!--end::Modal - Invite Friend-->
 		<!--end::Modals-->
 		<!--begin::Javascript-->
-		<script>var hostUrl = "assets/";</script>
+		<script>var hostUrl = "static/assets/";</script>
 		<!--begin::Global Javascript Bundle(used by all pages)-->
 		<script src="static/assets/plugins/global/plugins.bundle.js"></script>
 		<script src="static/assets/js/scripts.bundle.js"></script>
@@ -1014,19 +1037,11 @@
 		<script src="static/assets/js/custom/apps/ecommerce/sales/save-order.js"></script>
 		<script src="static/assets/js/widgets.bundle.js"></script>
 		<script src="static/assets/js/custom/widgets.js"></script>
-        <!-- <script src="static/mylibrary/script.js" ></script> -->
         <script src="static/assets/js/custom/apps/user-management/users/list/table.js"></script>
 		<script src="static/assets/js/custom/apps/user-management/users/list/export-users.js"></script>
 		<script src="static/assets/js/custom/apps/user-management/users/list/add.js"></script>
 
-
-    
-        {% if request.args.get('cat') %}
-                <!-- <script src="static/mylibrary/search-cat.js"></script> -->
-        {% else %}
-            <!-- <script src="static/mylibrary/search.js"></script> -->
-        {% endif %}
-        <!-- <script src="static/mylibrary/catSearch.js"></script> -->
+		<script src="static/mylibrary/add_depot_user.js"></script>
         <script>
               document.getElementById("submitFormBtn").addEventListener("click", function() {
         document.getElementById("myForm").submit();
@@ -1039,64 +1054,25 @@
               // Call the function when the DOM content is loaded
               fetchTotal();
             });
-          </script>
-
-<script>
-document.getElementById("SubBtn").addEventListener("click", function(event) {
-    event.preventDefault(); // Prevent the default form submission
-
-    var userid = document.getElementById("user_id_select").value;
-    var checkedDepots = []; // Array to store checked depot values
-
-    // Get all checkboxes with class "depot-checkbox"
-    var checkboxes = document.querySelectorAll('.depot-checkbox');
-
-    // Iterate over each checkbox
-    checkboxes.forEach(function(checkbox) {
-        // If checkbox is checked, add its value to checkedDepots array
-        if (checkbox.checked) {
-            checkedDepots.push(checkbox.value);
-        }
-    });
-
-    // Now checkedDepots array contains all the checked checkbox values
-    fetch('/api/user_depots/' + userid, { // Corrected endpoint URL
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            depots: checkedDepots
-        })
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
-    })
-    .then(data => {
-        // Handle successful response here
-        console.log(data);
-        
-        // Reload the page after fetch operation is completed
-        window.location.reload();
-    })
-    .catch(error => {
-        // Handle errors here
-        console.error('There was a problem with the fetch operation:', error);
-    });
-});
-
-
-
-</script>
-	
-	
-
-          
+          </script>          
 		<!--end::Page Custom Javascript-->
 		<!--end::Javascript-->
+		<script src="static/assets/plugins/global/plugins.bundle.js"></script>
+		<script src="static/assets/js/scripts.bundle.js"></script>
+		<!--end::Globstatic/al Javascript Bundle-->
+		<!--begin::Pastatic/ge Vendors Javascript(used by this page)-->
+		<script src="static/assets/plugins/custom/datatables/datatables.bundle.js"></script>
+		<!--end::Pagestatic/ Vendors Javascript-->
+		<!--begin::Pastatic/ge Custom Javascript(used by this page)-->
+		<script src="static/assets/js/custom/apps/user-management/permissions/list.js"></script>
+		<script src="static/assets/js/custom/apps/user-management/permissions/add-permission.js"></script>
+		<script src="static/assets/js/custom/apps/user-management/permissions/update-permission.js"></script>
+		<script src="static/assets/js/widgets.bundle.js"></script>
+		<script src="static/assets/js/custom/widgets.js"></script>
+		<script src="static/assets/js/custom/apps/chat/chat.js"></script>
+		<script src="static/assets/js/custom/utilities/modals/upgrade-plan.js"></script>
+		<script src="static/assets/js/custom/utilities/modals/create-app.js"></script>
+		<script src="static/assets/js/custom/utilities/modals/users-search.js"></script>
 	</body>
 	<!--end::Body-->
 </html>

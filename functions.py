@@ -258,18 +258,22 @@ def add_user(name,password,role,user_mail,status):
     return execute_query(query, params)
 
 def get_all_depot_users():
-    query = "SELECT name, DE_Intitule FROM user_sel_depots ORDER BY name"  # Sorting helps with grouping
+    # Updated query to also select the userid
+    query = "SELECT userid, name, DE_Intitule FROM user_sel_depots ORDER BY name"
     data = fetch_all(query)
-    # print("Data fetched from database:", data)  # Debug print to verify data is fetched
     user_depot_map = {}
-    for name, depot in data:
-        if name in user_depot_map:
-            user_depot_map[name].append(depot)
+    # Create a dictionary to map each user to their depots
+    for userid, name, depot in data:
+        user_key = (userid, name)  # Using a tuple to store both userid and name as key
+        if user_key in user_depot_map:
+            user_depot_map[user_key].append(depot)
         else:
-            user_depot_map[name] = [depot]
+            user_depot_map[user_key] = [depot]
 
-    formatted_data = [{'name': name, 'DE_Intitule': ', '.join(depots)} for name, depots in user_depot_map.items()]
+    # Format the data for easy use in the front end
+    formatted_data = [{'userid': userid, 'name': name, 'DE_Intitule': ', '.join(depots)} for (userid, name), depots in user_depot_map.items()]
     return formatted_data
+
 
 def get_depots_by_user(userid):
     #select * from user_sel_depots where userid = 1
@@ -277,6 +281,7 @@ def get_depots_by_user(userid):
     data = fetch_all(query, (userid,))
     print(data)
     return data
+
 
 def get_all_depots():
     query = "SELECT DE_No, DE_Intitule FROM F_DEPOT"
