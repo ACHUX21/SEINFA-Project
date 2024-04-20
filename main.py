@@ -212,7 +212,7 @@ def upload_pic():
 
 @app.route('/products', methods=['GET'])
 def products_images():
-    return render_template('products.html')
+    return render_template('products.html',articles=fetch_products(100))
 
 @app.route('/users_depot', methods=['GET','POST'])
 def users_depot():
