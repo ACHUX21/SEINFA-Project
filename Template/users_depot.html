@@ -829,166 +829,40 @@
 														<!--begin::Modal body-->
 														<div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
 															<!--begin::Form-->
-															<form id="kt_modal_add_user_form" class="form" action="#">
+															<form id="kt_modal_add_user_form" class="form" method="POST" onsubmit="return setFormAction();">
 																<!--begin::Scroll-->
 																<div class="d-flex flex-column scroll-y me-n7 pe-7" id="kt_modal_add_user_scroll" data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#kt_modal_add_user_header" data-kt-scroll-wrappers="#kt_modal_add_user_scroll" data-kt-scroll-offset="300px">
 																	<!--begin::Input group-->
 																	<div class="fv-row mb-7">
 																		<!--begin::Label-->
-																		<label class="d-block fw-bold fs-6 mb-5">Avatar</label>
+																		<label class="required fw-bold fs-6 mb-2">Utilisateur</label>
 																		<!--end::Label-->
-																		<!--begin::Image input-->
-																		<div class="image-input image-input-outline" data-kt-image-input="true" style="background-image: url('assets/media/svg/avatars/blank.svg')">
-																			<!--begin::Preview existing avatar-->
-																			<div class="image-input-wrapper w-125px h-125px" style="background-image: url(assets/media/avatars/300-6.jpg);"></div>
-																			<!--end::Preview existing avatar-->
-																			<!--begin::Label-->
-																			<label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="change" data-bs-toggle="tooltip" title="Change avatar">
-																				<i class="bi bi-pencil-fill fs-7"></i>
-																				<!--begin::Inputs-->
-																				<input type="file" name="avatar" accept=".png, .jpg, .jpeg" />
-																				<input type="hidden" name="avatar_remove" />
-																				<!--end::Inputs-->
-																			</label>
-																			<!--end::Label-->
-																			<!--begin::Cancel-->
-																			<span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="cancel" data-bs-toggle="tooltip" title="Cancel avatar">
-																				<i class="bi bi-x fs-2"></i>
-																			</span>
-																			<!--end::Cancel-->
-																			<!--begin::Remove-->
-																			<span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="remove" data-bs-toggle="tooltip" title="Remove avatar">
-																				<i class="bi bi-x fs-2"></i>
-																			</span>
-																			<!--end::Remove-->
-																		</div>
-																		<!--end::Image input-->
-																		<!--begin::Hint-->
-																		<div class="form-text">Allowed file types: png, jpg, jpeg.</div>
-																		<!--end::Hint-->
+																		<!--begin::Select-->
+																		<select name="user_id" id="user_id_select" class="form-control form-control-solid mb-3 mb-lg-0">
+																			<option value="">Select a name</option>
+																			{% for user in all_users %}
+																			<option value="{{user.id}}">{{user.name}}</option>
+																			{% endfor %}
+																		</select>
+																		<!--end::Select-->
 																	</div>
-																	<!--end::Input group-->
-																	<!--begin::Input group-->
-																	<div class="fv-row mb-7">
-																		<!--begin::Label-->
-																		<label class="required fw-bold fs-6 mb-2">Full Name</label>
-																		<!--end::Label-->
-																		<!--begin::Input-->
-																		<input type="text" name="user_name" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Full name" value="Emma Smith" />
-																		<!--end::Input-->
-																	</div>
-																	<!--end::Input group-->
-																	<!--begin::Input group-->
-																	<div class="fv-row mb-7">
-																		<!--begin::Label-->
-																		<label class="required fw-bold fs-6 mb-2">Email</label>
-																		<!--end::Label-->
-																		<!--begin::Input-->
-																		<input type="email" name="user_email" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="example@domain.com" value="smith@kpmg.com" />
-																		<!--end::Input-->
-																	</div>
-																	<!--end::Input group-->
-																	<!--begin::Input group-->
+																	<!-- User Depots -->
 																	<div class="mb-7">
-																		<!--begin::Label-->
-																		<label class="required fw-bold fs-6 mb-5">Role</label>
-																		<!--end::Label-->
-																		<!--begin::Roles-->
-																		<!--begin::Input row-->
+																		<label class="required fw-bold fs-6 mb-5">Depôts</label>
+																		{% for depot in depots %}
 																		<div class="d-flex fv-row">
-																			<!--begin::Radio-->
 																			<div class="form-check form-check-custom form-check-solid">
-																				<!--begin::Input-->
-																				<input class="form-check-input me-3" name="user_role" type="radio" value="0" id="kt_modal_update_role_option_0" checked='checked' />
-																				<!--end::Input-->
-																				<!--begin::Label-->
-																				<label class="form-check-label" for="kt_modal_update_role_option_0">
-																					<div class="fw-bolder text-gray-800">Administrator</div>
-																					<div class="text-gray-600">Best for business owners and company administrators</div>
+																				<input class="form-check-input me-3" name="user_depot[]" type="checkbox" value="{{depot.DE_No}}" id="kt_modal_update_role_option_{{ loop.index }}">
+																				<label class="form-check-label" for="kt_modal_update_role_option_{{ loop.index }}">
+																					<div class="fw-bolder text-gray-800">{{depot.DE_Intitule}}</div>
 																				</label>
-																				<!--end::Label-->
 																			</div>
-																			<!--end::Radio-->
 																		</div>
-																		<!--end::Input row-->
 																		<div class='separator separator-dashed my-5'></div>
-																		<!--begin::Input row-->
-																		<div class="d-flex fv-row">
-																			<!--begin::Radio-->
-																			<div class="form-check form-check-custom form-check-solid">
-																				<!--begin::Input-->
-																				<input class="form-check-input me-3" name="user_role" type="radio" value="1" id="kt_modal_update_role_option_1" />
-																				<!--end::Input-->
-																				<!--begin::Label-->
-																				<label class="form-check-label" for="kt_modal_update_role_option_1">
-																					<div class="fw-bolder text-gray-800">Developer</div>
-																					<div class="text-gray-600">Best for developers or people primarily using the API</div>
-																				</label>
-																				<!--end::Label-->
-																			</div>
-																			<!--end::Radio-->
-																		</div>
-																		<!--end::Input row-->
-																		<div class='separator separator-dashed my-5'></div>
-																		<!--begin::Input row-->
-																		<div class="d-flex fv-row">
-																			<!--begin::Radio-->
-																			<div class="form-check form-check-custom form-check-solid">
-																				<!--begin::Input-->
-																				<input class="form-check-input me-3" name="user_role" type="radio" value="2" id="kt_modal_update_role_option_2" />
-																				<!--end::Input-->
-																				<!--begin::Label-->
-																				<label class="form-check-label" for="kt_modal_update_role_option_2">
-																					<div class="fw-bolder text-gray-800">Analyst</div>
-																					<div class="text-gray-600">Best for people who need full access to analytics data, but don't need to update business settings</div>
-																				</label>
-																				<!--end::Label-->
-																			</div>
-																			<!--end::Radio-->
-																		</div>
-																		<!--end::Input row-->
-																		<div class='separator separator-dashed my-5'></div>
-																		<!--begin::Input row-->
-																		<div class="d-flex fv-row">
-																			<!--begin::Radio-->
-																			<div class="form-check form-check-custom form-check-solid">
-																				<!--begin::Input-->
-																				<input class="form-check-input me-3" name="user_role" type="radio" value="3" id="kt_modal_update_role_option_3" />
-																				<!--end::Input-->
-																				<!--begin::Label-->
-																				<label class="form-check-label" for="kt_modal_update_role_option_3">
-																					<div class="fw-bolder text-gray-800">Support</div>
-																					<div class="text-gray-600">Best for employees who regularly refund payments and respond to disputes</div>
-																				</label>
-																				<!--end::Label-->
-																			</div>
-																			<!--end::Radio-->
-																		</div>
-																		<!--end::Input row-->
-																		<div class='separator separator-dashed my-5'></div>
-																		<!--begin::Input row-->
-																		<div class="d-flex fv-row">
-																			<!--begin::Radio-->
-																			<div class="form-check form-check-custom form-check-solid">
-																				<!--begin::Input-->
-																				<input class="form-check-input me-3" name="user_role" type="radio" value="4" id="kt_modal_update_role_option_4" />
-																				<!--end::Input-->
-																				<!--begin::Label-->
-																				<label class="form-check-label" for="kt_modal_update_role_option_4">
-																					<div class="fw-bolder text-gray-800">Trial</div>
-																					<div class="text-gray-600">Best for people who need to preview content data, but don't need to make any updates</div>
-																				</label>
-																				<!--end::Label-->
-																			</div>
-																			<!--end::Radio-->
-																		</div>
-																		<!--end::Input row-->
-																		<!--end::Roles-->
+																		{% endfor %}
 																	</div>
-																	<!--end::Input group-->
 																</div>
-																<!--end::Scroll-->
-																<!--begin::Actions-->
+																<!-- Actions -->
 																<div class="text-center pt-15">
 																	<button type="reset" class="btn btn-light me-3" data-kt-users-modal-action="cancel">Discard</button>
 																	<button type="submit" class="btn btn-primary" data-kt-users-modal-action="submit">
@@ -997,8 +871,9 @@
 																		<span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
 																	</button>
 																</div>
-																<!--end::Actions-->
 															</form>
+															
+															
 															<!--end::Form-->
 														</div>
 														<!--end::Modal body-->
@@ -1035,9 +910,11 @@
 												<tr>
 													<td>{{ user.name }}</td>
 													<td>
+														{% set color_classes = ['badge-light-primary', 'badge-light-success', 'badge-light-danger', 'badge-light-warning', 'badge-light-info'] %}
 														{% for depot in user.DE_Intitule.split(', ') %}
-														<a href="../../demo1/dist/apps/user-management/roles/view.html" class="badge badge-light-primary fs-7 m-1">{{ depot }}</a>
+															<a class="badge fs-7 m-1 {{ color_classes[loop.index0 % color_classes|length] }}">{{ depot }}</a>
 														{% endfor %}
+
 													</td>
 													<!--end::Assigned to=-->
 													<!--begin::Created Date-->
@@ -1162,6 +1039,22 @@
               fetchTotal();
             });
           </script>
+
+<script>
+	function setFormAction() {
+		var form = document.getElementById('kt_modal_add_user_form');
+		var selectedUserId = document.querySelector('select[name="user_id"]').value; // Correct the select name if needed
+		if (selectedUserId) {
+			form.action = '/api/user_depots/' + selectedUserId;
+			return true; // Allow the form to submit
+		}
+		alert('Please select a user before submitting.');
+		return false; // Prevent the form from submitting without a selected user
+	}
+	</script>
+	
+	
+
           
 		<!--end::Page Custom Javascript-->
 		<!--end::Javascript-->

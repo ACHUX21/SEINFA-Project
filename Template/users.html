@@ -825,7 +825,7 @@
 																		<!--begin::Image input-->
 																		<div class="image-input image-input-outline" data-kt-image-input="true" style="background-image: url('assets/media/svg/avatars/blank.svg')">
 																			<!--begin::Preview existing avatar-->
-																			<div class="image-input-wrapper w-125px h-125px" style="background-image: url(static/assets/media/avatars/300-6.jpg);"></div>
+																			<div class="image-input-wrapper w-125px h-125px" style="background-image: url(https://cdn.vectorstock.com/i/preview-1x/23/41/account-edit-profile-icon-vector-31052341.jpg);"></div>
 																			<!--end::Preview existing avatar-->
 																			<!--begin::Label-->
 																			<label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="change" data-bs-toggle="tooltip" title="Change avatar">
@@ -960,6 +960,38 @@
 																		</div>
 																		<!--end::Roles-->
 																	</div>
+																	<div class="mb-7">
+																		<!--begin::Label-->
+																		<label class="required fw-bold fs-6 mb-5">Depôts</label>
+																		<!--end::Label-->
+																		<!--begin::Roles-->
+																		{% for depot in depots %}
+																		<!--begin::Input row for Administrateur-->
+																		<div class="d-flex fv-row">
+																			<!--begin::Checkbox-->
+																			<div class="form-check form-check-custom form-check-solid">
+																				<!--begin::Input-->
+																				<input class="form-check-input me-3" name="user_roles[]" type="checkbox" value="{{depot.DE_No}}" id="kt_modal_update_role_option_0"/>
+																				<!--end::Input-->
+																				<!--begin::Label-->
+																				<label class="form-check-label" for="kt_modal_update_role_option_0">
+																					<div class="fw-bolder text-gray-800">{{depot.DE_Intitule}}</div>
+																				</label>
+																				<!--end::Label-->
+																			</div>
+																			<!--end::Checkbox-->
+																		</div>
+																		<!--end::Input row-->																	
+																		<div class='separator separator-dashed my-5'></div>
+																		{% endfor %}
+
+																		<!--end::Input row-->
+																	
+																		<!-- Add more roles as needed -->
+																	
+																	</div>
+																	
+																	
 																	<!--end::Input group-->
 																</div>
 																<!--end::Scroll-->
@@ -1029,11 +1061,11 @@
 														<!--begin:: Avatar -->
 														<div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
 															<a>
-																<div class="symbol-label">
-																	<img src="{{user.image_base64}}" alt="User Image" class="w-100" />
-																</div>
+																<div class="symbol-label" style="background-image: url('{{ user.image_base64}}')"></div>
 															</a>
 														</div>
+														
+														
 														<!--end::Avatar-->
 														<!--begin::User details-->
 														<div class="d-flex flex-column">

@@ -19,7 +19,8 @@ from functions import (
     Get_All_Users,
     get_all_depot_users,
     get_depots_by_user,
-    add_user
+    add_user,
+    get_all_depots
 )
 from mysqlDB import (
     select_tmpCart,
@@ -162,7 +163,7 @@ def users():
         return redirect(url_for('index'))
     if not payload:
         return redirect(url_for('index'))
-    return render_template('users.html', username=payload['username'],role=payload['role'], users=Get_All_Users())
+    return render_template('users.html', username=payload['username'],role=payload['role'], users=Get_All_Users(),depots = get_all_depots())
 
 @app.route('/add_user', methods=['POST'])
 def add_users():
@@ -218,7 +219,28 @@ def users_depot():
     users = get_all_depot_users()  # Fetches the list of users
     if not users:
         print("No users fetched. Check the database and query.")
-    return render_template('users_depot.html', users=users)
+    return render_template('users_depot.html', users=users,depots = get_all_depots(),all_users=Get_All_Users())
+
+@app.route('/api/user_depots/<int:user_id>', methods=['POST'])
+def update_user_depots(user_id):
+    # Retrieve depot IDs from the form data
+    depots = request.form.getlist('user_roles[]')  # This should match the name attribute of your checkbox inputs
+    cursor = conn.cursor()
+    
+    # Delete existing user-depot relations
+    cursor.execute('DELETE FROM user_depots WHERE userid = ?', (user_id,))
+    
+    # Insert new user-depot relations
+    for depot_id in depots:
+        cursor.execute('INSERT INTO user_depots (userid, depot_id) VALUES (?, ?)', (user_id, depot_id))
+    
+    # Commit transaction and close connections
+    conn.commit()
+    cursor.close()
+    conn.close()
+    
+    # Return a success message
+    return jsonify({'status': 'success'})
 
 
 # # Submit Route

@@ -233,6 +233,7 @@ def Get_All_Users():
     # Modified query to format the user_create_date in the desired format with French day and month names
     query = """
     SELECT 
+    users.id,
     users.name, 
     users.role, 
     FORMAT(users.user_create_date, 'dd MMM yyyy, HH:mm', 'fr-FR') as user_create_date_formatted,
@@ -248,16 +249,16 @@ def Get_All_Users():
     users.id, users.name, users.role, users.user_create_date,users.user_mail,users.image_base64,users.actif
     """
     data = fetch_all(query)
-    return [{'name': row[0], 'role': row[1], 'user_create_date': row[2],'LOGINDATTIM':row[3] ,'user_mail': row[4],'image_base64':row[5],'actif':row[6]} for row in data]
+    return [{'id':row[0], 'name': row[1], 'role': row[2], 'user_create_date': row[3], 'last_login_date': row[4], 'user_mail': row[5], 'image_base64': row[6], 'actif': row[7]} for row in data]
 
 def add_user(name,password,role,user_mail,status):
     password = hashlib.md5(password.encode()).hexdigest()
-    query = "INSERT INTO users(name,password,role,user_mail,actif) VALUES (?,?,?,?,?,?)"
-    params = (name,password,role,user_mail,status)
+    query = "INSERT INTO users(name,password,role,user_mail,image_base64,actif) VALUES (?,?,?,?,?,?)"
+    params = (name,password,role,user_mail,"image",status)
     return execute_query(query, params)
 
 def get_all_depot_users():
-    query = "SELECT name, DE_Intitule,user_mail FROM user_sel_depots ORDER BY name"  # Sorting helps with grouping
+    query = "SELECT name, DE_Intitule FROM user_sel_depots ORDER BY name"  # Sorting helps with grouping
     data = fetch_all(query)
     print("Data fetched from database:", data)  # Debug print to verify data is fetched
     user_depot_map = {}
@@ -267,7 +268,7 @@ def get_all_depot_users():
         else:
             user_depot_map[name] = [depot]
 
-    formatted_data = [{'name': name, 'DE_Intitule': ', '.join(depots), 'user_mail': user_mail} for name, depots,user_mail in user_depot_map.items()]
+    formatted_data = [{'name': name, 'DE_Intitule': ', '.join(depots)} for name, depots in user_depot_map.items()]
     return formatted_data
 
 def get_depots_by_user(userid):
@@ -276,6 +277,11 @@ def get_depots_by_user(userid):
     data = fetch_all(query, (userid,))
     print(data)
     return data
+
+def get_all_depots():
+    query = "SELECT DE_No, DE_Intitule FROM F_DEPOT"
+    data = fetch_all(query)
+    return [{'DE_No': row[0], 'DE_Intitule': row[1]} for row in data]
 
 # Updated function using the new execute_query
 def insert_ToEntete(client, date, ref, userid, dateF, devis, co_no):
