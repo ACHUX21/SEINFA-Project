@@ -245,10 +245,10 @@ def Get_All_Users():
     ON 
     users.id = login_hist.IDUSER
     GROUP BY 
-    users.id, users.name, users.role, users.user_create_date,users.user_mail,users.image,users.actif
+    users.id, users.name, users.role, users.user_create_date,users.user_mail,users.image_base64,users.actif
     """
     data = fetch_all(query)
-    return [{'name': row[0], 'role': row[1], 'user_create_date': row[2],'LOGINDATTIM':row[3] ,'user_mail': row[4],'image':row[5],'actif':row[6]} for row in data]
+    return [{'name': row[0], 'role': row[1], 'user_create_date': row[2],'LOGINDATTIM':row[3] ,'user_mail': row[4],'image_base64':row[5],'actif':row[6]} for row in data]
 
 def add_user(name,password,role,user_mail,status):
     password = hashlib.md5(password.encode()).hexdigest()
