@@ -252,8 +252,8 @@ def Get_All_Users():
 
 def add_user(name,password,role,user_mail,status):
     password = hashlib.md5(password.encode()).hexdigest()
-    query = "INSERT INTO users(name,password,role,user_mail,image_base64,actif) VALUES (?,?,?,?,?,?)"
-    params = (name,password,role,user_mail,"image",status)
+    query = "INSERT INTO users(name,password,role,user_mail,actif) VALUES (?,?,?,?,?,?)"
+    params = (name,password,role,user_mail,status)
     return execute_query(query, params)
 
 def get_all_depot_users():
