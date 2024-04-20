@@ -1027,12 +1027,13 @@
 													<!--begin::User=-->
 													<td class="d-flex align-items-center">
 														<!--begin:: Avatar -->
-														<div class="symbol symbol-circle symbol-50px overflow-hidden me-3" style="background-image: url('{{user.image_base64}}');">
+														<div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
 															<a>
-																<div class="symbol-label"></div>
+																<div class="symbol-label">
+																	<img src="{{user.image_base64}}" alt="User Image" class="w-100" />
+																</div>
 															</a>
 														</div>
-														
 														<!--end::Avatar-->
 														<!--begin::User details-->
 														<div class="d-flex flex-column">
