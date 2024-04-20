@@ -210,6 +210,10 @@ def upload_pic():
     cursor.close()
     return jsonify('success')
 
+@app.route('/products', methods=['GET'])
+def products_images():
+    return render_template('products.html')
+
 @app.route('/users_depot', methods=['GET','POST'])
 def users_depot():
     token = request.cookies.get('token')
