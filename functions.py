@@ -89,6 +89,7 @@ def fetch_products(num=4000, cat=None):
             'qte': int(row[3]) if row[3] else 0,
             'category': row[4],
             'ref': row[0],
+            'prix_achat': round(row[8],2)
         }
         products.append(product)
 
@@ -106,6 +107,7 @@ def get_product_by_ref(ref):
             'qte': int(data[3]) if data[3] else 0,
             'category': data[4],
             'ref': data[0],
+            'prix_achat': round(data[8],2)
         }
         return product
     return None
@@ -231,6 +233,7 @@ def Search_Function(q=None, cat=None):
             'qte': int(row[3]),
             'category': row[4],
             'ref': row[0],
+            'prix_achat': round(row[8],2)
         } for row in data]
     else:
         # For category-based and default list
@@ -292,7 +295,7 @@ def get_all_depot_users():
 
 def get_depots_by_user(userid):
     #select * from user_sel_depots where userid = 1
-    query = "SELECT DE_Intitule FROM user_sel_depots WHERE userid = ?"
+    query = "SELECT DE_No,DE_Intitule FROM user_sel_depots WHERE userid = ?"
     data = fetch_all(query, (userid,))
     print(data)
     return data

@@ -213,7 +213,13 @@ def upload_pic():
 
 @app.route('/products', methods=['GET'])
 def products_images():
-    return render_template('products.html', articles=fetch_products(500))
+    token = request.cookies.get('token')
+    if not token:
+        return redirect(url_for('logout'))
+    payload = verifyjwt(token)
+    if not payload:
+        return redirect(url_for('logout'))
+    return render_template('products.html', articles=fetch_products(500), username=payload['username'],role=payload['role'])
 
 @app.route('/product_details/<string:ref>', methods=['GET'])
 def product_images(ref):

@@ -192,7 +192,7 @@ function removeAndreplace(AR_Ref) {
 													<!--end::Price=-->
 													<!--begin::Rating-->
 													<td class="text-end pe-0">
-														<span class="fw-bolder text-dark">${product.price}</span>
+														<span class="fw-bolder text-dark">${product.prix_achat}</span>
 													</td>
 													<!--end::Rating-->
 													<!--begin::Status=-->
@@ -204,28 +204,18 @@ function removeAndreplace(AR_Ref) {
 													<!--end::Status=-->
 													<!--begin::Action=-->
 													<td class="text-end">
-														<a href="#" class="btn btn-sm btn-light btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
-														<!--begin::Svg Icon | path: icons/duotune/arrows/arr072.svg-->
-														<span class="svg-icon svg-icon-5 m-0">
-															<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-																<path d="M11.4343 12.7344L7.25 8.55005C6.83579 8.13583 6.16421 8.13584 5.75 8.55005C5.33579 8.96426 5.33579 9.63583 5.75 10.05L11.2929 15.5929C11.6834 15.9835 12.3166 15.9835 12.7071 15.5929L18.25 10.05C18.6642 9.63584 18.6642 8.96426 18.25 8.55005C17.8358 8.13584 17.1642 8.13584 16.75 8.55005L12.5657 12.7344C12.2533 13.0468 11.7467 13.0468 11.4343 12.7344Z" fill="currentColor" />
-															</svg>
-														</span>
-														<!--end::Svg Icon--></a>
-														<!--begin::Menu-->
-														<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px py-4" data-kt-menu="true">
-															<!--begin::Menu item-->
-															<div class="menu-item px-3">
-																<a href="/api/edit/${product.ref}" class="menu-link px-3" data-kt-ecommerce-product-filter="delete_row">Edit</a>
-															</div>
-															<!--end::Menu item-->
-															<!--begin::Menu item-->
-															<div class="menu-item px-3">
-																<a href="#" class="menu-link px-3" data-kt-ecommerce-product-filter="delete_row">Delete</a>
-															</div>
-															<!--end::Menu item-->
-														</div>
-														<!--end::Menu-->
+														<!--begin::Update-->
+														<a href="/product_details/${product.ref}" class="btn btn-icon btn-active-light-primary w-30px h-30px" data-kt-permissions-table-filter="delete_row">
+															<!--begin::Svg Icon | path: icons/duotune/general/gen027.svg-->
+															<span class="svg-icon svg-icon-3">
+																<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+																	<path d="M17.5 11H6.5C4 11 2 9 2 6.5C2 4 4 2 6.5 2H17.5C20 2 22 4 22 6.5C22 9 20 11 17.5 11ZM15 6.5C15 7.9 16.1 9 17.5 9C18.9 9 20 7.9 20 6.5C20 5.1 18.9 4 17.5 4C16.1 4 15 5.1 15 6.5Z" fill="currentColor" />
+																	<path opacity="0.3" d="M17.5 22H6.5C4 22 2 20 2 17.5C2 15 4 13 6.5 13H17.5C20 13 22 15 22 17.5C22 20 20 22 17.5 22ZM4 17.5C4 18.9 5.1 20 6.5 20C7.9 20 9 18.9 9 17.5C9 16.1 7.9 15 6.5 15C5.1 15 4 16.1 4 17.5Z" fill="currentColor" />
+																</svg>
+															</span>
+															<!--end::Svg Icon-->
+														</a>
+														<!--end::Delete-->
 													</td>
 													<!--end::Action=-->
 												</tr>

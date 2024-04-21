@@ -171,6 +171,16 @@
                                         </a>
                                     </div>
                                 </div>
+								<div class="menu-sub menu-sub-accordion menu-active-bg">
+                                    <div class="menu-item">
+                                        <a class="menu-link active" href=""> 
+                                            <span class="menu-bullet">
+                                                <span class="bullet bullet-dot"></span>
+                                            </span>
+                                            <span class="menu-title">Produits</span>
+                                        </a>
+                                    </div>
+                                </div>
                                 {% endif %}
                             </div>
                         </div>
@@ -641,66 +651,7 @@
 										</div>
 										<!--end::Status-->
 										<!--begin::Category & tags-->
-										<div class="card card-flush py-4">
-											<!--begin::Card header-->
-											<div class="card-header">
-												<!--begin::Card title-->
-												<div class="card-title">
-													<h2>Product Details</h2>
-												</div>
-												<!--end::Card title-->
-											</div>
-											<!--end::Card header-->
-											<!--begin::Card body-->
-											<div class="card-body pt-0">
-												<!--begin::Input group-->
-												<!--begin::Label-->
-												<label class="form-label">Categories</label>
-												<!--end::Label-->
-												<!--begin::Select2-->
-												<select class="form-select mb-2" data-control="select2" data-placeholder="Select an option" data-allow-clear="true" multiple="multiple">
-													<option></option>
-													<option value="Computers">Computers</option>
-													<option value="Watches">Watches</option>
-													<option value="Headphones">Headphones</option>
-													<option value="Footwear">Footwear</option>
-													<option value="Cameras">Cameras</option>
-													<option value="Shirts">Shirts</option>
-													<option value="Household">Household</option>
-													<option value="Handbags">Handbags</option>
-													<option value="Wines">Wines</option>
-													<option value="Sandals">Sandals</option>
-												</select>
-												<!--end::Select2-->
-												<!--begin::Description-->
-												<div class="text-muted fs-7 mb-7">Add product to a category.</div>
-												<!--end::Description-->
-												<!--end::Input group-->
-												<!--begin::Button-->
-												<a href="../../demo1/dist/apps/ecommerce/catalog/add-category.html" class="btn btn-light-primary btn-sm mb-10">
-												<!--begin::Svg Icon | path: icons/duotune/arrows/arr087.svg-->
-												<span class="svg-icon svg-icon-2">
-													<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-														<rect opacity="0.5" x="11" y="18" width="12" height="2" rx="1" transform="rotate(-90 11 18)" fill="currentColor" />
-														<rect x="6" y="11" width="12" height="2" rx="1" fill="currentColor" />
-													</svg>
-												</span>
-												<!--end::Svg Icon-->Create new category</a>
-												<!--end::Button-->
-												<!--begin::Input group-->
-												<!--begin::Label-->
-												<label class="form-label d-block">Tags</label>
-												<!--end::Label-->
-												<!--begin::Input-->
-												<input id="kt_ecommerce_add_product_tags" name="kt_ecommerce_add_product_tags" class="form-control mb-2" value="new, trending, sale" />
-												<!--end::Input-->
-												<!--begin::Description-->
-												<div class="text-muted fs-7">Add tags to a product.</div>
-												<!--end::Description-->
-												<!--end::Input group-->
-											</div>
-											<!--end::Card body-->
-										</div>
+										
 										<!--end::Category & tags-->
 										<!--begin::Card widget 6-->
 										<div class="card card-flush">
@@ -810,7 +761,7 @@
 														<!--begin::Card header-->
 														<div class="card-header">
 															<div class="card-title">
-																<h2>General</h2>
+																<h2>Information du produit</h2>
 															</div>
 														</div>
 														<!--end::Card header-->
@@ -818,78 +769,36 @@
 														<div class="card-body pt-0">
 															<!--begin::Input group-->
 															<div class="mb-10 fv-row">
+																<div class="mb-10 fv-row">
+																	<!--begin::Label-->
+																	<label class="required form-label">Réference</label>
+																	<!--end::Label-->
+																	<!--begin::Input-->
+																	<input type="text" name="product_name" class="form-control mb-2" placeholder="Product name" value="{{product.ref}}" readonly />
+																	<!--end::Input-->
+																</div>
 																<!--begin::Label-->
-																<label class="required form-label">Product Name</label>
+																<label class="required form-label">Nom du Produit</label>
 																<!--end::Label-->
 																<!--begin::Input-->
-																<input type="text" name="product_name" class="form-control mb-2" placeholder="Product name" value="Sample product" />
+																<input type="text" name="product_name" class="form-control mb-2" placeholder="Product name" value="{{product.name}}" readonly />
 																<!--end::Input-->
-																<!--begin::Description-->
-																<div class="text-muted fs-7">A product name is required and recommended to be unique.</div>
-																<!--end::Description-->
 															</div>
-															<!--end::Input group-->
-															<!--begin::Input group-->
-															<div>
-																<!--begin::Label-->
-																<label class="form-label">Description</label>
-																<!--end::Label-->
-																<!--begin::Editor-->
-																<div id="kt_ecommerce_add_product_description" name="kt_ecommerce_add_product_description" class="min-h-200px mb-2"></div>
-																<!--end::Editor-->
-																<!--begin::Description-->
-																<div class="text-muted fs-7">Set a description to the product for better visibility.</div>
-																<!--end::Description-->
-															</div>
+															
 															<!--end::Input group-->
 														</div>
 														<!--end::Card header-->
 													</div>
 													<!--end::General options-->
 													<!--begin::Media-->
-													<div class="card card-flush py-4">
-														<!--begin::Card header-->
-														<div class="card-header">
-															<div class="card-title">
-																<h2>Media</h2>
-															</div>
-														</div>
-														<!--end::Card header-->
-														<!--begin::Card body-->
-														<div class="card-body pt-0">
-															<!--begin::Input group-->
-															<div class="fv-row mb-2">
-																<!--begin::Dropzone-->
-																<div class="dropzone" id="kt_ecommerce_add_product_media">
-																	<!--begin::Message-->
-																	<div class="dz-message needsclick">
-																		<!--begin::Icon-->
-																		<i class="bi bi-file-earmark-arrow-up text-primary fs-3x"></i>
-																		<!--end::Icon-->
-																		<!--begin::Info-->
-																		<div class="ms-4">
-																			<h3 class="fs-5 fw-bolder text-gray-900 mb-1">Drop files here or click to upload.</h3>
-																			<span class="fs-7 fw-bold text-gray-400">Upload up to 10 files</span>
-																		</div>
-																		<!--end::Info-->
-																	</div>
-																</div>
-																<!--end::Dropzone-->
-															</div>
-															<!--end::Input group-->
-															<!--begin::Description-->
-															<div class="text-muted fs-7">Set the product media gallery.</div>
-															<!--end::Description-->
-														</div>
-														<!--end::Card header-->
-													</div>
+													
 													<!--end::Media-->
 													<!--begin::Pricing-->
 													<div class="card card-flush py-4">
 														<!--begin::Card header-->
 														<div class="card-header">
 															<div class="card-title">
-																<h2>Pricing</h2>
+																<h2>Tarif</h2>
 															</div>
 														</div>
 														<!--end::Card header-->
@@ -898,14 +807,19 @@
 															<!--begin::Input group-->
 															<div class="mb-10 fv-row">
 																<!--begin::Label-->
-																<label class="required form-label">Base Price</label>
+																<label class="required form-label">Prix de vente</label>
 																<!--end::Label-->
 																<!--begin::Input-->
-																<input type="text" name="price" class="form-control mb-2" placeholder="Product price" value="199.99" />
+																<input type="text" name="price" class="form-control mb-2" placeholder="Product price" value="{{product.price}}" readonly/>
 																<!--end::Input-->
-																<!--begin::Description-->
-																<div class="text-muted fs-7">Set the product price.</div>
-																<!--end::Description-->
+															</div>
+															<div class="mb-10 fv-row">
+																<!--begin::Label-->
+																<label class="required form-label">Prix d'Achat</label>
+																<!--end::Label-->
+																<!--begin::Input-->
+																<input type="text" name="price" class="form-control mb-2" placeholder="Product price" value="{{product.prix_achat}}" readonly />
+																<!--end::Input-->
 															</div>
 															<!--end::Input group-->
 															<!--begin::Input group-->
@@ -977,7 +891,7 @@
 															<!--begin::Input group-->
 															<div class="mb-10 fv-row" id="kt_ecommerce_add_product_discount_percentage">
 																<!--begin::Label-->
-																<label class="form-label">Set Discount Percentage</label>
+																<label class="form-label">Promotion</label>
 																<!--end::Label-->
 																<!--begin::Slider-->
 																<div class="d-flex flex-column text-center mb-5">
