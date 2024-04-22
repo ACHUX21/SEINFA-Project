@@ -581,21 +581,21 @@
                                                             <img src="static/assets/media/stock/600x400/img-26.jpg" class="" alt="" />
                                                         </div> -->
                                                         <div class="d-flex justify-content-start flex-column">
-                                                            <a href="#" class="text-dark fw-bolder text-hover-primary mb-1 fs-6">{{ "- " + bl.ct_intitule }}</a>
+                                                            <a href="/api/voirbl/{{ bl.do_piece }}" class="text-dark fw-bolder text-hover-primary mb-1 fs-6">{{ "- " + bl.ct_intitule }}</a>
                                                             <!-- <span class="text-muted fw-bold text-muted d-block fs-7">HTML, JS, ReactJS</span> -->
                                                         </div>
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <a href="#" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6">{{ bl.do_date }} DH</a>
+                                                    <a href="/api/voirbl/{{ bl.do_piece }}" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6">{{ bl.do_date }} DH</a>
                                                     <!-- <span class="text-muted fw-bold text-muted d-block fs-7">Paid</span> -->
                                                 </td>
                                                 <td>
-                                                    <a href="#" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6">{{ bl.do_piece }}</a>
+                                                    <a href="/api/voirbl/{{ bl.do_piece }}" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6">{{ bl.do_piece }}</a>
                                                     <!-- <span class="text-muted fw-bold text-muted d-block fs-7">Rejected</span> -->
                                                 </td>
                                                 <td>
-                                                    <a href="#" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6">{{ bl.do_totalttc }} DH</a>
+                                                    <a href="/api/voirbl/{{ bl.do_piece }}" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6">{{ bl.do_totalttc }} DH</a>
                                                     <!-- <span class="text-muted fw-bold text-muted d-block fs-7">Insurance</span> -->
                                                 </td>
                                                 <td>
@@ -612,7 +612,7 @@
                                                     {% endif %}
                                                 </td>
                                                 <td class="text-end">
-                                                    <a href="/api/voirdevis/" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1">
+                                                    <a href="/api/voirbl/{{ bl.do_piece }}" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1">
                                                         <!--begin::Svg Icon | path: icons/duotune/general/gen019.svg-->
                                                         <span class="svg-icon svg-icon-3">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -622,7 +622,7 @@
                                                         </span>
                                                         <!--end::Svg Icon-->
                                                     </a>
-                                                    <a href="/voirdevis#" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1">
+                                                    <a href="/api/voirbl/{{ bl.do_piece }}" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1">
                                                         <!--begin::Svg Icon | path: icons/duotune/art/art005.svg-->
                                                         <span class="svg-icon svg-icon-3">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -632,7 +632,7 @@
                                                         </span>
                                                         <!--end::Svg Icon-->
                                                     </a>
-                                                    <a href="/voirdevis#" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm">
+                                                    <a href="/api/voirbl/{{ bl.do_piece }}" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm">
                                                         <!--begin::Svg Icon | path: icons/duotune/general/gen027.svg-->
                                                         <span class="svg-icon svg-icon-3">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">

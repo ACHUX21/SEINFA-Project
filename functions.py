@@ -183,15 +183,25 @@ def get_all_devis_by_co_no(co_no, offset=0, limit=200000):
         rounded_devis.append(devis)
     return rounded_devis
 
-def get_all_bl_by_co_no(co_no):
-    query = """
-    SELECT do_piece, FORMAT(do_date, 'yyyy-MM-dd') as short_date, ct_intitule, do_ref, do_totalht, do_totalttc, do_statut
-    FROM f_docentete
-    INNER JOIN f_comptet ON f_comptet.ct_num = f_docentete.do_tiers
-    WHERE do_type = 3 AND f_docentete.co_no = ?
-    ORDER BY do_date DESC
-    """
-    params = (co_no)
+def get_all_bl_by_co_no(co_no=None):
+    if co_no is not None:
+        query = """
+        SELECT do_piece, FORMAT(do_date, 'yyyy-MM-dd') as short_date, ct_intitule, do_ref, do_totalht, do_totalttc, do_statut
+        FROM f_docentete
+        INNER JOIN f_comptet ON f_comptet.ct_num = f_docentete.do_tiers
+        WHERE do_type = 3 AND f_docentete.co_no = ?
+        ORDER BY do_date DESC
+        """
+        params = (co_no)
+    elif co_no is None:
+        query = """
+        SELECT do_piece, FORMAT(do_date, 'yyyy-MM-dd') as short_date, ct_intitule, do_ref, do_totalht, do_totalttc, do_statut
+        FROM f_docentete
+        INNER JOIN f_comptet ON f_comptet.ct_num = f_docentete.do_tiers
+        WHERE do_type = 3
+        ORDER BY do_date DESC
+        """
+        params = ()
     data = fetch_all(query, params)
     rounded_devis = []
     for row in data:
@@ -207,6 +217,52 @@ def get_all_bl_by_co_no(co_no):
         rounded_devis.append(devis)
     return rounded_devis
 
+def get_detail_by_bl(bl_id):
+    query = """
+    SELECT F_COMPTET.CT_Num, F_COMPTET.CT_Intitule, F_COMPTET.CT_Telephone, F_COMPTET.CT_Adresse,
+           F_DOCLIGNE.DO_Piece, F_DOCLIGNE.DO_Ref, F_DOCLIGNE.DO_Date, F_DOCLIGNE.AR_Ref,
+           F_DOCLIGNE.DL_Design, F_DOCLIGNE.DL_Qte, F_DOCLIGNE.DL_PUTTC, F_DOCLIGNE.DL_MontantHT,
+           F_DOCLIGNE.DL_MontantTTC, F_DOCENTETE.DO_Statut, F_DOCENTETE.DO_TotalHT, F_DOCENTETE.DO_TotalTTC
+    FROM F_DOCLIGNE
+    INNER JOIN F_COMPTET ON F_COMPTET.CT_Num = F_DOCLIGNE.CT_Num
+    INNER JOIN F_DOCENTETE ON F_DOCENTETE.do_piece = F_DOCLIGNE.DO_Piece
+    WHERE F_DOCLIGNE.DO_Type = 3 AND F_DOCLIGNE.DO_Piece = ?
+    """
+    data = fetch_all(query, (bl_id,))
+
+    if not data:
+        return []
+
+    products = [
+        {
+            'AR_Ref': row[7],
+            'DL_Design': row[8],
+            'DL_Qte': float(row[9]),
+            'DL_PUTTC': float(row[10]),
+            'DL_MontantHT': float(row[11]),
+            'DL_MontantTTC': float(row[12])
+        } for row in data
+    ]
+
+    row = data[0]
+    details = {
+        'CT_Num': row[0],
+        'CT_Intitule': row[1],
+        'CT_Telephone': row[2],
+        'CT_Adresse': row[3],
+        'DO_Piece': row[4],
+        'DO_Ref': row[5],
+        'DO_Date': datetime.datetime.strftime(row[6], '%Y-%m-%d'),
+        'DO_Statut': int(row[13]),
+        'DO_TotalHT': float(row[14]),
+        'DO_TotalTTC': float(row[15]),
+        'products': products
+    }
+
+    return [details]
+
+
+
 
 def get_devis_by_id(devis_id):
     query = """
@@ -217,7 +273,7 @@ def get_devis_by_id(devis_id):
     FROM F_DOCLIGNE
     INNER JOIN F_COMPTET ON F_COMPTET.CT_Num = F_DOCLIGNE.CT_Num
     INNER JOIN F_DOCENTETE ON F_DOCENTETE.do_piece = F_DOCLIGNE.DO_Piece
-    WHERE F_DOCLIGNE.DO_Type = 0 AND F_DOCLIGNE.DO_Piece = ?
+    WHERE F_DOCLIGNE.DO_Type = 3 AND F_DOCLIGNE.DO_Piece = ?
     """
     data = fetch_all(query, (devis_id,))
 

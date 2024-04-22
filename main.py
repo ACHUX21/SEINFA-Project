@@ -22,7 +22,8 @@ from functions import (
     add_user,
     get_all_depots,get_picture,
     get_product_by_ref,
-    get_all_bl_by_co_no
+    get_all_bl_by_co_no,
+    get_detail_by_bl
 )
 from mysqlDB import (
     select_tmpCart,
@@ -134,7 +135,10 @@ def voir_bl():
     payload = verifyjwt(token)
     if not payload:
         return redirect(url_for('logout'))
-    bls = get_all_bl_by_co_no(payload['co_no'])
+    if payload['role'] == 'Administrateur':
+        bls = get_all_bl_by_co_no()
+    else:
+        bls = get_all_bl_by_co_no(payload['co_no'])
     return render_template('voir_bl.html', bls=bls, username=payload['username'], profile_pic=get_picture(payload['username']),role=payload['role'])
 
 # Commandes Route
@@ -504,6 +508,20 @@ def draftDevis():
     return render_template('voir_draft.html', draft=drafts, username=payload['username'], profile_pic=get_picture(payload['username']),role=payload['role'])
 
 # API Routes
+
+# API voirbl Route
+@app.route('/api/voirbl/<string:devis>', methods=['GET'])
+def voirBlNum(devis):
+    token = request.cookies.get('token')
+    if not token:
+        return redirect(url_for('logout'))
+    payload = verifyjwt(token)
+    if not payload:
+        return redirect(url_for('index'))
+    devis = get_detail_by_bl(devis)
+    if not devis or not devis[0] or not devis[0]['products']:
+        devis = [{'CT_Num': '', 'CT_Intitule': '', 'CT_Telephone': '', 'CT_Adresse': '', 'DO_Piece': '', 'DO_Ref': '', 'DO_Date': '', 'DO_Statut': 0, 'DO_TotalHT': 0, 'DO_TotalTTC': 0, 'products': [{'AR_Ref': '', 'DL_Design': '', 'DL_Qte': 0, 'DL_PUTTC': 0, 'DL_MontantHT': 0, 'DL_MontantTTC': 0}]} ]
+    return render_template('detail_bl.html',entete=devis[0], lignes=devis[0]['products'], username=payload['username'], profile_pic=get_picture(payload['username']),role=payload['role'])
 
 # API Devis Draft Validation Route
 @app.route('/api/validerdraft/<string:devis>', methods=['GET'])
