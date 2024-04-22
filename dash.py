@@ -87,7 +87,7 @@ def get_products_en_promotions():
     try:
         cursor = conn.cursor()
         query = f"""
-        SELECT * FROM promotion
+        SELECT promotion.*,product_data.image_picture FROM promotion left join product_data on promotion.ar_ref = product_data.ar_ref
         """
         cursor.execute(query)
         data = cursor.fetchall()
@@ -102,6 +102,7 @@ def get_products_en_promotions():
                 'ref': row[0],
                 'en_promotion': row[4],
                 'prix_en_promotion': round(row[5], 2),
+                'img': row[6]
             }
             products.append(product)
 

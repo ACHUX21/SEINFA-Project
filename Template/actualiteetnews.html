@@ -609,7 +609,9 @@
                             <div class="promo-grid-container">
                                 {% for promotion in products_en_promotions %}
                                 <div class="promo-grid-card">
-                                    {% if promotion.category in ["GOBLET", "EMBALLAGE", "ELASTIQUE", "TAPIS", "PRODUITSFINIS"] %}
+                                    {% if promotion.img %}
+                                    <img src="{{ promotion.img }}" alt="{{ promotion.category }}" class="promo-grid-image">
+                                    {% elif promotion.category in ["GOBLET", "EMBALLAGE", "ELASTIQUE", "TAPIS", "PRODUITSFINIS"] %}
                                     <img src="{{ 'static/images_seinfa_app/' + promotion.category | lower + '.jpg' }}" alt="{{ promotion.category }}" class="promo-grid-image">
                                     {% else %}
                                     <img src="static/images_seinfa_app/noimageavailable.jpg" alt="{{ promotion.category }}" class="promo-grid-image">
