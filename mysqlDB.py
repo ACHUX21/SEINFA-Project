@@ -128,12 +128,12 @@ def last_dev():
 
 
 
-def add_devis_draft(client, date, ref, devis, userid, client_name):
+def add_devis_draft(client, date, ref, devis, userid, client_name, de_no):
     query = """
-    INSERT INTO devis_draft (client, date, ref, devis, userid, client_name)
-    VALUES (%s, %s, %s, %s, %s, %s)
+    INSERT INTO devis_draft (client, date, ref, devis, userid, client_name, de_no)
+    VALUES (%s, %s, %s, %s, %s, %s, %s)
     """
-    values = (client, date, ref, devis, userid, client_name)
+    values = (client, date, ref, devis, userid, client_name, de_no)
     try:
         with managed_cursor() as cursor:
             cursor.execute(query, values)
@@ -170,7 +170,8 @@ def get_drafts(id="all", devis="all"):
         devis_draft.`devis`,
         devis_draft.`userid`,
         devis_draft.`draft_confirm`,
-        SUM(devis_draft_details.total) as total
+        SUM(devis_draft_details.total) as total,
+        devis_draft.`de_no`
     FROM devis_draft 
     INNER JOIN devis_draft_details 
     ON devis_draft_details.devis = devis_draft.devis
@@ -204,7 +205,8 @@ def get_drafts(id="all", devis="all"):
                 "devis": i[5],
                 "userid": i[6],
                 "status": i[7],
-                "total": float(i[8]) if i[8] is not None else 0.00
+                "total": float(i[8]) if i[8] is not None else 0.00,
+                "de_no": i[9]
             } for i in data
         ]
         return drafts
@@ -224,7 +226,8 @@ def get_draft_devis(devis):
         devis_draft.`devis`,
         devis_draft.`userid`,
         devis_draft.`draft_confirm`,
-        SUM(devis_draft_details.total) as total
+        SUM(devis_draft_details.total) as total,
+        devis_draft.`de_no`
     FROM devis_draft
     INNER JOIN devis_draft_details ON devis_draft_details.devis = devis_draft.devis
     WHERE devis_draft.devis = %s
@@ -245,7 +248,8 @@ def get_draft_devis(devis):
                 "devis": i[5],
                 "userid": i[6],
                 "status": i[7],
-                "total": float(i[8]) if i[8] is not None else 0.00
+                "total": float(i[8]) if i[8] is not None else 0.00,
+                "de_no": i[9]
             } for i in data
         ]
         return drafts
@@ -269,8 +273,8 @@ def get_drafts_details(devis):
     query = """
     SELECT 
         id, client, devis, ar_ref, productDescription, quantity,
-        price, dateF, ref, date, total, userid
-    FROM devis_draft_details 
+        price, dateF, ref, date, total, userid, de_no
+    FROM devis_draft_details
     WHERE devis = %s
     """
     try:
@@ -286,12 +290,13 @@ def get_drafts_details(devis):
                 "ar_ref": row[3],
                 "productDescription": row[4],
                 "quantity": row[5],
-                "price": row[6],
+                "price": float(row[6]),
                 "dateF": row[7],
                 "ref": row[8],
                 "date": row[9],
-                "total": row[10],
-                "userid": row[11]
+                "total": float(row[10]),
+                "userid": row[11],
+                "de_no": row[12]
             } for row in data
         ]
         return drafts_details
@@ -317,14 +322,14 @@ def clean_drafts(devis):
 
 def add_devis_draft_details_batch(details):
     query = """
-    INSERT INTO devis_draft_details (client, ar_ref, productDescription, quantity, price, dateF, ref, date, total, devis, userid)
-    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+    INSERT INTO devis_draft_details (client, ar_ref, productDescription, quantity, price, dateF, ref, date, total, devis, userid, de_no)
+    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
     """
     values = []
     for detail in details:
         values.append((detail['client'], detail['ar_ref'], detail['productDescription'], detail['quantity'],
                        detail['price'], detail['dateF'], detail['ref'], detail['date'], detail['total'],
-                       detail['devis'], detail['userid']))
+                       detail['devis'], detail['userid'], detail['de_no']))
 
     try:
         with managed_cursor() as cursor:

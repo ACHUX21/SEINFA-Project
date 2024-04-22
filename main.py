@@ -203,10 +203,10 @@ def add_users():
     # if not name or not password or not role or not user_mail or not image:
     #     return render_template('users.html', username=payload['username'], profile_pic=get_picture(payload['username']),role=payload['role'], users=Get_All_Users(), error='S\'il vous plaît remplir tous les champs')
     f = add_user(name, password,role, user_mail,statut)
-    print(f)
+    # print(f)
     if not f:
         return render_template('users.html', username=payload['username'], profile_pic=get_picture(payload['username']),role=payload['role'], users=Get_All_Users(), error='Erreur lors de l\'enregistrement de l\'utilisateur')
-    print(name,password,user_mail)
+    # print(name,password,user_mail)
     return redirect(url_for('users'))
 
 @app.route('/upload_pic', methods=['POST'])
@@ -214,8 +214,8 @@ def upload_pic():
     data = request.get_json()
     username = data['username']
     image = data['image']
-    print(username, image)
-    time.sleep(2)
+    # print(username, image)
+    time.sleep(1)
 
     cursor = conn.cursor()
     query = "UPDATE users SET image_base64 = ? WHERE name = ?"
@@ -328,6 +328,7 @@ def submit():
     payload = verifyjwt(token)
     if not payload:
         return redirect(url_for('index'))
+    de_no = request.form['category']
 
     client = request.form['client']
     date = request.form['date']
@@ -338,7 +339,7 @@ def submit():
 
     client_id = Get_CT_NUM(client)  # Get client ID based on name
     var_last_devis = last_dev()
-    f = add_devis_draft(client_id, date, ref, var_last_devis, payload['id'], request.form['client'])
+    f = add_devis_draft(client_id, date, ref, var_last_devis, payload['id'], request.form['client'], de_no)
     if not f:
         return render_template("commande.html", last_dev=last_dev(), products=fetch_products(20), categories=get_categories(), tmpCart=select_tmpCart(payload['id']), error='Erreur lors de l\'enregistrement de la commande')
 
@@ -362,7 +363,8 @@ def submit():
             'date': date,
             'total': panier['qte'] * panier['price'],
             'devis': var_last_devis,
-            'userid': payload['id']
+            'userid': payload['id'],
+            'de_no': de_no
         }
         details.append(detail)
 
@@ -371,7 +373,7 @@ def submit():
         return render_template("commande.html", last_dev=last_dev(), products=fetch_products(20), categories=get_categories(), tmpCart=select_tmpCart(payload['id']), error='Erreur lors de l\'enregistrement de la commande')
 
     clean_tmpCart(payload['id'])
-    return render_template("commande.html", last_dev=last_dev(), products=fetch_products(20), categories=get_categories(), tmpCart=select_tmpCart(payload['id']), success='Commande enregistrée avec succès', total=get_TOTAL(payload['id']))
+    return render_template("commande.html", last_dev=last_dev(), products=fetch_products(20), categories=get_categories(), tmpCart=select_tmpCart(payload['id']), success='Commande enregistrée avec succès', total=get_TOTAL(payload['id']), role=payload['role'], username=payload['username'], profile_pic=get_picture(payload['username']))
 
 
 # @app.route('/submit', methods=['POST'])
@@ -509,18 +511,20 @@ def validerDraftNum(devis):
     client = data[0]['client']
     date = data[0]['date']
     ref = data[0]['ref']
-    print(client, date, ref)
+    de_no = data[0]['de_no']
+    print(client, date, ref, de_no)
+    # print(client, date, ref)
     if not client or not date or not ref:
         return render_template('detail_devis_draft.html', error='S\'il vous plaît remplir tous les champs', username=payload['username'], profile_pic=get_picture(payload['username']),role=payload['role'], data=[], d_data=[])
     var_last_devis = last_dev_mssql()
     userid = int(payload['id'])
     dateF = "1753-01-01"
     co_no = payload['co_no']
-    f = insert_ToEntete(client, date, ref, userid, dateF, var_last_devis, co_no)
+    f = insert_ToEntete(client, date, ref, userid, dateF, var_last_devis, co_no, de_no)
     if not f:
         return redirect(url_for('draftDevis'))
     for i in data:
-        f = insert_ToLigne(client, var_last_devis, i['ar_ref'], i['productDescription'], float(i['quantity']), float(i['price']), dateF, ref, date, float(i['quantity']) * float(i['price']), co_no)
+        f = insert_ToLigne(client, var_last_devis, i['ar_ref'], i['productDescription'], float(i['quantity']), float(i['price']), dateF, ref, date, float(i['quantity']) * float(i['price']), co_no, de_no)
         if not f:
             return redirect(url_for('draftDevis'))
     f = insert_ToDocRegl(var_last_devis, date)
@@ -556,6 +560,7 @@ def voirDraftNum(devis):
         d_data = get_drafts(payload['id'], devis)
     # print(d_data)
     if not data:
+        print('Devis introuvable')
         return render_template('detail_devis_draft.html', error='Devis introuvable', username=payload['username'], profile_pic=get_picture(payload['username']),role=payload['role'], data=[])
     return render_template('detail_devis_draft.html',d_data=d_data[0], data=data, username=payload['username'], profile_pic=get_picture(payload['username']),role=payload['role'])
 

@@ -847,10 +847,10 @@
 																		<td class="text-end">{{ produit.quantity }}</td>
 																		<!--end::Quantity-->
 																		<!--begin::Price-->
-																		<td class="text-end">{{ produit.price }}</td>
+																		<td class="text-end">{{ "%.2f" % (produit.price) }}</td>
 																		<!--end::Price-->
 																		<!--begin::Total-->
-																		<td class="text-end">{{ produit.total }}</td>
+																		<td class="text-end">{{ "%.2f" % (produit.total) }}</td>
 																		<!--end::Total-->
 																	</tr>
                                                                     {% endfor %}
@@ -858,14 +858,14 @@
 																	<!--begin::Subtotal-->
 																	<tr>
 																		<td colspan="4" class="text-end">Total HT</td>
-																		<td class="text-end">{{ d_data.total }}</td>
+																		<td class="text-end">{{ "%.2f" % (d_data.total) }}</td>
 																	</tr>
 																	<!--end::VAT-->
 																	<!--begin::Shipping-->
 																	<tr>
 																		<td colspan="4" class="text-end">Montant TTC</td>
                                                                         {% if d_data.total %}
-																		    <td class="text-end"><b>{{ d_data.total * 1.2 }}</b></td>
+                                                                            <td class="text-end"><b>{{ "%.2f" % (d_data.total * 1.2) }}</b></td>
                                                                         {% else %}
                                                                             <td class="text-end"><b>0</b></td>
                                                                         {% endif %}

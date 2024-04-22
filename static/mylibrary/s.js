@@ -163,13 +163,13 @@ function removeAndreplace(AR_Ref) {
 													<td>
 														<div class="d-flex align-items-center">
 															<!--begin::Thumbnail-->
-															<a href="../../demo1/dist/apps/ecommerce/catalog/edit-product.html" class="symbol symbol-50px">
+															<a href="/product_details/${product.ref.replace('/', '-')}" class="symbol symbol-50px">
 																<span class="symbol-label" style="background-image:url(${product.img})"></span>
 															</a>
 															<!--end::Thumbnail-->
 															<div class="ms-5">
 																<!--begin::Title-->
-																<a href="../../demo1/dist/apps/ecommerce/catalog/edit-product.html" class="text-gray-800 text-hover-primary fs-5 fw-bolder" data-kt-ecommerce-product-filter="product_name">${product.name}</a>
+																<a href="/product_details/${product.ref.replace('/', '-')}" class="text-gray-800 text-hover-primary fs-5 fw-bolder" data-kt-ecommerce-product-filter="product_name">${product.name}</a>
 																<!--end::Title-->
 															</div>
 														</div>

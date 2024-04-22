@@ -53,7 +53,7 @@ def last_DR_No():
     return None  # Handle the case when no record is found
 
 def Get_CT_NUM(CT_INTITULE):
-    query = "SELECT CT_NUM FROM F_COMPTET WHERE CT_INTITULE = ?"
+    query = "SELECT CT_NUM FROM F_COMPTET WHERE CT_INTITULE =  ? and ct_type = 0"
     data = fetch_first(query, (CT_INTITULE,))
     if data:
         return data[0]
@@ -343,12 +343,14 @@ def get_all_depots():
     return [{'DE_No': row[0], 'DE_Intitule': row[1]} for row in data]
 
 # Updated function using the new execute_query
-def insert_ToEntete(client, date, ref, userid, dateF, devis, co_no):
+def insert_ToEntete(client, date, ref, userid, dateF, devis, co_no, de_no):
+    print(de_no)
     query = "INSERT INTO dbo.F_DOCENTETE(DO_Domaine,DO_Type,DO_Piece,DO_Date,DO_Ref,DO_Tiers,CO_No,cbCO_No,DO_Period,DO_Devise,DO_Cours,DE_No,cbDE_No,LI_No,cbLI_No,CT_NumPayeur,DO_Expedit,DO_NbFacture,DO_BLFact,DO_TxEscompte,DO_Reliquat,DO_Imprim,CA_Num,DO_Coord01,DO_Coord02,DO_Coord03,DO_Coord04,DO_Souche,DO_DateLivr,DO_Condition,DO_Tarif,DO_Colisage,DO_TypeColis,DO_Transaction,DO_Langue,DO_Ecart,DO_Regime,N_CatCompta,DO_Ventile,AB_No,DO_DebutAbo,DO_FinAbo,DO_DebutPeriod,DO_FinPeriod,CG_Num,DO_Statut,DO_Heure,CA_No,CO_NoCaissier,DO_Transfere,DO_Cloture,DO_NoWeb,DO_Attente,DO_Provenance,CA_NumIFRS,MR_No,DO_TypeFrais,DO_ValFrais,DO_TypeLigneFrais,DO_TypeFranco,DO_ValFranco,DO_TypeLigneFranco,DO_Taxe1,DO_TypeTaux1,DO_TypeTaxe1,DO_Taxe2,DO_TypeTaux2,DO_TypeTaxe2,DO_Taxe3,DO_TypeTaux3,DO_TypeTaxe3,DO_MajCpta,DO_Motif,DO_Contact,DO_FactureElec,DO_TypeTransac,DO_DateLivrRealisee,DO_DateExpedition,DO_FactureFrs,DO_PieceOrig,DO_EStatut,DO_DemandeRegul,ET_No,cbET_No,DO_Valide,DO_Coffre,DO_TotalHT,DO_StatutBAP,DO_Escompte,DO_DocType,DO_TypeCalcul,DO_TotalHTNet,DO_TotalTTC,DO_NetAPayer,DO_MontantRegle,DO_AdressePaiement,DO_PaiementLigne,DO_MotifDevis,cbProt,cbCreateur,cbModification,cbReplication,cbFlag,cbCreation,cbHashVersion,cbHashDate,cbHashOrder,DO_Conversion,usercreatedevis) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
     params = (0,0,devis,date,ref,client,co_no,co_no,2,0,0.000000,de_no,1,14,14,client,1,1,0,5.000000,0,"","","","","","",0,dateF,1,1,1,1,11,0,0.000000,21,2,0,0,dateF,dateF,dateF,dateF,"34210000",0,"000012617",0,0,0,0,"",0,0,"",0,0,15.000000,0,0,2500.000000,0,0.000000,0,0,0.00000,0,0,0.000000,0,0,0,"","",0,0,dateF,dateF,"","",0,0,0,"",0,0,0.000000,0,1,0,0,0.000000,0.000000,0.000000,0.000000,"",0,0,0,"COLU",date,0,0,date,1,"",0,0,userid)
     return execute_query(query, params)
 
-def insert_ToLigne(client, devis, ar_ref, productDescription, quantity, price, dateF, ref, date, total, co_no):
+def insert_ToLigne(client, devis, ar_ref, productDescription, quantity, price, dateF, ref, date, total, co_no, de_no):
+    print(de_no)
     query = "INSERT INTO dbo.F_DOCLIGNE(DO_Domaine,DO_Type,CT_Num,DO_Piece,DL_PieceBC,DL_PieceBL,DO_Date,DL_DateBC,DL_DateBL,DL_Ligne,DO_Ref,DL_TNomencl,DL_TRemPied,DL_TRemExep,AR_Ref,DL_Design,DL_Qte,DL_QteBC,DL_QteBL,DL_PoidsNet,DL_PoidsBrut,DL_Remise01REM_Valeur,DL_Remise01REM_Type,DL_Remise02REM_Valeur,DL_Remise02REM_Type,DL_Remise03REM_Valeur,DL_Remise03REM_Type,DL_PrixUnitaire,DL_PUBC,CO_No,AG_No1,AG_No2,DL_PrixRU,DL_CMUP,DL_MvtStock,DT_No,EU_Enumere,EU_Qte,DL_TTC,DE_No,DL_NoRef,DL_TypePL,DL_PUDevise,DL_PUTTC,DO_DateLivr,CA_Num,DL_Frais,DL_Valorise,AR_RefCompose,DL_NonLivre,AC_RefClient,DL_MontantHT,DL_MontantTTC,DL_FactPoids,DL_Escompte,DL_PiecePL,DL_DatePL,DL_QtePL,DL_NoColis,DL_NoLink,DL_QteRessource,DL_DateAvancement,PF_Num,DL_PieceOFProd,DL_PieceDE,DL_DateDE,DL_QteDE,DL_Operation,DL_NoSousTotal,CA_No,DO_DocType) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
     params = (0,0,client,devis,"","",date,dateF,dateF,1000,ref,0,0,0,ar_ref,productDescription,quantity,0.000000,0.000000,0.000000,0.000000,0.000000,1,0.000000,0,0.000000,0,price,0.000000,co_no,0,0,0.000000,6.000000,0,0,"Unité",quantity,0,de_no,1,0,0.000000,price*1.2,dateF,"",0.000000,1,"",0,"",total,total*1.2,0,0,"",dateF,0.000000,"",0,0,dateF,"",0,"",date,1.000000,"",0,0,0)
     return execute_query(query, params)
