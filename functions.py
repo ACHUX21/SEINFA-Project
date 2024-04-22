@@ -183,6 +183,31 @@ def get_all_devis_by_co_no(co_no, offset=0, limit=200000):
         rounded_devis.append(devis)
     return rounded_devis
 
+def get_all_bl_by_co_no(co_no):
+    query = """
+    SELECT do_piece, FORMAT(do_date, 'yyyy-MM-dd') as short_date, ct_intitule, do_ref, do_totalht, do_totalttc, do_statut
+    FROM f_docentete
+    INNER JOIN f_comptet ON f_comptet.ct_num = f_docentete.do_tiers
+    WHERE do_type = 3 AND f_docentete.co_no = ?
+    ORDER BY do_date DESC
+    """
+    params = (co_no)
+    data = fetch_all(query, params)
+    rounded_devis = []
+    for row in data:
+        devis = {
+            'do_piece': row[0],
+            'do_date': row[1],
+            'ct_intitule': row[2],
+            'do_ref': row[3],
+            'do_totalht': f'{row[4]:,.2f}'.replace(',', ' '),
+            'do_totalttc': f'{row[5]:,.2f}'.replace(',', ' '),
+            'do_statut': row[6]
+        }
+        rounded_devis.append(devis)
+    return rounded_devis
+
+
 def get_devis_by_id(devis_id):
     query = """
     SELECT F_COMPTET.CT_Num, F_COMPTET.CT_Intitule, F_COMPTET.CT_Telephone, F_COMPTET.CT_Adresse,

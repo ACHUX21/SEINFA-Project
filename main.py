@@ -21,7 +21,8 @@ from functions import (
     get_depots_by_user,
     add_user,
     get_all_depots,get_picture,
-    get_product_by_ref
+    get_product_by_ref,
+    get_all_bl_by_co_no
 )
 from mysqlDB import (
     select_tmpCart,
@@ -124,6 +125,17 @@ def auth():
     response = make_response(redirect(url_for('dashboard')))
     response.set_cookie('token', auth)
     return response
+
+@app.route('/voir_bl', methods=['GET'])
+def voir_bl():
+    token = request.cookies.get('token')
+    if not token:
+        return redirect(url_for('logout'))
+    payload = verifyjwt(token)
+    if not payload:
+        return redirect(url_for('logout'))
+    bls = get_all_bl_by_co_no(payload['co_no'])
+    return render_template('voir_bl.html', bls=bls, username=payload['username'], profile_pic=get_picture(payload['username']),role=payload['role'])
 
 # Commandes Route
 @app.route('/commandes', methods=['GET'])

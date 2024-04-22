@@ -116,9 +116,9 @@ def encours_commercial_client(co_no,role):
         # from facture_asz_no_regler;
         cursor = conn.cursor()
         if role == 'Administrateur':
-            cursor.execute("SELECT sum(DO_TotalTTC) FROM facture_asz_no_regler")
+            cursor.execute("SELECT sum(reste) FROM facture_asz_no_regler")
         else:
-            cursor.execute("SELECT sum(DO_TotalTTC) FROM facture_asz_no_regler WHERE CO_No = ?", co_no)
+            cursor.execute("SELECT sum(reste) FROM facture_asz_no_regler WHERE CO_No = ?", co_no)
         rows = cursor.fetchall()
         cursor.close()
         return f"{rows[0][0]:,.2f}"

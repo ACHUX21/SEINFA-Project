@@ -595,20 +595,14 @@
                                                     <!-- <span class="text-muted fw-bold text-muted d-block fs-7">Rejected</span> -->
                                                 </td>
                                                 <td>
-                                                    <a href="/api/voirdraft/{{ dev.devis }}" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6">{{ dev.total }} DH</a>
+                                                    <a href="/api/voirdraft/{{ dev.devis }}" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6">{{"%.2f" % (dev.total) }} DH</a>
                                                     <!-- <span class="text-muted fw-bold text-muted d-block fs-7">Insurance</span> -->
                                                 </td>
                                                 <td>
                                                     {% if dev.status == 0 %}
                                                         <span class="badge badge-light-primary ">Saisie</span>
                                                     {% elif dev.status == 1 %}
-                                                        <span class="badge badge-light-info">Confirmé</span>
-                                                    {% elif dev.status == 2 %}
-                                                        <span class="badge badge-light-success">Accepté</span>
-                                                    {% elif dev.status == 3 %}
-                                                        <span class="badge badge-light-danger">Perdu</span>
-                                                    {% elif dev.status == 4 %}
-                                                        <span class="badge badge-light-dark">Archivé</span>
+                                                        <span class="badge badge-light-info">Déja valider</span>
                                                     {% endif %}
                                                 </td>
                                                 <td class="text-end">
