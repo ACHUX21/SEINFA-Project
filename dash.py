@@ -31,14 +31,14 @@ def get_ca_products_co_no_2024(co_no, role):
     try:
         cursor = conn.cursor()
         if role == 'Administrateur':
-            cursor.execute("SELECT TOP 10 AR_Design,sum(dl_montantttc) as Dl_MontantTTC,CO_No,sum(dl_qte) as dl_qte,ar_ref,famille FROM ca_products_co_no_2024 group by AR_Design,CO_No,ar_ref,famille ORDER BY Dl_MontantTTC DESC")
+            cursor.execute("SELECT TOP 10 ca_products_co_no_2024.AR_Design,sum(dl_montantttc) as Dl_MontantTTC,CO_No,sum(dl_qte) as dl_qte,ca_products_co_no_2024.ar_ref,famille,product_data.image_picture FROM ca_products_co_no_2024 left join product_data on product_data.ar_ref = ca_products_co_no_2024.ar_ref group by ca_products_co_no_2024.AR_Design,CO_No,ca_products_co_no_2024.ar_ref,famille,image_picture ORDER BY Dl_MontantTTC DESC")
         else:
-            cursor.execute("SELECT TOP 10 AR_Design,sum(dl_montantttc) as Dl_MontantTTC,CO_No,sum(dl_qte) as dl_qte,ar_ref,famille FROM ca_products_co_no_2024 WHERE Co_no = ? group by AR_Design,CO_No,ar_ref,famille ORDER BY Dl_MontantTTC DESC" , co_no)
+            cursor.execute("SELECT TOP 10 ca_products_co_no_2024.AR_Design,sum(dl_montantttc) as Dl_MontantTTC,CO_No,sum(dl_qte) as dl_qte,ca_products_co_no_2024.ar_ref,famille,product_data.image_picture FROM ca_products_co_no_2024 left join product_data on product_data.ar_ref = ca_products_co_no_2024.ar_ref WHERE Co_no = ? group by ca_products_co_no_2024.AR_Design,CO_No,ca_products_co_no_2024.ar_ref,famille,image_picture ORDER BY Dl_MontantTTC DESC", co_no)
         rows = cursor.fetchall()
         cursor.close()
         list = []
         for row in rows:
-            list.append({'ar_design': row[0], 'dl_montantttc': f"{row[1]:,.2f}", 'co_no': row[2], 'dl_qte': int(row[3]), 'ar_ref': row[4], 'famille': row[5]})
+            list.append({'ar_design': row[0], 'dl_montantttc': f"{row[1]:,.2f}", 'co_no': row[2], 'dl_qte': int(row[3]), 'ar_ref': row[4], 'famille': row[5], 'img': row[6]})
         # print(list)
         return list
     except Exception as e:

@@ -659,8 +659,11 @@
                                                                 {% for p in data_product %}
                                                                 <tr>
                                                                     <td>
-                                                                        
-                                                                        {% if p.famille in ["GOBLET", "EMBALLAGE", "ELASTIQUE", "TAPIS","PRODUITSFINIS"] %}
+                                                                        {% if p.img %}
+                                                                            <a class="symbol symbol-50px me-3">
+                                                                                <span class="symbol-label" style="background-image:url({{ p.img }});"></span>
+                                                                            </a>
+                                                                        {% elif p.famille in ["GOBLET", "EMBALLAGE", "ELASTIQUE", "TAPIS","PRODUITSFINIS"] %}
                                                                             <a class="symbol symbol-50px me-3">
                                                                                 <span class="symbol-label" style="background-image:url(static/images_seinfa_app/{{ p.famille | lower }}.jpg);"></span>
                                                                             </a>
