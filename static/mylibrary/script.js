@@ -88,8 +88,9 @@ function initializeAutocomplete(clients) {
     
 
     function submitForm(name, price, ref,category, img) {
+        console.log('Submitting form with:', name, price, ref,category, img);
         const buttonId = 'productButton' + ref; // Make sure this ID is correctly generated.
-        console.log("Looking for button with ID:", buttonId); // Debug to see the actual ID being generated
+        // console.log("Looking for button with ID:", buttonId); // Debug to see the actual ID being generated
     
         const button = document.getElementById(buttonId);
         if (!button) {
@@ -106,17 +107,17 @@ function initializeAutocomplete(clients) {
         spinner.style.display = 'inline-block'; // Show the spinner
     
         const qteId = 'qte-' + name;
-        console.log("Looking for quantity input with ID:", qteId); // Debug to confirm the ID
+        // console.log("Looking for quantity input with ID:", qteId); // Debug to confirm the ID
         const qte = document.getElementById(qteId) ? document.getElementById(qteId).value : '1'; // Default to '1' if not found
-        console.log("Quantity:", qte); // Log the quantity
+        // console.log("Quantity:", qte); // Log the quantity
     
         const formData = {
             name: name,
             price: price,
             ref: ref,
             qte: qte,
-            category: category,
-            img: img
+            img: img,
+            category: category
         };
     
         fetch('/addToCart', {
@@ -133,7 +134,7 @@ function initializeAutocomplete(clients) {
             return response.json();
         })
         .then(data => {
-            console.log('Data successfully sent to /addToCart:', data);
+            // console.log('Data successfully sent to /addToCart:', data);
             spinner.style.display = 'none'; // Hide the spinner
         })
         .catch(error => {
@@ -169,7 +170,7 @@ function removeProduct(id, name) {
         return response.json();
     })
     .then(data => {
-        console.log('Data successfully sent to /removeFromCart:', data);
+        // console.log('Data successfully sent to /removeFromCart:', data);
         
     })
     .catch(error => {
@@ -197,7 +198,7 @@ function fetchTotal() {
     fetch('/api/total')
       .then(response => response.json())
       .then(data => {
-        console.log('Total price:', data);
+        // console.log('Total price:', data);
         document.getElementById('totalPrice').textContent = data.total;
       })
       .catch(error => {

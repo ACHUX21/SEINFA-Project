@@ -241,7 +241,7 @@ def product_images(ref):
     payload = verifyjwt(token)
     if not payload:
         return redirect(url_for('logout'))
-    product = get_product_by_ref(ref)
+    product = get_product_by_ref(ref.replace('-', '/'))
     return render_template('product_details.html',product=product, username=payload['username'],role=payload['role'])
 
 
@@ -588,6 +588,14 @@ def upload_img():
     ref = data['ref']
     img = data['img']
     cursor = conn.cursor()
+    query = "SELECT * FROM product_data WHERE ar_ref = ?"
+    cursor.execute(query, ref)
+    if cursor.fetchone():
+        query = "UPDATE product_data SET image_picture = ? WHERE ar_ref = ?"
+        cursor.execute(query, img, ref)
+        cursor.commit()
+        cursor.close()
+        return jsonify('success')
     query = "INSERT INTO product_data(ar_ref, image_picture) VALUES (?, ?)"
     cursor.execute(query, ref, img)
     cursor.commit()

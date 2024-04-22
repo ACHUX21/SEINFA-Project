@@ -111,7 +111,7 @@ def fetch_products(num=4000, cat=None):
 
 
 def get_product_by_ref(ref):
-    query = "SELECT article_table.*, ASZPROD.dbo.product_data.image_picture FROM article_table INNER JOIN ASZPROD.dbo.product_data ON article_table.AR_Ref = ASZPROD.dbo.product_data.ar_ref WHERE article_table.AR_Ref = ?"
+    query = "SELECT article_table.*, ASZPROD.dbo.product_data.image_picture FROM article_table LEFT JOIN ASZPROD.dbo.product_data ON article_table.AR_Ref = ASZPROD.dbo.product_data.ar_ref WHERE article_table.AR_Ref = ?"
     data = fetch_first(query, (ref,))
     if data:
         product = {
