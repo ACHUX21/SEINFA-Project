@@ -580,7 +580,7 @@
 											<div class="card-header">
 												<!--begin::Card title-->
 												<div class="card-title">
-													<h2>Thumbnail</h2>
+													<h2>Image de produit</h2>
 												</div>
 												<!--end::Card title-->
 											</div>
@@ -614,7 +614,7 @@
 												</div>
 												<!--end::Image input-->
 												<!--begin::Description-->
-												<div class="text-muted fs-7">Set the product thumbnail image. Only *.png, *.jpg and *.jpeg image files are accepted</div>
+												<div class="text-muted fs-7">Définissez l'image du produit. Seuls les fichiers image *.png, *.jpg et *.jpeg sont acceptés</div>
 												<!--end::Description-->
 											</div>
 											<!--end::Card body-->
@@ -666,77 +666,25 @@
 										<!--begin::Card widget 6-->
 										<div class="card card-flush">
 											<!--begin::Header-->
-											<div class="card-header pt-5">
-												<!--begin::Title-->
-												<div class="card-title d-flex flex-column">
-													<!--begin::Info-->
-													<div class="d-flex align-items-center">
-														<!--begin::Currency-->
-														<span class="fs-4 fw-bold text-gray-400 me-1 align-self-start">$</span>
-														<!--end::Currency-->
-														<!--begin::Amount-->
-														<span class="fs-2hx fw-bolder text-dark me-2 lh-1 ls-n2">2,420</span>
-														<!--end::Amount-->
-														<!--begin::Badge-->
-														<span class="badge badge-success fs-base">
-														<!--begin::Svg Icon | path: icons/duotune/arrows/arr066.svg-->
-														<span class="svg-icon svg-icon-5 svg-icon-white ms-n1">
-															<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-																<rect opacity="0.5" x="13" y="6" width="13" height="2" rx="1" transform="rotate(90 13 6)" fill="currentColor" />
-																<path d="M12.5657 8.56569L16.75 12.75C17.1642 13.1642 17.8358 13.1642 18.25 12.75C18.6642 12.3358 18.6642 11.6642 18.25 11.25L12.7071 5.70711C12.3166 5.31658 11.6834 5.31658 11.2929 5.70711L5.75 11.25C5.33579 11.6642 5.33579 12.3358 5.75 12.75C6.16421 13.1642 6.83579 13.1642 7.25 12.75L11.4343 8.56569C11.7467 8.25327 12.2533 8.25327 12.5657 8.56569Z" fill="currentColor" />
-															</svg>
-														</span>
-														<!--end::Svg Icon-->2.6%</span>
-														<!--end::Badge-->
-													</div>
-													<!--end::Info-->
-													<!--begin::Subtitle-->
-													<span class="text-gray-400 pt-1 fw-bold fs-6">Average Daily Sales</span>
-													<!--end::Subtitle-->
-												</div>
-												<!--end::Title-->
-											</div>
-											<!--end::Header-->
-											<!--begin::Card body-->
-											<div class="card-body d-flex align-items-end px-0 pb-0">
-												<!--begin::Chart-->
-												<div id="kt_card_widget_6_chart" class="w-100" style="height: 80px"></div>
-												<!--end::Chart-->
+											<div class="card-body">
+												<!--begin::Svg Icon | path: icons/duotune/general/gen032.svg-->
+												<span class="svg-icon svg-icon-primary svg-icon-3x ms-n1">
+													<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+														<rect x="8" y="9" width="3" height="10" rx="1.5" fill="currentColor" />
+														<rect opacity="0.5" x="13" y="5" width="3" height="14" rx="1.5" fill="currentColor" />
+														<rect x="18" y="11" width="3" height="8" rx="1.5" fill="currentColor" />
+														<rect x="3" y="13" width="3" height="6" rx="1.5" fill="currentColor" />
+													</svg>
+												</span>
+												<!--end::Svg Icon-->
+												<div class="text-gray-900 fw-bolder fs-2 mb-2 mt-5">{{ encours_commercial_client }} DH</div>
+												<div class="fw-bold text-gray-400 fs-3">CA {{product.name}}</div>
 											</div>
 											<!--end::Card body-->
 										</div>
 										<!--end::Card widget 6-->
 										<!--begin::Template settings-->
-										<div class="card card-flush py-4">
-											<!--begin::Card header-->
-											<div class="card-header">
-												<!--begin::Card title-->
-												<div class="card-title">
-													<h2>Product Template</h2>
-												</div>
-												<!--end::Card title-->
-											</div>
-											<!--end::Card header-->
-											<!--begin::Card body-->
-											<div class="card-body pt-0">
-												<!--begin::Select store template-->
-												<label for="kt_ecommerce_add_product_store_template" class="form-label">Select a product template</label>
-												<!--end::Select store template-->
-												<!--begin::Select2-->
-												<select class="form-select mb-2" data-control="select2" data-hide-search="true" data-placeholder="Select an option" id="kt_ecommerce_add_product_store_template">
-													<option></option>
-													<option value="default" selected="selected">Default template</option>
-													<option value="electronics">Electronics</option>
-													<option value="office">Office stationary</option>
-													<option value="fashion">Fashion</option>
-												</select>
-												<!--end::Select2-->
-												<!--begin::Description-->
-												<div class="text-muted fs-7">Assign a template from your current theme to define how a single product is displayed.</div>
-												<!--end::Description-->
-											</div>
-											<!--end::Card body-->
-										</div>
+										
 										<!--end::Template settings-->
 									</div>
 									<!--end::Aside column-->
@@ -931,40 +879,7 @@
 															</div>
 															<!--end::Input group-->
 															<!--begin::Tax-->
-															<div class="d-flex flex-wrap gap-5">
-																<!--begin::Input group-->
-																<div class="fv-row w-100 flex-md-root">
-																	<!--begin::Label-->
-																	<label class="required form-label">Tax Class</label>
-																	<!--end::Label-->
-																	<!--begin::Select2-->
-																	<select class="form-select mb-2" name="tax" data-control="select2" data-hide-search="true" data-placeholder="Select an option">
-																		<option></option>
-																		<option value="0">Tax Free</option>
-																		<option value="1" selected="selected">Taxable Goods</option>
-																		<option value="2">Downloadable Product</option>
-																	</select>
-																	<!--end::Select2-->
-																	<!--begin::Description-->
-																	<div class="text-muted fs-7">Set the product tax class.</div>
-																	<!--end::Description-->
-																</div>
-																<!--end::Input group-->
-																<!--begin::Input group-->
-																<div class="fv-row w-100 flex-md-root">
-																	<!--begin::Label-->
-																	<label class="form-label">VAT Amount (%)</label>
-																	<!--end::Label-->
-																	<!--begin::Input-->
-																	<input type="text" class="form-control mb-2" value="35" />
-																	<!--end::Input-->
-																	<!--begin::Description-->
-																	<div class="text-muted fs-7">Set the product VAT about.</div>
-																	<!--end::Description-->
-																</div>
-																<!--end::Input group-->
-															</div>
-															<!--end:Tax-->
+															
 														</div>
 														<!--end::Card header-->
 													</div>
