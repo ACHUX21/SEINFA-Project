@@ -22,186 +22,12 @@
         <link href="static/mylibrary/mycustom.css" rel="stylesheet" type="text/css" />
         <script src="https://kit.fontawesome.com/a401a1528d.js" crossorigin="anonymous"></script>
         <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="static/mylibrary/promotion.css">
 
 
         
 		<!--end::Global Stylesheets Bundle-->
 	</head>
-    <style>
-        .promo-card {
-            background: #fff;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            border-radius: 8px;
-            overflow: hidden;
-        }
-    
-        .promo-card-header {
-            background: #007bff;
-            color: #ffffff;
-            padding: 15px 20px;
-        }
-    
-        .promo-card-title {
-            margin-bottom: 0;
-            font-weight: bold;
-        }
-    
-        .promo-text-secondary {
-            color: #adb5bd;
-        }
-    
-        .promo-item {
-            border-bottom: 1px solid #f0f0f0;
-            padding-bottom: 10px;
-            margin-bottom: 10px;
-            transition: all 0.3s ease;
-        }
-    
-        .promo-item:last-child {
-            border-bottom: none;
-        }
-    
-        .promo-item:hover {
-            background-color: #f8f9fa;
-        }
-    
-        .promo-symbol img {
-            width: 100%;
-            height: auto;
-            border-radius: 5px;
-        }
-    
-        .promo-details {
-            flex-grow: 1;
-            padding-left: 15px;
-        }
-    
-        .promo-product-name {
-            color: #0056b3;
-            font-size: 1.2rem;
-            display: block;
-            margin-bottom: 5px;
-        }
-    
-        .promo-info {
-            text-align: right;
-            background: linear-gradient(to right, #ffedbc, #ffa726);
-            border-radius: 4px;
-            padding: 5px 10px;
-            margin-top: 10px;
-        }
-    
-        .promo-price-old {
-            font-size: 1.1rem;
-            color: #d9534f;
-            text-decoration: line-through;
-        }
-    
-        .promo-price-new {
-            font-size: 1.1rem;
-            color: #dc3545;
-        }
-    
-        .promo-small {
-            font-size: 0.875rem;
-        }
-    </style>
-    
-    <style>
-.symbol {
-    width: 60px;     /* Width as specified in your class */
-    height: 90px;    /* Height calculated based on 2:3 ratio */
-    overflow: hidden; /* Prevents the image from overflowing the dimensions */
-    display: flex;   /* Enables centering of the image */
-    align-items: center; /* Vertically centers the image */
-    justify-content: center; /* Horizontally centers the image */
-}
-
-.symbol img {
-    width: auto;    /* Maintains the aspect ratio */
-    height: 100%;   /* Fills the height of the container */
-    min-width: 100%; /* Ensures the image covers the width */
-}
-</style>
-<style>
-    .promotion-details a, .promotion-details span {
-        display: block; /* Makes each element take a full line */
-        margin-bottom: 0.5em; /* Adds a little space between each element */
-    }
-
-    .wrap-text {
-        word-wrap: break-word; /* Ensure text wraps within container */
-        hyphens: auto; /* Automatically add hyphens when breaking words */
-    }
-    
-</style>
-<style>
-    .promotion-details .product-name {
-        display: block; /* Makes it a block element so it takes the full width */
-        word-wrap: break-word; /* Wraps text at normal word breaks */
-        overflow-wrap: break-word; /* Allows unbreakable words to be broken */
-        hyphens: auto; /* Automatically adds hyphens at appropriate hyphenation points */
-        margin-bottom: 0.5em; /* Adds a little space below the name */
-    }
-</style>
-<style>
-    .card-body {
-        padding: 20px; /* Padding around the items */
-    }
-
-    .promotion-item {
-        border: 1px solid #ccc; /* Subtle border */
-        padding: 10px;
-        border-radius: 8px; /* Rounded corners */
-        background: white; /* White background for each item */
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Soft shadow for depth */
-        transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for hover effects */
-    }
-
-    .promotion-item:hover {
-        transform: translateY(-5px); /* Slight raise effect on hover */
-        box-shadow: 0 4px 10px rgba(0,0,0,0.2); /* Increased shadow on hover */
-    }
-
-    .symbol img {
-        border-radius: 4px; /* Slightly rounded corners for images */
-        transition: all 0.3s ease; /* Smooth transition for images */
-    }
-
-    .symbol:hover img {
-        transform: scale(1.05); /* Slight zoom effect on image hover */
-    }
-
-    .promotion-details a.product-name {
-        color: #0056b3; /* Darker blue for names to stand out */
-        font-size: 18px; /* Larger font size */
-        font-weight: bold; /* Bold font for emphasis */
-        text-decoration: none; /* No underline */
-    }
-
-    .promotion-details span {
-        display: block; /* Ensures each detail is on a new line */
-        color: #666; /* Dark gray color for text */
-        margin-top: 5px; /* Space between details */
-    }
-
-    .text-end {
-        background: linear-gradient(to right, #ffedbc, #ffa726); /* Gradient background for pricing area */
-        border-radius: 4px; /* Rounded corners */
-        padding: 5px 10px; /* Padding */
-        margin-top: 10px; /* Space from details */
-    }
-
-    .fw-boldest {
-        font-size: 20px; /* Larger font for prices */
-        color: #d9534f; /* Reddish color for price to stand out */
-    }
-</style>
-
-
-
-
-
 	<!--end::Head-->
 	<!--begin::Body-->
 	<body id="kt_body" class="header-fixed header-tablet-and-mobile-fixed toolbar-enabled toolbar-fixed aside-enabled aside-fixed" style="--kt-toolbar-height:55px;--kt-toolbar-height-tablet-and-mobile:55px">
@@ -370,7 +196,7 @@
                         <!--begin::Mobile logo-->
                         <div class="d-flex align-items-center flex-grow-1 flex-lg-grow-0">
                             <a href="{{ url_for('commandes') }}" class="d-lg-none">
-                                <img alt="Logo" src="static/assets/media/logos/logo-2.svg" class="h-30px" />
+                                <img alt="Logo" src="static/images/logo.png" class="h-30px" />
                             </a>
                         </div>
                         <!--end::Mobile logo-->
@@ -568,7 +394,7 @@
                                             <div class="menu-content d-flex align-items-center px-3">
                                                 <!--begin::Avatar-->
                                                 <div class="symbol symbol-50px me-5">
-                                                    <img alt="Logo" src="{{ profile_pic }}" />
+                                                    <img alt="Logo" src="static/assets/media/avatars/300-1.jpg" />
                                                 </div>
                                                 <!--end::Avatar-->
                                                 <!--begin::Username-->
@@ -674,34 +500,42 @@
                             {% if g.promotion_value == 0 %}
                             <div class="row g-5 g-xl-10 mb-xl-10">
                                 <div class="col-12 mb-8 mb-xl-0">
-                                    <div class="card promo-card">
-                                        <div class="card-header promo-card-header">
-                                            <h3 class="card-title promo-card-title">
-                                                <span class="card-label fw-bolder text-dark">Nos promotions</span>
+                                    <div class="card promo-card-special">
+                                        <div class="card-header promo-card-header-special">
+                                            <h3 class="card-title promo-card-title-special">
+                                                <span class="card-label fw-bolder text-light">Nos promotions</span>
                                                 <br>
-                                                <span class="promo-text-secondary mt-1 fw-bold fs-4">Découvrez nos offres exclusives et profitez de réductions exceptionnelles pour faire de bonnes affaires toute l'année!</span>
+                                                <span class="promo-text-secondary-special">Découvrez nos offres exclusives et profitez de réductions exceptionnelles pour faire de bonnes affaires toute l'année!</span>
                                             </h3>
                                         </div>
                                         <div class="card-body">
                                             <div class="hover-scroll-overlay-y pe-6 me-n6" style="height: 415px">
                                                 {% for promotion in products_en_promotions %}
-                                                <div class="promo-item d-flex mb-7">
-                                                    <div class="symbol promo-symbol symbol-60px symbol-2by3 flex-shrink-0 me-4">
+                                                <div class="promo-item-special d-flex mb-7">
+                                                    {% if promotion.category in ["GOBLET", "EMBALLAGE", "ELASTIQUE", "TAPIS", "PRODUITSFINIS"] %}
+                                                    <div class="symbol symbol-s promo-symbol-special symbol-60px symbol-2by3 flex-shrink-0 me-4">
                                                         <a href="static/images_seinfa_app/{{ promotion.category | lower }}.jpg" data-lightbox="image-set" data-title="Optional caption here">
                                                             <img src="static/images_seinfa_app/{{ promotion.category | lower }}.jpg" class="mw-100" alt="{{ promotion.category }}">
                                                         </a>
                                                     </div>
+                                                    {% else %}
+                                                    <div class="symbol promo-symbol-special symbol-60px symbol-2by3 flex-shrink-0 me-4">
+                                                        <a href="static/images_seinfa_app/noimageavailable.jpg" data-lightbox="image-set" data-title="Optional caption here">
+                                                            <img src="static/images_seinfa_app/noimageavailable.jpg" class="mw-100" alt="{{ promotion.category }}">
+                                                        </a>
+                                                    </div>
+                                                    {% endif %}
                                                     <div class="d-flex align-items-start flex-wrap flex-grow-1 mt-n2 mt-lg-n1">
-                                                        <div class="promo-details flex-grow-1 my-lg-0 my-2 pe-3">
-                                                            <a href="#" class="promo-product-name">{{ promotion.name }}</a>
+                                                        <div class="promo-details-special flex-grow-1 my-lg-0 my-2 pe-3">
+                                                            <a href="#" class="promo-product-name-special">{{ promotion.name }}</a>
                                                             <span>Ref: {{ promotion.ref }}</span>
                                                             <span>Famille: <a href="#" class="fw-bold">{{ promotion.category }}</a></span>
                                                         </div>
-                                                        <div class="promo-info text-end py-lg-0 py-2">
-                                                            <span class="promo-price-old">{{ promotion.price }} DH</span><br>
-                                                            <span class="promo-price-new">{{ promotion.prix_en_promotion }} DH</span>
+                                                        <div class="promo-info-special text-end py-lg-0 py-2">
+                                                            <span class="promo-price-old-special">{{ promotion.price }} DH</span><br>
+                                                            <span class="promo-price-new-special">{{ promotion.prix_en_promotion }} DH</span>
                                                             <br>
-                                                            <span class="promo-small fw-bold">En promo</span>
+                                                            <span class="promo-small-special fw-bold">En promo</span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -732,13 +566,13 @@
                                             <div class="promotion-item d-flex mb-7">
                                                 <!-- Begin::Symbol -->
                                                 {% if promotion.category in ["GOBLET", "EMBALLAGE", "ELASTIQUE", "TAPIS", "PRODUITSFINIS"] %}
-                                                <div class="symbol symbol-60px symbol-2by3 flex-shrink-0 me-4">
+                                                <div class="symbol symbol-s symbol-60px symbol-2by3 flex-shrink-0 me-4">
                                                     <a href="static/images_seinfa_app/{{ promotion.category | lower }}.jpg" data-lightbox="image-set" data-title="Optional caption here">
                                                         <img src="static/images_seinfa_app/{{ promotion.category | lower }}.jpg" class="mw-100" alt="{{ promotion.category }}">
                                                     </a>
                                                 </div>
                                                 {% else %}
-                                                <div class="symbol symbol-60px symbol-2by3 flex-shrink-0 me-4">
+                                                <div class="symbol symbol-s symbol-60px symbol-2by3 flex-shrink-0 me-4">
                                                     <a href="static/images_seinfa_app/noimageavailable.jpg" data-lightbox="image-set" data-title="Optional caption here">
                                                         <img src="static/images_seinfa_app/noimageavailable.jpg" class="mw-100" alt="{{ promotion.category }}">
                                                     </a>
@@ -766,22 +600,47 @@
                                             {% endfor %}
                                             <!-- End::Item -->
                                         </div>
-                                        
-                                        
-                                        
                                         <!--end::Body-->
                                     </div>
                                     <!--end::List Widget 9-->
                                 </div>
+                            </div>                            
+                            {%elif g.promotion_value == 2 %}
+                            <div class="promo-grid-container">
+                                {% for promotion in products_en_promotions %}
+                                <div class="promo-grid-card">
+                                    {% if promotion.category in ["GOBLET", "EMBALLAGE", "ELASTIQUE", "TAPIS", "PRODUITSFINIS"] %}
+                                    <img src="{{ 'static/images_seinfa_app/' + promotion.category | lower + '.jpg' }}" alt="{{ promotion.category }}" class="promo-grid-image">
+                                    {% else %}
+                                    <img src="static/images_seinfa_app/noimageavailable.jpg" alt="{{ promotion.category }}" class="promo-grid-image">
+                                    {% endif %}
+                                    <div class="promo-grid-overlay">
+                                        <h3 class="promo-grid-title">{{ promotion.name }}</h3>
+                                        <p class="promo-grid-details">Ref: {{ promotion.ref }} | Famille: {{ promotion.category }}</p>
+                                        <div class="promo-grid-price">{{ promotion.prix_en_promotion }} DH</div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            {% elif g.promotion_value == 3 %}
+                            
+                            <div class="promo-ecommerce-container">
+                                {% for promotion in products_en_promotions %}
+                                <div class="promo-ecommerce-card">
+                                    <img src="{{ 'static/images_seinfa_app/' + promotion.category | lower + '.jpg' }}" alt="{{ promotion.category }}" class="promo-ecommerce-image">
+                                    <div class="promo-ecommerce-info">
+                                        <h3 class="promo-ecommerce-title">{{ promotion.name }}</h3>
+                                        <p class="promo-ecommerce-details">Ref: {{ promotion.ref }} | Famille: {{ promotion.category }}</p>
+                                        <div class="promo-ecommerce-price">{{ promotion.prix_en_promotion }} DH</div>
+                                    </div>
+                                </div>
+                                {% endfor %}
                             </div>
                             {% endif %}
                         </div>
                         <!--end::Container-->
                     </div>
                     <!--end::Post-->
-                </div>
-					
-                    
 					<!--begin::Footer-->
 					<div class="footer py-4 d-flex flex-lg-column" id="kt_footer">
 						<!--begin::Container-->

@@ -1,0 +1,308 @@
+
+        .promo-grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+    
+        .promo-grid-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease-in-out;
+            cursor: pointer;
+        }
+    
+        .promo-grid-card:hover {
+            transform: scale(1.05);
+        }
+    
+        .promo-grid-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+    
+        .promo-grid-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+    
+        .promo-grid-card:hover .promo-grid-overlay {
+            opacity: 1;
+        }
+    
+        .promo-grid-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0;
+            text-align: center;
+            padding: 10px;
+        }
+    
+        .promo-grid-details {
+            text-align: center;
+            font-size: 1rem;
+            padding: 5px;
+        }
+    
+        .promo-grid-price {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+    
+    
+    
+        .promo-card-special {
+            background: #ffffff;
+            border: 1px solid #e3e6f0;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+    
+        .promo-card-special:hover {
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            transform: translateY(-5px);
+        }
+    
+        .promo-card-header-special {
+            background-color: #4e73df;
+            color: #fff;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            padding: 15px 20px;
+            background-image: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+    
+        .promo-card-title-special {
+            font-weight: 600;
+            font-size: 1.75rem;
+        }
+    
+        .promo-text-secondary-special {
+            font-size: 1.25rem;
+            color: white;
+        }
+    
+        .promo-item-special {
+            background: #f8f9fc;
+            margin: 15px 0;
+            padding: 20px;
+            border-radius: 8px;
+            transition: all 0.3s ease-in-out;
+        }
+    
+        .promo-item-special:hover {
+            background-color: #e2e6ea;
+        }
+    
+        .promo-symbol-special img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+    
+        .promo-details-special {
+            padding-left: 15px;
+        }
+    
+        .promo-product-name-special {
+            color: #1c4e80;
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+    
+        .promo-info-special {
+            text-align: right;
+            font-weight: 500;
+        }
+    
+        .promo-price-old-special {
+            color: #aaabad;
+            text-decoration: line-through;
+        }
+    
+        .promo-price-new-special {
+            color: #ff414d;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+    
+        .promo-small-special {
+            font-size: 1rem;
+            color: #666;
+        }
+    
+    
+    
+    
+    
+    
+.symbol-s {
+    width: 60px;     /* Width as specified in your class */
+    height: 90px;    /* Height calculated based on 2:3 ratio */
+    overflow: hidden; /* Prevents the image from overflowing the dimensions */
+    display: flex;   /* Enables centering of the image */
+    align-items: center; /* Vertically centers the image */
+    justify-content: center; /* Horizontally centers the image */
+}
+
+.symbol-s img {
+    width: auto;    /* Maintains the aspect ratio */
+    height: 100%;   /* Fills the height of the container */
+    min-width: 100%; /* Ensures the image covers the width */
+}
+
+
+    .promotion-details a, .promotion-details span {
+        display: block; /* Makes each element take a full line */
+        margin-bottom: 0.5em; /* Adds a little space between each element */
+    }
+
+    .wrap-text {
+        word-wrap: break-word; /* Ensure text wraps within container */
+        hyphens: auto; /* Automatically add hyphens when breaking words */
+    }
+    
+
+
+    .promotion-details .product-name {
+        display: block; /* Makes it a block element so it takes the full width */
+        word-wrap: break-word; /* Wraps text at normal word breaks */
+        overflow-wrap: break-word; /* Allows unbreakable words to be broken */
+        hyphens: auto; /* Automatically adds hyphens at appropriate hyphenation points */
+        margin-bottom: 0.5em; /* Adds a little space below the name */
+    }
+
+
+    .card-body {
+        padding: 20px; /* Padding around the items */
+    }
+
+    .promotion-item {
+        border: 1px solid #ccc; /* Subtle border */
+        padding: 10px;
+        border-radius: 8px; /* Rounded corners */
+        background: white; /* White background for each item */
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Soft shadow for depth */
+        transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for hover effects */
+    }
+
+    .promotion-item:hover {
+        transform: translateY(-5px); /* Slight raise effect on hover */
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2); /* Increased shadow on hover */
+    }
+
+    .symbol img {
+        border-radius: 4px; /* Slightly rounded corners for images */
+        transition: all 0.3s ease; /* Smooth transition for images */
+    }
+
+    .symbol:hover img {
+        transform: scale(1.05); /* Slight zoom effect on image hover */
+    }
+
+    .promotion-details a.product-name {
+        color: #0056b3; /* Darker blue for names to stand out */
+        font-size: 18px; /* Larger font size */
+        font-weight: bold; /* Bold font for emphasis */
+        text-decoration: none; /* No underline */
+    }
+
+    .promotion-details span {
+        display: block; /* Ensures each detail is on a new line */
+        color: #666; /* Dark gray color for text */
+        margin-top: 5px; /* Space between details */
+    }
+
+    .text-end {
+        background: linear-gradient(to right, #ffedbc, #ffa726); /* Gradient background for pricing area */
+        border-radius: 4px; /* Rounded corners */
+        padding: 5px 10px; /* Padding */
+        margin-top: 10px; /* Space from details */
+    }
+
+    .fw-boldest {
+        font-size: 20px; /* Larger font for prices */
+        color: #d9534f; /* Reddish color for price to stand out */
+    }
+
+
+    .promo-ecommerce-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 20px;
+        padding: 20px;
+        background: #f4f4f4; /* Subtle background for the grid */
+    }
+
+    .promo-ecommerce-card {
+        background: #fff;
+        border: none;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease;
+        position: relative;
+        cursor: pointer;
+    }
+
+    .promo-ecommerce-card:hover {
+        transform: translateY(-10px); /* Elevate card on hover */
+        box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    }
+
+    .promo-ecommerce-image {
+        width: 100%;
+        height: 250px; /* Fixed height for images */
+        object-fit: cover; /* Ensure cover fit for images */
+    }
+
+    .promo-ecommerce-info {
+        padding: 15px;
+        background: rgba(0, 0, 0, 0.6); /* Dark overlay for readability */
+        color: #ffffff;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        transform: translateY(100%);
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .promo-ecommerce-card:hover .promo-ecommerce-info {
+        transform: translateY(0); /* Show info on hover */
+    }
+
+    .promo-ecommerce-title {
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin: 0;
+    }
+
+    .promo-ecommerce-details {
+        font-size: 0.9rem;
+        margin-top: 5px;
+    }
+
+    .promo-ecommerce-price {
+        font-size: 1.4rem;
+        font-weight: bold;
+        margin-top: 10px;
+    }

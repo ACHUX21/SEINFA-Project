@@ -132,6 +132,7 @@ def get_categories():
     categories = [row[0] for row in data] if data else []
     return categories
 
+#add co_no here
 def get_all_devis(offset=0, limit=200000):
     query = """
     SELECT do_piece, FORMAT(do_date, 'yyyy-MM-dd') as short_date, ct_intitule, do_ref, do_totalht, do_totalttc, do_statut

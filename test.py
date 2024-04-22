@@ -4,7 +4,7 @@ import pyodbc,datetime
 from flask import jsonify
 
 # Database connection
-conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=196.115.135.114,1433;DATABASE=ASZPROD;UID=sa;PWD=90901504Data;Encrypt=no;TrustServerCertificate=yes;')
+# conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=196.115.135.114,1433;DATABASE=ASZPROD;UID=sa;PWD=90901504Data;Encrypt=no;TrustServerCertificate=yes;')
 
 
 
@@ -22,6 +22,32 @@ def get_connection():
         password=Password,
         database=DBName
     )
+#do it with mysql not mssql
+# SeverName = "159.8.122.152"
+# UserName = "datad02n_userpneu"
+# Password = "6A3AKayzuukD&j9eusK^"
+# DBName = "datad02n_data"
+
+def get_all_tempcard():
+    try:
+        #do it with mysql not mssql
+# SeverName = "159.8.122.152"
+# UserName = "datad02n_userpneu"
+# Password = "6A3AKayzuukD&j9eusK^"
+# DBName = "datad02n_data"
+        mydb = get_connection()
+        cursor = mydb.cursor()
+        cursor.execute("SELECT * FROM tempCart")
+        data = cursor.fetchall()
+        cursor.close()
+        mydb.close()
+        print (data)
+        return data
+    except mysql.connector.Error as error:
+        print(error)
+        return None
+    
+get_all_tempcard()
 
 # def create_devis_draft():
 #     try:
@@ -370,4 +396,4 @@ def Get_All_Depot():
         }
         depots.append(depot)
     return depots
-Get_All_Depot()
+# Get_All_Depot()
