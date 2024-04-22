@@ -512,7 +512,13 @@
                                             <div class="hover-scroll-overlay-y pe-6 me-n6" style="height: 415px">
                                                 {% for promotion in products_en_promotions %}
                                                 <div class="promo-item-special d-flex mb-7">
-                                                    {% if promotion.category in ["GOBLET", "EMBALLAGE", "ELASTIQUE", "TAPIS", "PRODUITSFINIS"] %}
+                                                    {% if promotion.img %}
+                                                    <div class="symbol symbol-s promo-symbol-special symbol-60px symbol-2by3 flex-shrink-0 me-4">
+                                                        <a href="{{ promotion.img }}" data-lightbox="image-set" data-title="Optional caption here">
+                                                            <img src="{{ promotion.img }}" class="mw-100" alt="{{ promotion.category }}">
+                                                        </a>
+                                                    </div>
+                                                    {% elif promotion.category in ["GOBLET", "EMBALLAGE", "ELASTIQUE", "TAPIS", "PRODUITSFINIS"] %}
                                                     <div class="symbol symbol-s promo-symbol-special symbol-60px symbol-2by3 flex-shrink-0 me-4">
                                                         <a href="static/images_seinfa_app/{{ promotion.category | lower }}.jpg" data-lightbox="image-set" data-title="Optional caption here">
                                                             <img src="static/images_seinfa_app/{{ promotion.category | lower }}.jpg" class="mw-100" alt="{{ promotion.category }}">
@@ -565,7 +571,13 @@
                                             {% for promotion in products_en_promotions %}
                                             <div class="promotion-item d-flex mb-7">
                                                 <!-- Begin::Symbol -->
-                                                {% if promotion.category in ["GOBLET", "EMBALLAGE", "ELASTIQUE", "TAPIS", "PRODUITSFINIS"] %}
+                                                {% if promotion.img %}
+                                                <div class="symbol symbol-s symbol-60px symbol-2by3 flex-shrink-0 me-4">
+                                                    <a href="{{ promotion.img }}" data-lightbox="image-set" data-title="Optional caption here">
+                                                        <img src="{{ promotion.img }}" class="mw-100" alt="{{ promotion.category }}">
+                                                    </a>
+                                                </div>
+                                                {% elif promotion.category in ["GOBLET", "EMBALLAGE", "ELASTIQUE", "TAPIS", "PRODUITSFINIS"] %}
                                                 <div class="symbol symbol-s symbol-60px symbol-2by3 flex-shrink-0 me-4">
                                                     <a href="static/images_seinfa_app/{{ promotion.category | lower }}.jpg" data-lightbox="image-set" data-title="Optional caption here">
                                                         <img src="static/images_seinfa_app/{{ promotion.category | lower }}.jpg" class="mw-100" alt="{{ promotion.category }}">
@@ -629,7 +641,13 @@
                             <div class="promo-ecommerce-container">
                                 {% for promotion in products_en_promotions %}
                                 <div class="promo-ecommerce-card">
-                                    <img src="{{ 'static/images_seinfa_app/' + promotion.category | lower + '.jpg' }}" alt="{{ promotion.category }}" class="promo-ecommerce-image">
+                                    {% if promotion.img %}
+                                    <img src="{{ promotion.img }}" alt="{{ promotion.category }}" class="promo-ecommerce-image">
+                                    {% elif promotion.category in ["GOBLET", "EMBALLAGE", "ELASTIQUE", "TAPIS", "PRODUITSFINIS"] %}
+                                    <img src="{{ 'static/images_seinfa_app/' + promotion.category | lower + '.jpg' }}" alt="{{ promotion.category }}" class="promo-econmerce-image">
+                                    {% else %}
+                                    <img src="static/images_seinfa_app/noimageavailable.jpg" alt="{{ promotion.category }}" class="promo-ecommerce-image">
+                                    {% endif %}
                                     <div class="promo-ecommerce-info">
                                         <h3 class="promo-ecommerce-title">{{ promotion.name }}</h3>
                                         <p class="promo-ecommerce-details">Ref: {{ promotion.ref }} | Famille: {{ promotion.category }}</p>
