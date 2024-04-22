@@ -59,7 +59,7 @@ def addTo_tmpCart(data, userid):
         if cursor.fetchone():
             cursor.execute("UPDATE tempCart SET qte = qte + %s WHERE userid = %s AND ref = %s", (data['qte'], userid, data['ref']))
         else:
-            cursor.execute("INSERT INTO tempCart (name, qte, price, ref, userid, img) VALUES (%s, %s, %s, %s, %s, %s)", (data['name'], data['qte'], data['price'], data['ref'], userid, data['img']))
+            cursor.execute("INSERT INTO tempCart (name, qte, price, ref, userid,famille, img) VALUES (%s, %s, %s, %s, %s,'ok' ,%s)", (data['name'], data['qte'], data['price'], data['ref'], userid, data['img']))
         
         mydb.commit()
         cursor.close()

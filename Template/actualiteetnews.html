@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 	<!--begin::Head-->
-	<head><base href="/">
-		<title>Valider les commandes - DATADEV</title>
+	<head><base href="../../../">
+		<title>Tableau de board - DATADEV</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta property="og:locale" content="en_US" />
@@ -18,62 +18,190 @@
 		<link href="static/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
 		<link href="static/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
         <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.4/dist/tailwind.min.css" rel="stylesheet">
+
+        <link href="static/mylibrary/mycustom.css" rel="stylesheet" type="text/css" />
         <script src="https://kit.fontawesome.com/a401a1528d.js" crossorigin="anonymous"></script>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css" rel="stylesheet">
+
 
         
 		<!--end::Global Stylesheets Bundle-->
 	</head>
     <style>
-            /* Quantity Selector Styles */
-            .quantity-selector {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-top: 10px;
-            }
-
-            .quantity-selector button {
-            background-color: #eee;
-            border: 1px solid #ccc;
+        .promo-card {
+            background: #fff;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+    
+        .promo-card-header {
+            background: #007bff;
+            color: #ffffff;
+            padding: 15px 20px;
+        }
+    
+        .promo-card-title {
+            margin-bottom: 0;
+            font-weight: bold;
+        }
+    
+        .promo-text-secondary {
+            color: #adb5bd;
+        }
+    
+        .promo-item {
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+    
+        .promo-item:last-child {
+            border-bottom: none;
+        }
+    
+        .promo-item:hover {
+            background-color: #f8f9fa;
+        }
+    
+        .promo-symbol img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+    
+        .promo-details {
+            flex-grow: 1;
+            padding-left: 15px;
+        }
+    
+        .promo-product-name {
+            color: #0056b3;
+            font-size: 1.2rem;
+            display: block;
+            margin-bottom: 5px;
+        }
+    
+        .promo-info {
+            text-align: right;
+            background: linear-gradient(to right, #ffedbc, #ffa726);
+            border-radius: 4px;
             padding: 5px 10px;
-            cursor: pointer;
-            }
-
-            .quantity-selector input {
-            text-align: center;
-            margin: 0 5px;
-            width: 60px; /* Fixed width for consistency */
-            border: 1px solid #ccc;
-            }
-
-            .quantity-selector input:focus {
-            outline: none;
-            border-color: #66afe9;
-            }
-
-            .quantity-selector button:focus {
-            outline: none;
-            }
-
-            .quantity-selector button:active {
-            background-color: #ddd;
-            } 
-            .category-slider {
-            overflow-x: auto;
-            overflow-y: hidden;
-            white-space: nowrap;
-            }
-
-            .category-slider .d-flex {
-            flex-wrap: nowrap;
-            }
-
-            .category-slider .btn {
-            white-space: normal; /* This ensures text within buttons doesn't get squeezed. */
-            }
-                
-
+            margin-top: 10px;
+        }
+    
+        .promo-price-old {
+            font-size: 1.1rem;
+            color: #d9534f;
+            text-decoration: line-through;
+        }
+    
+        .promo-price-new {
+            font-size: 1.1rem;
+            color: #dc3545;
+        }
+    
+        .promo-small {
+            font-size: 0.875rem;
+        }
     </style>
+    
+    <style>
+.symbol {
+    width: 60px;     /* Width as specified in your class */
+    height: 90px;    /* Height calculated based on 2:3 ratio */
+    overflow: hidden; /* Prevents the image from overflowing the dimensions */
+    display: flex;   /* Enables centering of the image */
+    align-items: center; /* Vertically centers the image */
+    justify-content: center; /* Horizontally centers the image */
+}
+
+.symbol img {
+    width: auto;    /* Maintains the aspect ratio */
+    height: 100%;   /* Fills the height of the container */
+    min-width: 100%; /* Ensures the image covers the width */
+}
+</style>
+<style>
+    .promotion-details a, .promotion-details span {
+        display: block; /* Makes each element take a full line */
+        margin-bottom: 0.5em; /* Adds a little space between each element */
+    }
+
+    .wrap-text {
+        word-wrap: break-word; /* Ensure text wraps within container */
+        hyphens: auto; /* Automatically add hyphens when breaking words */
+    }
+    
+</style>
+<style>
+    .promotion-details .product-name {
+        display: block; /* Makes it a block element so it takes the full width */
+        word-wrap: break-word; /* Wraps text at normal word breaks */
+        overflow-wrap: break-word; /* Allows unbreakable words to be broken */
+        hyphens: auto; /* Automatically adds hyphens at appropriate hyphenation points */
+        margin-bottom: 0.5em; /* Adds a little space below the name */
+    }
+</style>
+<style>
+    .card-body {
+        padding: 20px; /* Padding around the items */
+    }
+
+    .promotion-item {
+        border: 1px solid #ccc; /* Subtle border */
+        padding: 10px;
+        border-radius: 8px; /* Rounded corners */
+        background: white; /* White background for each item */
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Soft shadow for depth */
+        transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for hover effects */
+    }
+
+    .promotion-item:hover {
+        transform: translateY(-5px); /* Slight raise effect on hover */
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2); /* Increased shadow on hover */
+    }
+
+    .symbol img {
+        border-radius: 4px; /* Slightly rounded corners for images */
+        transition: all 0.3s ease; /* Smooth transition for images */
+    }
+
+    .symbol:hover img {
+        transform: scale(1.05); /* Slight zoom effect on image hover */
+    }
+
+    .promotion-details a.product-name {
+        color: #0056b3; /* Darker blue for names to stand out */
+        font-size: 18px; /* Larger font size */
+        font-weight: bold; /* Bold font for emphasis */
+        text-decoration: none; /* No underline */
+    }
+
+    .promotion-details span {
+        display: block; /* Ensures each detail is on a new line */
+        color: #666; /* Dark gray color for text */
+        margin-top: 5px; /* Space between details */
+    }
+
+    .text-end {
+        background: linear-gradient(to right, #ffedbc, #ffa726); /* Gradient background for pricing area */
+        border-radius: 4px; /* Rounded corners */
+        padding: 5px 10px; /* Padding */
+        margin-top: 10px; /* Space from details */
+    }
+
+    .fw-boldest {
+        font-size: 20px; /* Larger font for prices */
+        color: #d9534f; /* Reddish color for price to stand out */
+    }
+</style>
+
+
+
+
+
 	<!--end::Head-->
 	<!--begin::Body-->
 	<body id="kt_body" class="header-fixed header-tablet-and-mobile-fixed toolbar-enabled toolbar-fixed aside-enabled aside-fixed" style="--kt-toolbar-height:55px;--kt-toolbar-height-tablet-and-mobile:55px">
@@ -87,7 +215,7 @@
                 <!--begin::Brand-->
                 <div class="aside-logo flex-column-auto" id="kt_aside_logo">
                     <!--begin::Logo-->
-                    <a href="/commandes">
+                    <a href="{{ url_for('commandes') }}">
                         <img alt="Logo" src="static/images/logo.png" class="h-25px logo" />
                     </a>
                     <!--end::Logo-->
@@ -241,7 +369,7 @@
                         <!--end::Aside mobile toggle-->
                         <!--begin::Mobile logo-->
                         <div class="d-flex align-items-center flex-grow-1 flex-lg-grow-0">
-                            <a href="/commandes" class="d-lg-none">
+                            <a href="{{ url_for('commandes') }}" class="d-lg-none">
                                 <img alt="Logo" src="static/assets/media/logos/logo-2.svg" class="h-30px" />
                             </a>
                         </div>
@@ -261,7 +389,7 @@
                                             </span>
                                             <div class="menu-sub menu-sub-lg-down-accordion menu-sub-lg-dropdown menu-rounded-0 py-lg-4 w-lg-225px">
                                                 <div class="menu-item">
-                                                    <a class="menu-link active py-3" href="/commandes">
+                                                    <a class="menu-link active py-3" href="{{ url_for('commandes') }}">
                                                         <span class="menu-bullet">
                                                             <span class="bullet bullet-dot"></span>
                                                         </span>
@@ -467,6 +595,7 @@
                                         <!--begin::Menu item-->
                                         <!--end::Menu item-->
                                         <!--begin::Menu item-->
+
                                         <div class="menu-item px-5">
                                             <a href="{{ url_for('logout') }}" class="menu-link px-5">Sign Out</a>
                                         </div>
@@ -509,155 +638,150 @@
                         </div>
                         <!--end::Wrapper-->
                     </div>
-                    <!--end::Container-->
+                    <!--end::Content-->
                 </div>
-					<!--begin::Content-->
-					<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
-						<!--begin::Toolbar-->
-						<div class="toolbar" id="kt_toolbar">
-							<!--begin::Container-->
-							<div id="kt_toolbar_container" class="container-fluid d-flex flex-stack">
-								<!--begin::Page title-->
-								<div data-kt-swapper="true" data-kt-swapper-mode="prepend" data-kt-swapper-parent="{default: '#kt_content_container', 'lg': '#kt_toolbar_container'}" class="page-title d-flex align-items-center flex-wrap me-3 mb-5 mb-lg-0">
-									<!--begin::Title-->
-									<h1 class="d-flex text-dark fw-bolder fs-3 align-items-center my-1">Les devis en brouillons</h1>
-									<!--end::Title-->
-									<!--begin::Separator-->
-									<span class="h-20px border-gray-300 border-start mx-4"></span>
-									<!--end::Separator-->
-								</div>
-								<!--end::Page title-->
-							</div>
-						</div>
-                       
-                        <!--end::Alert-->
-                        
-						<!--end::Toolbar-->
-						<!--begin::Post-->
-                        <div class="card mb-5 mb-xl-8">
-                            <!--begin::Header-->
-                            <div class="card-header border-0 pt-5">
-                                <h3 class="card-title align-items-start flex-column">
-                                    <span class="card-label fw-bolder fs-3 mb-1">Voir les brouillons</span>
-                                </h3>
-                                <div class="card-toolbar">
-                                    <a href="{{ url_for('commandes') }}" class="btn btn-sm btn-light-primary">
-                                    <!--begin::Svg Icon | path: icons/duotune/arrows/arr075.svg-->
-                                    <span class="svg-icon svg-icon-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                            <rect opacity="0.5" x="11.364" y="20.364" width="16" height="2" rx="1" transform="rotate(-90 11.364 20.364)" fill="currentColor" />
-                                            <rect x="4.36396" y="11.364" width="16" height="2" rx="1" fill="currentColor" />
-                                        </svg>
-                                    </span>
-                                    <!--end::Svg Icon-->Créer un brouillon</a>
-                                </div>
+                <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+                    <!--begin::Toolbar-->
+                    <div class="toolbar" id="kt_toolbar">
+                        <!--begin::Container-->
+                        <div id="kt_toolbar_container" class="container-fluid d-flex flex-stack">
+                            <!--begin::Page title-->
+                            <div data-kt-swapper="true" data-kt-swapper-mode="prepend" data-kt-swapper-parent="{default: '#kt_content_container', 'lg': '#kt_toolbar_container'}" class="page-title d-flex align-items-center flex-wrap me-3 mb-5 mb-lg-0">
+                                <!--begin::Title-->
+                                <h1 class="d-flex text-dark fw-bolder fs-3 align-items-center my-1">Actualité et News</h1>
+                                <!--end::Title-->
                             </div>
-                            <!--end::Header-->
-                            <!--begin::Body-->
-                            <div class="card-body py-3">
-                                <!--begin::Table container-->
-                                <div class="table-responsive">
-                                    <!--begin::Table-->
-                                    <table class="table align-middle gs-0 gy-4">
-                                        <!--begin::Table head-->
-                                        <thead>
-                                            <tr class="fw-bolder text-muted bg-light">
-                                                <th class="ps-4 min-w-325px rounded-start">Client</th>
-                                                <th class="min-w-125px">Date</th>
-                                                <th class="min-w-125px">N° Devis</th>
-                                                <th class="min-w-125px">Prix TTC</th>
-                                                <th class="min-w-150px">Statut</th>
-                                                <th class="min-w-200px text-end rounded-end"></th>
-                                            </tr>
-                                        </thead>
-                                        <!--end::Table head-->
-                                        <!--begin::Table body-->
-                                        <tbody>
-                                         {% for dev in draft %}
-                                            <tr>
-                                                <td>
-                                                    <div class="d-flex align-items-center">
-                                                        <!-- <div class="symbol symbol-50px me-5">
-                                                            <img src="static/assets/media/stock/600x400/img-26.jpg" class="" alt="" />
-                                                        </div> -->
-                                                        <div class="d-flex justify-content-start flex-column">
-                                                            <a href="#" class="text-dark fw-bolder text-hover-primary mb-1 fs-6">{{ dev.client_name }}</a>
-                                                            <!-- <span class="text-muted fw-bold text-muted d-block fs-7">HTML, JS, ReactJS</span> -->
+                            <!--end::Page title-->
+                            <!--begin::Actions-->
+                            <div class="d-flex align-items-center gap-2 gap-lg-3">
+                                <!--begin::Secondary button-->
+                                <a href="#" class="btn btn-sm btn-light">Valider les commande</a>
+                                <!--end::Secondary button-->
+                                <!--begin::Primary button-->
+                                <a href="#" class="btn btn-sm btn-primary">Créer une nouvelle commande</a>
+                                <!--end::Primary button-->
+                            </div>
+                            <!--end::Actions-->
+                        </div>
+                        <!--end::Container-->
+                    </div>
+                    <!--end::Toolbar-->
+                    <!--begin::Post-->
+                    <div class="post d-flex flex-column-fluid" id="kt_post">
+                        <!--begin::Container-->
+                        <div id="kt_content_container" class="container-xxl">
+                            <!--begin::Row-->
+                            {% if g.promotion_value == 0 %}
+                            <div class="row g-5 g-xl-10 mb-xl-10">
+                                <div class="col-12 mb-8 mb-xl-0">
+                                    <div class="card promo-card">
+                                        <div class="card-header promo-card-header">
+                                            <h3 class="card-title promo-card-title">
+                                                <span class="card-label fw-bolder text-dark">Nos promotions</span>
+                                                <br>
+                                                <span class="promo-text-secondary mt-1 fw-bold fs-4">Découvrez nos offres exclusives et profitez de réductions exceptionnelles pour faire de bonnes affaires toute l'année!</span>
+                                            </h3>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="hover-scroll-overlay-y pe-6 me-n6" style="height: 415px">
+                                                {% for promotion in products_en_promotions %}
+                                                <div class="promo-item d-flex mb-7">
+                                                    <div class="symbol promo-symbol symbol-60px symbol-2by3 flex-shrink-0 me-4">
+                                                        <a href="static/images_seinfa_app/{{ promotion.category | lower }}.jpg" data-lightbox="image-set" data-title="Optional caption here">
+                                                            <img src="static/images_seinfa_app/{{ promotion.category | lower }}.jpg" class="mw-100" alt="{{ promotion.category }}">
+                                                        </a>
+                                                    </div>
+                                                    <div class="d-flex align-items-start flex-wrap flex-grow-1 mt-n2 mt-lg-n1">
+                                                        <div class="promo-details flex-grow-1 my-lg-0 my-2 pe-3">
+                                                            <a href="#" class="promo-product-name">{{ promotion.name }}</a>
+                                                            <span>Ref: {{ promotion.ref }}</span>
+                                                            <span>Famille: <a href="#" class="fw-bold">{{ promotion.category }}</a></span>
+                                                        </div>
+                                                        <div class="promo-info text-end py-lg-0 py-2">
+                                                            <span class="promo-price-old">{{ promotion.price }} DH</span><br>
+                                                            <span class="promo-price-new">{{ promotion.prix_en_promotion }} DH</span>
+                                                            <br>
+                                                            <span class="promo-small fw-bold">En promo</span>
                                                         </div>
                                                     </div>
-                                                </td>
-                                                <td>
-                                                    <a href="#" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6">{{ dev.date }}</a>
-                                                    <!-- <span class="text-muted fw-bold text-muted d-block fs-7">Paid</span> -->
-                                                </td>
-                                                <td>
-                                                    <a href="#" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6">{{ dev.devis }}</a>
-                                                    <!-- <span class="text-muted fw-bold text-muted d-block fs-7">Rejected</span> -->
-                                                </td>
-                                                <td>
-                                                    <a href="#" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6">{{ dev.total }} DH</a>
-                                                    <!-- <span class="text-muted fw-bold text-muted d-block fs-7">Insurance</span> -->
-                                                </td>
-                                                <td>
-                                                    {% if dev.status == 0 %}
-                                                        <span class="badge badge-light-primary ">Saisie</span>
-                                                    {% elif dev.status == 1 %}
-                                                        <span class="badge badge-light-info">Confirmé</span>
-                                                    {% elif dev.status == 2 %}
-                                                        <span class="badge badge-light-success">Accepté</span>
-                                                    {% elif dev.status == 3 %}
-                                                        <span class="badge badge-light-danger">Perdu</span>
-                                                    {% elif dev.status == 4 %}
-                                                        <span class="badge badge-light-dark">Archivé</span>
-                                                    {% endif %}
-                                                </td>
-                                                <td class="text-end">
-                                                    <a href="/api/voirdraft/{{ dev.devis }}" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1">
-                                                        <!--begin::Svg Icon | path: icons/duotune/general/gen019.svg-->
-                                                        <span class="svg-icon svg-icon-3">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                                                <path d="M17.5 11H6.5C4 11 2 9 2 6.5C2 4 4 2 6.5 2H17.5C20 2 22 4 22 6.5C22 9 20 11 17.5 11ZM15 6.5C15 7.9 16.1 9 17.5 9C18.9 9 20 7.9 20 6.5C20 5.1 18.9 4 17.5 4C16.1 4 15 5.1 15 6.5Z" fill="currentColor" />
-                                                                <path opacity="0.3" d="M17.5 22H6.5C4 22 2 20 2 17.5C2 15 4 13 6.5 13H17.5C20 13 22 15 22 17.5C22 20 20 22 17.5 22ZM4 17.5C4 18.9 5.1 20 6.5 20C7.9 20 9 18.9 9 17.5C9 16.1 7.9 15 6.5 15C5.1 15 4 16.1 4 17.5Z" fill="currentColor" />
-                                                            </svg>
-                                                        </span>
-                                                        <!--end::Svg Icon-->
-                                                    </a>
-                                                    <a href="/api/validerdraft/{{ dev.devis }}" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1">
-                                                        <!--begin::Svg Icon | path: icons/duotune/art/art005.svg-->
-                                                        <span class="svg-icon svg-icon-3">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                                                <path opacity="0.3" d="M21.4 8.35303L19.241 10.511L13.485 4.755L15.643 2.59595C16.0248 2.21423 16.5426 1.99988 17.0825 1.99988C17.6224 1.99988 18.1402 2.21423 18.522 2.59595L21.4 5.474C21.7817 5.85581 21.9962 6.37355 21.9962 6.91345C21.9962 7.45335 21.7817 7.97122 21.4 8.35303ZM3.68699 21.932L9.88699 19.865L4.13099 14.109L2.06399 20.309C1.98815 20.5354 1.97703 20.7787 2.03189 21.0111C2.08674 21.2436 2.2054 21.4561 2.37449 21.6248C2.54359 21.7934 2.75641 21.9115 2.989 21.9658C3.22158 22.0201 3.4647 22.0084 3.69099 21.932H3.68699Z" fill="currentColor" />
-                                                                <path d="M5.574 21.3L3.692 21.928C3.46591 22.0032 3.22334 22.0141 2.99144 21.9594C2.75954 21.9046 2.54744 21.7864 2.3789 21.6179C2.21036 21.4495 2.09202 21.2375 2.03711 21.0056C1.9822 20.7737 1.99289 20.5312 2.06799 20.3051L2.696 18.422L5.574 21.3ZM4.13499 14.105L9.891 19.861L19.245 10.507L13.489 4.75098L4.13499 14.105Z" fill="currentColor" />
-                                                            </svg>
-                                                        </span>
-                                                        <!--end::Svg Icon-->
-                                                    </a>
-                                                    <a href="#/api/delete/{ dev.devis }}" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm">
-                                                        <!--begin::Svg Icon | path: icons/duotune/general/gen027.svg-->
-                                                        <span class="svg-icon svg-icon-3">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                                                <path d="M5 9C5 8.44772 5.44772 8 6 8H18C18.5523 8 19 8.44772 19 9V18C19 19.6569 17.6569 21 16 21H8C6.34315 21 5 19.6569 5 18V9Z" fill="currentColor" />
-                                                                <path opacity="0.5" d="M5 5C5 4.44772 5.44772 4 6 4H18C18.5523 4 19 4.44772 19 5V5C19 5.55228 18.5523 6 18 6H6C5.44772 6 5 5.55228 5 5V5Z" fill="currentColor" />
-                                                                <path opacity="0.5" d="M9 4C9 3.44772 9.44772 3 10 3H14C14.5523 3 15 3.44772 15 4V4H9V4Z" fill="currentColor" />
-                                                            </svg>
-                                                        </span>
-                                                        <!--end::Svg Icon-->
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                        <!--end::Table body-->
-                                    </table>
-                                    <!--end::Table-->
+                                                </div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <!--end::Table container-->
                             </div>
-                            <!--begin::Body-->
+                            {% elif g.promotion_value == 1 %}
+                            <div class="row g-5 g-xl-10 mb-xl-10">
+                                <div class="col-12 mb-8 mb-xl-0">
+                                    <!--begin::List Widget 9-->
+                                    <div class="card card-xl-stretch mb-5 mb-xl-8">
+                                        <!--begin::Header-->
+                                        <div class="card-header align-items-center border-0 mt-3">
+                                            <h3 class="card-title align-items-start flex-column">
+                                                <span class="card-label fw-bolder text-dark">Nos promotions</span>
+                                                <br>
+                                                    <span class="text-gray-400 mt-1 fw-bold fs-4">Découvrez nos offres exclusives et profitez de réductions exceptionnelles pour faire de bonnes affaires toute l'année !</span>
+                                            </h3>
+                                        </div>
+                                        <!--end::Header-->
+                                        <!--begin::Body-->
+                                        <div class="card-body pt-5 scrollable-content">
+                                            <!-- Begin::Item -->
+                                            {% for promotion in products_en_promotions %}
+                                            <div class="promotion-item d-flex mb-7">
+                                                <!-- Begin::Symbol -->
+                                                {% if promotion.category in ["GOBLET", "EMBALLAGE", "ELASTIQUE", "TAPIS", "PRODUITSFINIS"] %}
+                                                <div class="symbol symbol-60px symbol-2by3 flex-shrink-0 me-4">
+                                                    <a href="static/images_seinfa_app/{{ promotion.category | lower }}.jpg" data-lightbox="image-set" data-title="Optional caption here">
+                                                        <img src="static/images_seinfa_app/{{ promotion.category | lower }}.jpg" class="mw-100" alt="{{ promotion.category }}">
+                                                    </a>
+                                                </div>
+                                                {% else %}
+                                                <div class="symbol symbol-60px symbol-2by3 flex-shrink-0 me-4">
+                                                    <a href="static/images_seinfa_app/noimageavailable.jpg" data-lightbox="image-set" data-title="Optional caption here">
+                                                        <img src="static/images_seinfa_app/noimageavailable.jpg" class="mw-100" alt="{{ promotion.category }}">
+                                                    </a>
+                                                </div>
+                                                {% endif %}
+                                                <!-- End::Symbol -->
+                                                <!-- Begin::Section -->
+                                                <div class="d-flex align-items-start flex-wrap flex-grow-1 mt-n2 mt-lg-n1">
+                                                    <div class="promotion-details flex-grow-1 my-lg-0 my-2 pe-3">
+                                                        <a href="#" class="product-name">{{ promotion.name }}</a>
+                                                        <span>Ref: {{ promotion.ref }}</span>
+                                                        <span>Famille: <a href="#" class="fw-bold">{{ promotion.category }}</a></span>
+                                                    </div>
+                                                    <!-- Begin::Info -->
+                                                    <div class="text-end py-lg-0 py-2">
+                                                        <span class="fw-boldest" style="text-decoration: line-through;">{{ promotion.price }} DH</span><br>
+                                                        <span class="fw-boldest">{{ promotion.prix_en_promotion }} DH</span>
+                                                        <br>
+                                                        <span class="fs-7 fw-bold">En promo</span>
+                                                    </div>
+                                                    <!-- End::Info -->
+                                                </div>
+                                                <!-- End::Section -->
+                                            </div>
+                                            {% endfor %}
+                                            <!-- End::Item -->
+                                        </div>
+                                        
+                                        
+                                        
+                                        <!--end::Body-->
+                                    </div>
+                                    <!--end::List Widget 9-->
+                                </div>
+                            </div>
+                            {% endif %}
                         </div>
-						<!--end::Post-->
-					</div>
-					<!--end::Content-->
+                        <!--end::Container-->
+                    </div>
+                    <!--end::Post-->
+                </div>
+					
+                    
 					<!--begin::Footer-->
 					<div class="footer py-4 d-flex flex-lg-column" id="kt_footer">
 						<!--begin::Container-->
@@ -673,6 +797,7 @@
 					</div>
 					<!--end::Footer-->
 				</div>
+                
 				<!--end::Wrapper-->
 			</div>
 			<!--end::Page-->
@@ -689,29 +814,86 @@
 			</span>
 			<!--end::Svg Icon-->
 		</div>
+        
 		<!--end::Modal - Invite Friend-->
 		<!--end::Modals-->
 		<!--begin::Javascript-->
 		<script>var hostUrl = "assets/";</script>
 		<!--begin::Global Javascript Bundle(used by all pages)-->
-		<script src="static/assets/plugins/global/plugins.bundle.js"></script>
+        <script src="static/assets/plugins/global/plugins.bundle.js"></script>
 		<script src="static/assets/js/scripts.bundle.js"></script>
 		<!--end::Global Javascript Bundle-->
 		<!--begin::Page Vendors Javascript(used by this page)-->
 		<script src="static/assets/plugins/custom/datatables/datatables.bundle.js"></script>
+		<script src="static/assets/plugins/custom/vis-timeline/vis-timeline.bundle.js"></script>
 		<!--end::Page Vendors Javascript-->
 		<!--begin::Page Custom Javascript(used by this page)-->
-		<script src="static/assets/js/custom/apps/ecommerce/sales/save-order.js"></script>
 		<script src="static/assets/js/widgets.bundle.js"></script>
 		<script src="static/assets/js/custom/widgets.js"></script>
-        <script src="static/mylibrary/script.js" ></script>
+		<script src="static/assets/js/custom/apps/chat/chat.js"></script>
+		<script src="static/assets/js/custom/utilities/modals/upgrade-plan.js"></script>
+		<script src="static/assets/js/custom/utilities/modals/users-search.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
+		<script>
+			lightbox.option({
+				'resizeDuration': 200,
+				'wrapAround': true,
+				'albumLabel': "Image %1 of %2",
+				'alwaysShowNavOnTouchDevices': true
+			})
+			</script>
+        
 
+
+    
+        {% if request.args.get('cat') %}
+                <script src="static/mylibrary/search-cat.js"></script>
+        {% else %}
+            <script src="static/mylibrary/search.js"></script>
+        {% endif %}
+        <script src="static/mylibrary/catSearch.js"></script>
         <script>
               document.getElementById("submitFormBtn").addEventListener("click", function() {
         document.getElementById("myForm").submit();
-    });
+        });
+
         </script>
         <script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.9/dist/l10n/fr.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+              // Call the function when the DOM content is loaded
+              fetchTotal();
+            });
+          </script>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    var timers = document.querySelectorAll('.timer-badge');
+                    timers.forEach(function(timer, index) {
+                        var duration = [86400, 36000, 28800, 172800][index % 4]; // Example durations for 24h, 10h, 8h, 48h
+                        startTimer(duration, timer);
+                    });
+
+                    function startTimer(duration, display) {
+                        var timer = duration, hours, minutes, seconds;
+                        setInterval(function() {
+                            hours = parseInt(timer / 3600, 10);
+                            minutes = parseInt((timer % 3600) / 60, 10);
+                            seconds = parseInt(timer % 60, 10);
+
+                            hours = hours < 10 ? "0" + hours : hours;
+                            minutes = minutes < 10 ? "0" + minutes : minutes;
+                            seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                            display.textContent = hours + ":" + minutes + ":" + seconds;
+
+                            if (--timer < 0) {
+                                timer = duration; // Resets timer automatically
+                            }
+                        }, 1000);
+                    }
+                });
+            </script>
+          
 		<!--end::Page Custom Javascript-->
 		<!--end::Javascript-->
 	</body>

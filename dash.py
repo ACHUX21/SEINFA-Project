@@ -3,7 +3,7 @@ from flask import jsonify
 import time
 
 
-conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=196.115.135.114,1433;DATABASE=ASZPROD;UID=sa;PWD=90901504Data;Encrypt=no;TrustServerCertificate=yes;MARS_Connection=Yes;MultipleActiveResultSets=True;')
+conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=196.115.56.212,1433;DATABASE=ASZPROD;UID=sa;PWD=90901504Data;Encrypt=no;TrustServerCertificate=yes;MARS_Connection=Yes;MultipleActiveResultSets=True;')
 
 def get_ca_client_co_no_2024(co_no, role):
     try:
@@ -106,5 +106,20 @@ def get_products_en_promotions():
             products.append(product)
 
         return products
+    except Exception as e:
+        return None
+    
+def encours_commercial_client(co_no,role):
+    try:
+        # select DO_Piece, CO_No, DO_TotalTTC, montantàregle
+        # from facture_asz_no_regler;
+        cursor = conn.cursor()
+        if role == 'Administrateur':
+            cursor.execute("SELECT sum(DO_TotalTTC) FROM facture_asz_no_regler")
+        else:
+            cursor.execute("SELECT sum(DO_TotalTTC) FROM facture_asz_no_regler WHERE CO_No = ?", co_no)
+        rows = cursor.fetchall()
+        cursor.close()
+        return f"{rows[0][0]:,.2f}"
     except Exception as e:
         return None

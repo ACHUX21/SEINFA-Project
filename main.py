@@ -1,5 +1,5 @@
 import pyodbc, requests
-from flask import Flask, render_template, request, redirect, url_for, make_response, jsonify, render_template_string
+from flask import Flask, render_template, request, redirect, url_for, make_response, jsonify, render_template_string,g
 from jawt import authen, verifyjwt
 import time
 
@@ -44,34 +44,36 @@ from dash import (
     get_all_client_by_co_no,
     get_ca_by_co_no,
     get_all_ca,
-    get_products_en_promotions
+    get_products_en_promotions,
+    encours_commercial_client
 )
 
-conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=196.115.135.114,1433;DATABASE=ASZPROD;UID=sa;PWD=90901504Data;Encrypt=no;TrustServerCertificate=yes;MARS_Connection=Yes;MultipleActiveResultSets=True;')
+conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=196.115.56.212,1433;DATABASE=ASZPROD;UID=sa;PWD=90901504Data;Encrypt=no;TrustServerCertificate=yes;MARS_Connection=Yes;MultipleActiveResultSets=True;')
 
 app = Flask(__name__, static_folder='static', template_folder='Template')
 
-def fetch_maintenance_status():
+def fetch_config():
     url = "https://data-dev.ma/seinfa/config.json"
     try:
         response = requests.get(url)
-        response.raise_for_status()  # This will raise an exception for HTTP errors
+        response.raise_for_status()  # Raises an exception for HTTP errors
         data = response.json()
-        return data['maintenance_mode']
+        return data.get('maintenance_mode', False), data.get('promotion_value', 0)  # Default values if not found
     except requests.RequestException as e:
-        print(f"Error fetching maintenance status: {e}")
-        return False  # default to normal operation if there's an error fetching data
+        print(f"Error fetching configuration: {e}")
+        return False, 0  # Defaults to normal operation and promotion value 0 if there's an error
 
-
-# Simple maintenance mode handler
+# Flask route or application logic
 @app.before_request
-def check_for_maintenance():
-    maintenance_mode = fetch_maintenance_status()
-    if maintenance_mode :
+def check_for_maintenance_and_promotion():
+    maintenance_mode, promotion_value = fetch_config()
+    if maintenance_mode:
         return render_template_string('''
         <h1>Site en maintenance</h1>
         <p>Le site est actuellement en maintenance, veuillez réessayer plus tard</p>
         '''), 503
+    g.promotion_value = promotion_value  # Use Flask's g object to make it available globally in the app context
+
 
 # Login Routes
 @app.route('/')
@@ -91,7 +93,17 @@ def dashboard():
     payload = verifyjwt(token)
     if not payload:
         return redirect(url_for('logout'))
-    return render_template('dashboard.html', username=payload['username'],role=payload['role'], data_client=get_ca_client_co_no_2024(payload['co_no'], payload['role']), data_product=get_ca_products_co_no_2024(payload['co_no'], payload['role']),count_client=get_all_client_by_co_no(payload['co_no'], payload['role']), ca=get_ca_by_co_no(payload['co_no'], payload['role']),ca_all=get_all_ca( payload['co_no'] ,payload['role'] ),products_en_promotions=get_products_en_promotions())
+    return render_template('dashboard.html', username=payload['username'],role=payload['role'], data_client=get_ca_client_co_no_2024(payload['co_no'], payload['role']), data_product=get_ca_products_co_no_2024(payload['co_no'], payload['role']),count_client=get_all_client_by_co_no(payload['co_no'], payload['role']), ca=get_ca_by_co_no(payload['co_no'], payload['role']),ca_all=get_all_ca( payload['co_no'] ,payload['role'] ),encours_commercial_client=encours_commercial_client(payload['co_no'], payload['role']))
+
+@app.route('/newandpromotions')
+def newandpromotions():
+    token = request.cookies.get('token')
+    if not token:
+        return redirect(url_for('logout'))
+    payload = verifyjwt(token)
+    if not payload:
+        return redirect(url_for('logout'))
+    return render_template('actualiteetnews.html', username=payload['username'],role=payload['role'], products_en_promotions=get_products_en_promotions())
 
 @app.route('/login', methods=['GET'])
 def login():

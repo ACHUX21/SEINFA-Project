@@ -187,6 +187,16 @@
                                     </div>
                                 </div>
                                 {% endif %}
+								<div class="menu-sub menu-sub-accordion menu-active-bg">
+                                    <div class="menu-item">
+                                        <a class="menu-link active" href="{{ url_for('newandpromotions') }}"> 
+                                            <span class="menu-bullet">
+                                                <span class="bullet bullet-dot"></span>
+                                            </span>
+                                            <span class="menu-title">Actualité et news</span>
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <!--end::Menu-->
@@ -1031,11 +1041,16 @@
 			</span>
 			<!--end::Svg Icon-->
 		</div>
-        
-		<!--end::Modal - Invite Friend-->
-		<!--end::Modals-->
-		<!--begin::Javascript-->
-		<script>var hostUrl = "static/assets/";</script>
+
+		<script src="static/mylibrary/add_depot_user.js"></script>
+        <script>
+              document.getElementById("submitFormBtn").addEventListener("click", function() {
+        document.getElementById("myForm").submit();
+        });
+
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.9/dist/l10n/fr.js"></script>
+		<script>var hostUrl = "assets/";</script>
 		<!--begin::Global Javascript Bundle(used by all pages)-->
 		<script src="static/assets/plugins/global/plugins.bundle.js"></script>
 		<script src="static/assets/js/scripts.bundle.js"></script>
@@ -1047,42 +1062,10 @@
 		<script src="static/assets/js/custom/apps/ecommerce/sales/save-order.js"></script>
 		<script src="static/assets/js/widgets.bundle.js"></script>
 		<script src="static/assets/js/custom/widgets.js"></script>
+        <script src="static/mylibrary/script.js" ></script>
         <script src="static/assets/js/custom/apps/user-management/users/list/table.js"></script>
 		<script src="static/assets/js/custom/apps/user-management/users/list/export-users.js"></script>
 		<script src="static/assets/js/custom/apps/user-management/users/list/add.js"></script>
-
-		<script src="static/mylibrary/add_depot_user.js"></script>
-        <script>
-              document.getElementById("submitFormBtn").addEventListener("click", function() {
-        document.getElementById("myForm").submit();
-        });
-
-        </script>
-        <script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.9/dist/l10n/fr.js"></script>
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-              // Call the function when the DOM content is loaded
-              fetchTotal();
-            });
-          </script>          
 		<!--end::Page Custom Javascript-->
-		<!--end::Javascript-->
-		<script src="static/assets/plugins/global/plugins.bundle.js"></script>
-		<script src="static/assets/js/scripts.bundle.js"></script>
-		<!--end::Globstatic/al Javascript Bundle-->
-		<!--begin::Pastatic/ge Vendors Javascript(used by this page)-->
-		<script src="static/assets/plugins/custom/datatables/datatables.bundle.js"></script>
-		<!--end::Pagestatic/ Vendors Javascript-->
-		<!--begin::Pastatic/ge Custom Javascript(used by this page)-->
-		<script src="static/assets/js/custom/apps/user-management/permissions/list.js"></script>
-		<script src="static/assets/js/custom/apps/user-management/permissions/add-permission.js"></script>
-		<script src="static/assets/js/custom/apps/user-management/permissions/update-permission.js"></script>
-		<script src="static/assets/js/widgets.bundle.js"></script>
-		<script src="static/assets/js/custom/widgets.js"></script>
-		<script src="static/assets/js/custom/apps/chat/chat.js"></script>
-		<script src="static/assets/js/custom/utilities/modals/upgrade-plan.js"></script>
-		<script src="static/assets/js/custom/utilities/modals/create-app.js"></script>
-		<script src="static/assets/js/custom/utilities/modals/users-search.js"></script>
-	</body>
 	<!--end::Body-->
 </html>
