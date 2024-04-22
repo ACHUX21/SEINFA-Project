@@ -36,7 +36,8 @@ from mysqlDB import (
     get_drafts_details,
     get_draft_devis,
     clean_drafts,
-    add_devis_draft_details_batch
+    add_devis_draft_details_batch,
+    update_draft_confirm
 )
 from dash import (
     get_ca_client_co_no_2024,
@@ -530,7 +531,7 @@ def validerDraftNum(devis):
     f = insert_ToDocRegl(var_last_devis, date)
     if not f:
         return redirect(url_for('draftDevis'))
-    clean_drafts(devis)
+    update_draft_confirm(devis)
     return redirect(url_for('draftDevis'))
 
 

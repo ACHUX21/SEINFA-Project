@@ -305,6 +305,16 @@ def get_drafts_details(devis):
         return None
 
     
+def update_draft_confirm(devis):
+    query = "UPDATE devis_draft SET draft_confirm = 1 WHERE devis = %s"
+    try:
+        with managed_cursor() as cursor:
+            cursor.execute(query, (devis,))
+        return "Data updated"
+    except Error as error:
+        print(f"Error: {error}")
+        return None
+
 def clean_drafts(devis):
     queries = [
         "DELETE FROM devis_draft WHERE devis = %s",
