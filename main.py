@@ -49,6 +49,7 @@ from dash import (
     get_all_ca,
     get_products_en_promotions,
     encours_commercial_client,
+    get_ca_products
     
 )
 
@@ -260,7 +261,7 @@ def product_images(ref):
     if not payload:
         return redirect(url_for('logout'))
     product = get_product_by_ref(ref.replace('-', '/'))
-    return render_template('product_details.html',product=product, username=payload['username'], profile_pic=get_picture(payload['username']),role=payload['role'])
+    return render_template('product_details.html',product=product, username=payload['username'], profile_pic=get_picture(payload['username']),role=payload['role'],ca_product = get_ca_products(ref.replace('-', '/') ))
 
 
 @app.route('/users_depot', methods=['GET','POST'])

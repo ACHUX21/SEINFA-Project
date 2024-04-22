@@ -31,16 +31,27 @@ def get_ca_products_co_no_2024(co_no, role):
     try:
         cursor = conn.cursor()
         if role == 'Administrateur':
-            cursor.execute("SELECT TOP 10 ca_products_co_no_2024.AR_Design,sum(dl_montantttc) as Dl_MontantTTC,CO_No,sum(dl_qte) as dl_qte,ca_products_co_no_2024.ar_ref,famille,product_data.image_picture FROM ca_products_co_no_2024 left join product_data on product_data.ar_ref = ca_products_co_no_2024.ar_ref group by ca_products_co_no_2024.AR_Design,CO_No,ca_products_co_no_2024.ar_ref,famille,image_picture ORDER BY Dl_MontantTTC DESC")
+            cursor.execute("SELECT TOP 10 ca_products_co_no_2024.AR_Design,sum(dl_montantttc) as Dl_MontantTTC,sum(dl_qte) as dl_qte,ca_products_co_no_2024.ar_ref,famille,product_data.image_picture FROM ca_products_co_no_2024 left join product_data on product_data.ar_ref = ca_products_co_no_2024.ar_ref group by ca_products_co_no_2024.AR_Design,ca_products_co_no_2024.ar_ref,famille,image_picture ORDER BY Dl_MontantTTC DESC")
         else:
-            cursor.execute("SELECT TOP 10 ca_products_co_no_2024.AR_Design,sum(dl_montantttc) as Dl_MontantTTC,CO_No,sum(dl_qte) as dl_qte,ca_products_co_no_2024.ar_ref,famille,product_data.image_picture FROM ca_products_co_no_2024 left join product_data on product_data.ar_ref = ca_products_co_no_2024.ar_ref WHERE Co_no = ? group by ca_products_co_no_2024.AR_Design,CO_No,ca_products_co_no_2024.ar_ref,famille,image_picture ORDER BY Dl_MontantTTC DESC", co_no)
+            cursor.execute("SELECT TOP 10 ca_products_co_no_2024.AR_Design,sum(dl_montantttc) as Dl_MontantTTC,sum(dl_qte) as dl_qte,ca_products_co_no_2024.ar_ref,famille,product_data.image_picture FROM ca_products_co_no_2024 left join product_data on product_data.ar_ref = ca_products_co_no_2024.ar_ref WHERE Co_no = ? group by ca_products_co_no_2024.AR_Design,ca_products_co_no_2024.ar_ref,famille,image_picture ORDER BY Dl_MontantTTC DESC", co_no)
         rows = cursor.fetchall()
         cursor.close()
         list = []
         for row in rows:
-            list.append({'ar_design': row[0], 'dl_montantttc': f"{row[1]:,.2f}", 'co_no': row[2], 'dl_qte': int(row[3]), 'ar_ref': row[4], 'famille': row[5], 'img': row[6]})
+            list.append({'ar_design': row[0], 'dl_montantttc': f"{row[1]:,.2f}", 'dl_qte': int(row[2]), 'ar_ref': row[3], 'famille': row[4], 'img': row[5]})
         # print(list)
         return list
+    except Exception as e:
+        return None
+    
+def get_ca_products(ar_ref):
+    try:
+        cursor = conn.cursor()
+        cursor.execute("select sum(dl_montantttc) from all_ca_products where ar_ref = ?", ar_ref)
+        rows = cursor.fetchone()
+        cursor.close()
+        print(rows)
+        return f"{rows[0]:,.2f}"
     except Exception as e:
         return None
     
@@ -116,11 +127,11 @@ def encours_commercial_client(co_no,role):
         # from facture_asz_no_regler;
         cursor = conn.cursor()
         if role == 'Administrateur':
-            cursor.execute("SELECT sum(reste) FROM facture_asz_no_regler")
+            cursor.execute("SELECT sum(reste) as reste,sum(DO_TotalTTC) as DO_TotalTTC FROM facture_asz_no_regler")
         else:
-            cursor.execute("SELECT sum(reste) FROM facture_asz_no_regler WHERE CO_No = ?", co_no)
+            cursor.execute("SELECT sum(reste) as reste,sum(DO_TotalTTC) as DO_TotalTTC FROM facture_asz_no_regler WHERE CO_No = ?", co_no)
         rows = cursor.fetchall()
         cursor.close()
-        return f"{rows[0][0]:,.2f}"
+        return {'reste': f"{rows[0][0]:,.2f}", 'DO_TotalTTC': f"{rows[0][1]:,.2f}"}
     except Exception as e:
         return None
