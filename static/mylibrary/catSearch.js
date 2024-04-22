@@ -73,7 +73,8 @@ function populateCart() {
 
                 // Set image URL based on product category
                 const categoriesWithImages = ["GOBLET", "EMBALLAGE", "ELASTIQUE", "TAPIS","PRODUITSFINIS"];
-                const imageUrl = categoriesWithImages.includes(panier.famille) 
+                const imageUrl = panier.img ? panier.img 
+                                : categoriesWithImages.includes(panier.famille) 
                                  ? `static/images_seinfa_app/${panier.famille.toLowerCase()}.jpg`
                                  : 'static/images_seinfa_app/noimageavailable.jpg';
 

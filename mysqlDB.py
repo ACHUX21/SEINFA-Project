@@ -54,12 +54,12 @@ def addTo_tmpCart(data, userid):
     try:
         mydb = get_connection()
         cursor = mydb.cursor()
-        cursor.execute("SELECT * FROM tempCart WHERE userid = %s AND ref = %s", (userid, data['ref']))
+        cursor.execute("SELECT 1 FROM tempCart WHERE userid = %s AND ref = %s", (userid, data['ref']))
         
         if cursor.fetchone():
             cursor.execute("UPDATE tempCart SET qte = qte + %s WHERE userid = %s AND ref = %s", (data['qte'], userid, data['ref']))
         else:
-            cursor.execute("INSERT INTO tempCart (name, qte, price, ref, userid) VALUES (%s, %s, %s, %s, %s)", (data['name'], data['qte'], data['price'], data['ref'], userid))
+            cursor.execute("INSERT INTO tempCart (name, qte, price, ref, userid, img) VALUES (%s, %s, %s, %s, %s, %s)", (data['name'], data['qte'], data['price'], data['ref'], userid, data['img']))
         
         mydb.commit()
         cursor.close()
@@ -74,7 +74,7 @@ def select_tmpCart(userid):
     if not userid:
         return None
 
-    query = "SELECT name, qte, price, ref, famille FROM tempCart WHERE userid = %s"
+    query = "SELECT name, qte, price, ref, famille, img FROM tempCart WHERE userid = %s"
     try:
         with managed_cursor() as cursor:
             cursor.execute(query, (userid,))
@@ -87,7 +87,8 @@ def select_tmpCart(userid):
                 'qte': product[1],
                 'price': round(product[2], 2),
                 'ref': product[3],
-                'famille': product[4]
+                'famille': product[4],
+                'img': product[5]
             })
 
         return products

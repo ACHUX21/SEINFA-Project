@@ -125,9 +125,11 @@ function removeAndreplace(AR_Ref) {
         .then(response => response.json())
         .then(data => {
             const product = data[0];
-            const imageUrl = ["GOBLET", "EMBALLAGE", "ELASTIQUE", "TAPIS","PRODUITSFINIS"].includes(product.category) 
-                             ? `static/images_seinfa_app/${product.category.toLowerCase()}.jpg`
-                             : 'static/images_seinfa_app/noimageavailable.jpg';
+            const imageUrl = product.img
+            ? product.img
+            : ["GOBLET", "EMBALLAGE", "ELASTIQUE", "TAPIS", "PRODUITSFINIS"].includes(product.category) 
+                ? `static/images_seinfa_app/${product.category.toLowerCase()}.jpg`
+                : 'static/images_seinfa_app/noimageavailable.jpg';
 
             table.innerHTML = `
                 <form id="form${product.ref}" method="POST" action="/addToCart">

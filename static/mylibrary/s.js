@@ -164,7 +164,7 @@ function removeAndreplace(AR_Ref) {
 														<div class="d-flex align-items-center">
 															<!--begin::Thumbnail-->
 															<a href="../../demo1/dist/apps/ecommerce/catalog/edit-product.html" class="symbol symbol-50px">
-																<span class="symbol-label" style="background-image:url(assets/media//stock/ecommerce/1.gif);"></span>
+																<span class="symbol-label" style="background-image:url(${product.img})"></span>
 															</a>
 															<!--end::Thumbnail-->
 															<div class="ms-5">

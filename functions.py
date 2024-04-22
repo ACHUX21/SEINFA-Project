@@ -65,11 +65,23 @@ def fetch_products(num=4000, cat=None):
 
     # Prepare the query depending on whether a category is specified
     if cat:
-        query = f"SELECT TOP {num} * FROM article_table WHERE categorie = ? ORDER BY AS_QteSto DESC"
+        query = f"SELECT TOP {num} article_table.*, " \
+                f"ASZPROD.dbo.product_data.image_picture " \
+                f"FROM article_table " \
+                f"LEFT JOIN ASZPROD.dbo.product_data " \
+                f"ON article_table.AR_Ref = ASZPROD.dbo.product_data.ar_ref " \
+                f"WHERE article_table.categorie = ?"
+                
         params = (cat,)
     else:
-        query = f"SELECT TOP {num} * FROM article_table ORDER BY AS_QteSto DESC"
+        query = f"SELECT TOP {num} article_table.*, " \
+                f"ASZPROD.dbo.product_data.image_picture " \
+                f"FROM article_table " \
+                f"LEFT JOIN ASZPROD.dbo.product_data " \
+                f"ON article_table.AR_Ref = ASZPROD.dbo.product_data.ar_ref " \
+                f"ORDER BY AS_QteSto DESC"
         params = ()
+
 
     try:
         with get_cursor() as cursor:
@@ -89,7 +101,8 @@ def fetch_products(num=4000, cat=None):
             'qte': int(row[3]) if row[3] else 0,
             'category': row[4],
             'ref': row[0],
-            'prix_achat': round(row[8],2)
+            'prix_achat': round(row[8],2),
+            'img': row[9]
         }
         products.append(product)
 
@@ -98,7 +111,7 @@ def fetch_products(num=4000, cat=None):
 
 
 def get_product_by_ref(ref):
-    query = "SELECT * FROM article_table WHERE AR_Ref = ?"
+    query = "SELECT article_table.*, ASZPROD.dbo.product_data.image_picture FROM article_table INNER JOIN ASZPROD.dbo.product_data ON article_table.AR_Ref = ASZPROD.dbo.product_data.ar_ref WHERE article_table.AR_Ref = ?"
     data = fetch_first(query, (ref,))
     if data:
         product = {
@@ -107,7 +120,8 @@ def get_product_by_ref(ref):
             'qte': int(data[3]) if data[3] else 0,
             'category': data[4],
             'ref': data[0],
-            'prix_achat': round(data[8],2)
+            'prix_achat': round(data[8],2),
+            'img': data[9]
         }
         return product
     return None
@@ -214,11 +228,22 @@ def get_devis_by_id(devis_id):
 
 def Search_Function(q=None, cat=None):
     if cat:
-        query = "SELECT AR_Ref, AR_Design FROM article_table WHERE categorie = ?"
+        query = f"SELECT article_table.*, " \
+                f"ASZPROD.dbo.product_data.image_picture " \
+                f"FROM article_table " \
+                f"LEFT JOIN ASZPROD.dbo.product_data " \
+                f"ON article_table.AR_Ref = ASZPROD.dbo.product_data.ar_ref " \
+                f"WHERE article_table.categorie = ?"
         params = (cat,)
     elif q:
-        query = "SELECT * FROM article_table WHERE AR_Ref LIKE ?"
+        query = f"SELECT article_table.*, " \
+                f"ASZPROD.dbo.product_data.image_picture " \
+                f"FROM article_table " \
+                f"LEFT JOIN ASZPROD.dbo.product_data " \
+                f"ON article_table.AR_Ref = ASZPROD.dbo.product_data.ar_ref " \
+                f"WHERE article_table.AR_Ref LIKE ?"
         params = ('%' + q + '%',)
+
     else:
         query = "SELECT AR_Ref, AR_Design FROM article_table"
         params = ()
@@ -233,7 +258,8 @@ def Search_Function(q=None, cat=None):
             'qte': int(row[3]),
             'category': row[4],
             'ref': row[0],
-            'prix_achat': round(row[8],2)
+            'prix_achat': round(row[8],2),
+            'img': row[9]
         } for row in data]
     else:
         # For category-based and default list

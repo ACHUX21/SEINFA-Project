@@ -173,7 +173,7 @@
                                 </div>
 								<div class="menu-sub menu-sub-accordion menu-active-bg">
                                     <div class="menu-item">
-                                        <a class="menu-link active" href=""> 
+                                        <a class="menu-link active" href="{{ url_for('products_images') }}"> 
                                             <span class="menu-bullet">
                                                 <span class="bullet bullet-dot"></span>
                                             </span>
@@ -273,7 +273,7 @@
                                             <!--begin::Wrapper-->
                                             <div data-kt-search-element="wrapper">
                                                 <!--begin::Form-->
-                                                <form data-kt-search-element="form" class="w-100 position-relative mb-3" autocomplete="off">
+                                                <form  class="w-100 position-relative mb-3">
                                                     <!--begin::Icon-->
                                                     <!--begin::Svg Icon | path: icons/duotune/general/gen021.svg-->
                                                     <span class="svg-icon svg-icon-2 svg-icon-lg-1 svg-icon-gray-500 position-absolute top-50 translate-middle-y ms-0">
@@ -561,7 +561,7 @@
 							<!--begin::Container-->
 							<div id="kt_content_container" class="container-xxl">
 								<!--begin::Form-->
-								<form id="kt_ecommerce_add_product_form" class="form d-flex flex-column flex-lg-row" data-kt-redirect="../../demo1/dist/apps/ecommerce/catalog/products.html">
+								<form  class="form d-flex flex-column flex-lg-row" >
 									<!--begin::Aside column-->
 									<div class="d-flex flex-column gap-7 gap-lg-10 w-100 w-lg-300px mb-7 me-lg-10">
 										<!--begin::Thumbnail settings-->
@@ -580,7 +580,7 @@
 												<!--begin::Image input-->
 												<div class="image-input image-input-empty image-input-outline mb-3" data-kt-image-input="true" style="">
 													<!--begin::Preview existing avatar-->
-													<div class="image-input-wrapper w-150px h-150px" style="background-image: url(assets/media//stock/ecommerce/78.gif)"></div>
+													<div class="image-input-wrapper w-150px h-150px" style="background-image: url({{ product.img }})"></div>
 													<!--end::Preview existing avatar-->
 													<!--begin::Label-->
 													<label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="change" data-bs-toggle="tooltip" title="Change avatar">
@@ -774,7 +774,7 @@
 																	<label class="required form-label">Réference</label>
 																	<!--end::Label-->
 																	<!--begin::Input-->
-																	<input type="text" name="product_name" class="form-control mb-2" placeholder="Product name" value="{{product.ref}}" readonly />
+																	<input id="product_name" type="text" name="product_name" class="form-control mb-2" placeholder="Product name" value="{{product.ref}}" readonly />
 																	<!--end::Input-->
 																</div>
 																<!--begin::Label-->
@@ -2338,16 +2338,13 @@
 											<a href="../../demo1/dist/apps/ecommerce/catalog/products.html" id="kt_ecommerce_add_product_cancel" class="btn btn-light me-5">Cancel</a>
 											<!--end::Button-->
 											<!--begin::Button-->
-											<button type="submit" id="kt_ecommerce_add_product_submit" class="btn btn-primary">
-												<span class="indicator-label">Save Changes</span>
-												<span class="indicator-progress">Please wait...
-												<span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
-											</button>
+											
 											<!--end::Button-->
 										</div>
 									</div>
 									<!--end::Main column-->
 								</form>
+								<button onclick="uploadImage()">Upload Image</button>
 								<!--end::Form-->
 							</div>
 							<!--end::Container-->
@@ -2405,6 +2402,40 @@
 		<script src="../static/assets/js/custom/utilities/modals/users-search.js"></script>
           
 		<!--end::Page Custom Javascript-->
+		<script>
+			function uploadImage() {
+    // Get the base64 value of the image
+    var base64Image = document.querySelector('.image-input-wrapper').style.backgroundImage.slice(5, -2);
+    
+    // Get the product name
+    var productName = document.getElementById('product_name').value;
+
+    // Send the data to the server
+    fetch('/api/uploadimg', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            img: base64Image,
+            ref: productName
+        })
+    })
+    .then(response => {
+        if (response.ok) {
+            return response.json();
+        }
+        throw new Error('Network response was not ok.');
+    })
+    .then(data => {
+        console.log(data); // Handle the response from the server
+        window.location.reload(); // Reload the page
+    })
+    .catch(error => {
+        console.error('There was a problem with the fetch operation:', error);
+    });
+}
+		</script>
 		<!--end::Javascript-->
 	</body>
 	<!--end::Body-->

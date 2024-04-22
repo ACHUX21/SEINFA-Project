@@ -173,7 +173,7 @@
                                 </div>
                                 <div class="menu-sub menu-sub-accordion menu-active-bg">
                                     <div class="menu-item">
-                                        <a class="menu-link active" href=""> 
+                                        <a class="menu-link active" href="{{ url_for('products_images') }}"> 
                                             <span class="menu-bullet">
                                                 <span class="bullet bullet-dot"></span>
                                             </span>
@@ -762,8 +762,12 @@
                                                                             <div class="me-3">
                                                                                 <input id="qte-{{ product.name }}" type="number" id="quantity{{ product.id }}" name="quantity{{ product.id }}" min="1" value="1" class="form-control form-control-sm" style="width: 60px;">
                                                                             </div>
+                                                                            {% if  product.img %}
+                                                                            <a class="symbol symbol-50px me-3">
+                                                                                <span class="symbol-label" style="background-image:url({{ product.img }});"></span>
+                                                                            </a>
                                                                             <!--begin::Thumbnail-->
-                                                                            {% if product.category in ["GOBLET", "EMBALLAGE", "ELASTIQUE", "TAPIS","PRODUITSFINIS"] %}
+                                                                            {% elif product.category in ["GOBLET", "EMBALLAGE", "ELASTIQUE", "TAPIS","PRODUITSFINIS"] %}
                                                                             <a class="symbol symbol-50px me-3">
                                                                                 <span class="symbol-label" style="background-image:url(static/images_seinfa_app/{{ product.category | lower }}.jpg);"></span>
                                                                             </a>

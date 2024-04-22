@@ -561,6 +561,28 @@ def voirDevisNum(devis):
         devis = [{'CT_Num': '', 'CT_Intitule': '', 'CT_Telephone': '', 'CT_Adresse': '', 'DO_Piece': '', 'DO_Ref': '', 'DO_Date': '', 'DO_Statut': 0, 'DO_TotalHT': 0, 'DO_TotalTTC': 0, 'products': [{'AR_Ref': '', 'DL_Design': '', 'DL_Qte': 0, 'DL_PUTTC': 0, 'DL_MontantHT': 0, 'DL_MontantTTC': 0}]}]
     return render_template('detail_commande.html',entete=devis[0], lignes=devis[0]['products'], username=payload['username'],role=payload['role'])
 
+# CREATE TABLE [dbo].[product_data](
+#     [ar_ref] [varchar](255) NOT NULL,
+#     [image_picture] [varchar](max) NULL,
+# PRIMARY KEY CLUSTERED 
+# (
+#     [ar_ref] ASC
+# )
+
+# API upload img product
+@app.route('/api/uploadimg', methods=['POST'])
+def upload_img():
+    data = request.get_json()
+    ref = data['ref']
+    img = data['img']
+    cursor = conn.cursor()
+    query = "INSERT INTO product_data(ar_ref, image_picture) VALUES (?, ?)"
+    cursor.execute(query, ref, img)
+    cursor.commit()
+    cursor.close()
+    return jsonify('success')
+
+
 # API client Route
 @app.route('/api/clients', methods=['GET'])
 def clients():
