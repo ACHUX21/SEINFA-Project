@@ -173,11 +173,11 @@ def users():
     if not token:
         return redirect(url_for('logout'))
     payload = verifyjwt(token)
-    if payload['role'] != 'Administrateur':
-        print(payload['role'])
-        return redirect(url_for('index'))
     if not payload:
+        return redirect(url_for('logout'))
+    if payload['role'] != 'Administrateur':
         return redirect(url_for('index'))
+   
     return render_template('users.html', username=payload['username'], profile_pic=get_picture(payload['username']),role=payload['role'], users=Get_All_Users(),depots = get_all_depots())
 
 @app.route('/add_user', methods=['POST'])
