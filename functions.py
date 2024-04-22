@@ -301,6 +301,15 @@ def add_user(name,password,role,user_mail,status):
     params = (name,password,role,user_mail,"image",status)
     return execute_query(query, params)
 
+def get_picture(name):
+    query = "SELECT image_base64 FROM users WHERE name = ?"
+    data = fetch_first(query, (name,))
+    if data:
+        return data[0]
+    return None
+
+
+
 def get_all_depot_users():
     # Updated query to also select the userid
     query = "SELECT userid, name, DE_Intitule FROM user_sel_depots ORDER BY name"

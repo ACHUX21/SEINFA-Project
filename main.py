@@ -20,7 +20,7 @@ from functions import (
     get_all_depot_users,
     get_depots_by_user,
     add_user,
-    get_all_depots,
+    get_all_depots,get_picture,
     get_product_by_ref
 )
 from mysqlDB import (
@@ -45,7 +45,8 @@ from dash import (
     get_ca_by_co_no,
     get_all_ca,
     get_products_en_promotions,
-    encours_commercial_client
+    encours_commercial_client,
+    
 )
 
 conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=196.115.56.212,1433;DATABASE=ASZPROD;UID=sa;PWD=90901504Data;Encrypt=no;TrustServerCertificate=yes;MARS_Connection=Yes;MultipleActiveResultSets=True;')
@@ -93,7 +94,7 @@ def dashboard():
     payload = verifyjwt(token)
     if not payload:
         return redirect(url_for('logout'))
-    return render_template('dashboard.html', username=payload['username'],role=payload['role'], data_client=get_ca_client_co_no_2024(payload['co_no'], payload['role']), data_product=get_ca_products_co_no_2024(payload['co_no'], payload['role']),count_client=get_all_client_by_co_no(payload['co_no'], payload['role']), ca=get_ca_by_co_no(payload['co_no'], payload['role']),ca_all=get_all_ca( payload['co_no'] ,payload['role'] ),encours_commercial_client=encours_commercial_client(payload['co_no'], payload['role']))
+    return render_template('dashboard.html', username=payload['username'], profile_pic=get_picture(payload['username']),role=payload['role'], data_client=get_ca_client_co_no_2024(payload['co_no'], payload['role']), data_product=get_ca_products_co_no_2024(payload['co_no'], payload['role']),count_client=get_all_client_by_co_no(payload['co_no'], payload['role']), ca=get_ca_by_co_no(payload['co_no'], payload['role']),ca_all=get_all_ca( payload['co_no'] ,payload['role'] ),encours_commercial_client=encours_commercial_client(payload['co_no'], payload['role']))
 
 @app.route('/newandpromotions')
 def newandpromotions():
@@ -103,7 +104,7 @@ def newandpromotions():
     payload = verifyjwt(token)
     if not payload:
         return redirect(url_for('logout'))
-    return render_template('actualiteetnews.html', username=payload['username'],role=payload['role'], products_en_promotions=get_products_en_promotions())
+    return render_template('actualiteetnews.html', username=payload['username'], profile_pic=get_picture(payload['username']),role=payload['role'], products_en_promotions=get_products_en_promotions())
 
 @app.route('/login', methods=['GET'])
 def login():
@@ -155,7 +156,7 @@ def commandes():
         products=products,
         categories=categories,
         tmpCart=tmp_cart,
-        username=payload['username'],
+        username=payload['username'], profile_pic=get_picture(payload['username']),
         role=payload['role'],
         total=get_TOTAL(user_id),
         depot=depot,
@@ -177,7 +178,7 @@ def users():
         return redirect(url_for('index'))
     if not payload:
         return redirect(url_for('index'))
-    return render_template('users.html', username=payload['username'],role=payload['role'], users=Get_All_Users(),depots = get_all_depots())
+    return render_template('users.html', username=payload['username'], profile_pic=get_picture(payload['username']),role=payload['role'], users=Get_All_Users(),depots = get_all_depots())
 
 @app.route('/add_user', methods=['POST'])
 def add_users():
@@ -200,11 +201,11 @@ def add_users():
     image = ""
     statut = request.form['user_statut']
     # if not name or not password or not role or not user_mail or not image:
-    #     return render_template('users.html', username=payload['username'],role=payload['role'], users=Get_All_Users(), error='S\'il vous plaît remplir tous les champs')
+    #     return render_template('users.html', username=payload['username'], profile_pic=get_picture(payload['username']),role=payload['role'], users=Get_All_Users(), error='S\'il vous plaît remplir tous les champs')
     f = add_user(name, password,role, user_mail,statut)
     print(f)
     if not f:
-        return render_template('users.html', username=payload['username'],role=payload['role'], users=Get_All_Users(), error='Erreur lors de l\'enregistrement de l\'utilisateur')
+        return render_template('users.html', username=payload['username'], profile_pic=get_picture(payload['username']),role=payload['role'], users=Get_All_Users(), error='Erreur lors de l\'enregistrement de l\'utilisateur')
     print(name,password,user_mail)
     return redirect(url_for('users'))
 
@@ -231,7 +232,7 @@ def products_images():
     payload = verifyjwt(token)
     if not payload:
         return redirect(url_for('logout'))
-    return render_template('products.html', articles=fetch_products(500), username=payload['username'],role=payload['role'])
+    return render_template('products.html', articles=fetch_products(500), username=payload['username'], profile_pic=get_picture(payload['username']),role=payload['role'])
 
 @app.route('/product_details/<string:ref>', methods=['GET'])
 def product_images(ref):
@@ -242,7 +243,7 @@ def product_images(ref):
     if not payload:
         return redirect(url_for('logout'))
     product = get_product_by_ref(ref.replace('-', '/'))
-    return render_template('product_details.html',product=product, username=payload['username'],role=payload['role'])
+    return render_template('product_details.html',product=product, username=payload['username'], profile_pic=get_picture(payload['username']),role=payload['role'])
 
 
 @app.route('/users_depot', methods=['GET','POST'])
@@ -262,7 +263,7 @@ def users_depot():
     users = get_all_depot_users()  # Fetches the list of users
     if not users:
         print("No users fetched. Check the database and query.")
-    return render_template('users_depot.html', users=users,depots = get_all_depots(),all_users=Get_All_Users(), username=payload['username'],role=payload['role'])
+    return render_template('users_depot.html', users=users,depots = get_all_depots(),all_users=Get_All_Users(), username=payload['username'], profile_pic=get_picture(payload['username']),role=payload['role'])
 # api/user_depots
 @app.route('/api/user_depots/<int:user_id>', methods=['POST'])
 def update_user_depots(user_id):
@@ -429,7 +430,7 @@ def voirDevis():
         devis = get_all_devis()
     else:
         devis = get_all_devis_by_co_no(payload['co_no'])
-    return render_template('voir_commande.html', devis=devis, username=payload['username'],role=payload['role'])
+    return render_template('voir_commande.html', devis=devis, username=payload['username'], profile_pic=get_picture(payload['username']),role=payload['role'])
 
 # Cart Routes
 @app.route('/addToCart', methods=['POST'])
@@ -485,7 +486,7 @@ def draftDevis():
         drafts = get_drafts()
     else:
         drafts = get_drafts(payload['id'])
-    return render_template('voir_draft.html', draft=drafts, username=payload['username'],role=payload['role'])
+    return render_template('voir_draft.html', draft=drafts, username=payload['username'], profile_pic=get_picture(payload['username']),role=payload['role'])
 
 # API Routes
 
@@ -510,7 +511,7 @@ def validerDraftNum(devis):
     ref = data[0]['ref']
     print(client, date, ref)
     if not client or not date or not ref:
-        return render_template('detail_devis_draft.html', error='S\'il vous plaît remplir tous les champs', username=payload['username'],role=payload['role'], data=[], d_data=[])
+        return render_template('detail_devis_draft.html', error='S\'il vous plaît remplir tous les champs', username=payload['username'], profile_pic=get_picture(payload['username']),role=payload['role'], data=[], d_data=[])
     var_last_devis = last_dev_mssql()
     userid = int(payload['id'])
     dateF = "1753-01-01"
@@ -555,8 +556,8 @@ def voirDraftNum(devis):
         d_data = get_drafts(payload['id'], devis)
     # print(d_data)
     if not data:
-        return render_template('detail_devis_draft.html', error='Devis introuvable', username=payload['username'],role=payload['role'], data=[])
-    return render_template('detail_devis_draft.html',d_data=d_data[0], data=data, username=payload['username'],role=payload['role'])
+        return render_template('detail_devis_draft.html', error='Devis introuvable', username=payload['username'], profile_pic=get_picture(payload['username']),role=payload['role'], data=[])
+    return render_template('detail_devis_draft.html',d_data=d_data[0], data=data, username=payload['username'], profile_pic=get_picture(payload['username']),role=payload['role'])
 
 
 # API Devis Route
@@ -571,7 +572,7 @@ def voirDevisNum(devis):
     devis = get_devis_by_id(devis)
     if not devis or not devis[0] or not devis[0]['products']:
         devis = [{'CT_Num': '', 'CT_Intitule': '', 'CT_Telephone': '', 'CT_Adresse': '', 'DO_Piece': '', 'DO_Ref': '', 'DO_Date': '', 'DO_Statut': 0, 'DO_TotalHT': 0, 'DO_TotalTTC': 0, 'products': [{'AR_Ref': '', 'DL_Design': '', 'DL_Qte': 0, 'DL_PUTTC': 0, 'DL_MontantHT': 0, 'DL_MontantTTC': 0}]}]
-    return render_template('detail_commande.html',entete=devis[0], lignes=devis[0]['products'], username=payload['username'],role=payload['role'])
+    return render_template('detail_commande.html',entete=devis[0], lignes=devis[0]['products'], username=payload['username'], profile_pic=get_picture(payload['username']),role=payload['role'])
 
 # CREATE TABLE [dbo].[product_data](
 #     [ar_ref] [varchar](255) NOT NULL,
