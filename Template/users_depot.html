@@ -112,7 +112,7 @@
                                         </span>
                                         <!--end::Svg Icon-->
                                     </span>
-                                    <span class="menu-title">DEVIS</span>
+                                    <span class="menu-title">Traitement</span>
                                     <span class="menu-arrow"></span>
                                 </span>
                                 <div class="menu-sub menu-sub-accordion menu-active-bg">
@@ -155,6 +155,16 @@
                                         </a>
                                     </div>
                                 </div>
+                                <div class="menu-sub menu-sub-accordion menu-active-bg">
+                                    <div class="menu-item">
+                                        <a class="menu-link active" href="{{ url_for('voir_bl') }}"> 
+                                            <span class="menu-bullet">
+                                                <span class="bullet bullet-dot"></span>
+                                            </span>
+                                            <span class="menu-title">Voir les Bls</span>
+                                        </a>
+                                    </div>
+                                </div>
                                 {% if role == 'Administrateur' %}
                                 <div class="menu-sub menu-sub-accordion menu-active-bg">
                                     <div class="menu-item">
@@ -176,7 +186,7 @@
                                         </a>
                                     </div>
                                 </div>
-								<div class="menu-sub menu-sub-accordion menu-active-bg">
+                                <div class="menu-sub menu-sub-accordion menu-active-bg">
                                     <div class="menu-item">
                                         <a class="menu-link active" href="{{ url_for('products_images') }}"> 
                                             <span class="menu-bullet">
@@ -187,7 +197,7 @@
                                     </div>
                                 </div>
                                 {% endif %}
-								<div class="menu-sub menu-sub-accordion menu-active-bg">
+                                <div class="menu-sub menu-sub-accordion menu-active-bg">
                                     <div class="menu-item">
                                         <a class="menu-link active" href="{{ url_for('newandpromotions') }}"> 
                                             <span class="menu-bullet">

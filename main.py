@@ -23,7 +23,8 @@ from functions import (
     get_all_depots,get_picture,
     get_product_by_ref,
     get_all_bl_by_co_no,
-    get_detail_by_bl
+    get_detail_by_bl,
+    get_all_fac_no_by_co_no
 )
 from mysqlDB import (
     select_tmpCart,
@@ -141,6 +142,20 @@ def voir_bl():
     else:
         bls = get_all_bl_by_co_no(payload['co_no'])
     return render_template('voir_bl.html', bls=bls, username=payload['username'], profile_pic=get_picture(payload['username']),role=payload['role'])
+
+@app.route('/voir_facture_no_regler', methods=['GET'])
+def voir_fac():
+    token = request.cookies.get('token')
+    if not token:
+        return redirect(url_for('logout'))
+    payload = verifyjwt(token)
+    if not payload:
+        return redirect(url_for('logout'))
+    if payload['role'] == 'Administrateur':
+        fa_no_r = get_all_fac_no_by_co_no()
+    else:
+        fa_no_r = get_all_fac_no_by_co_no(payload['co_no'])
+    return render_template('voir_encours_facture.html', fa_no_r=fa_no_r, username=payload['username'], profile_pic=get_picture(payload['username']),role=payload['role'])
 
 # Commandes Route
 @app.route('/commandes', methods=['GET'])

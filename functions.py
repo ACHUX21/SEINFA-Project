@@ -262,6 +262,55 @@ def get_detail_by_bl(bl_id):
     return [details]
 
 
+def get_all_fac_no_by_co_no(co_no=None):
+    if co_no is not None:
+#         SELECT SUM(dbo.F_DOCENTETE.DO_TotalTTC) AS DO_TotalTTC, 
+#        COALESCE(SUM(dbo.reglech.montant_regle), 0) AS montant_regle, 
+#        SUM(dbo.F_DOCENTETE.DO_TotalTTC) - COALESCE(SUM(dbo.reglech.montant_regle), 0) AS reste, 
+#        dbo.F_DOCENTETE.DO_Piece
+# FROM dbo.F_DOCENTETE 
+# LEFT OUTER JOIN dbo.reglech ON dbo.reglech.DO_Piece = dbo.F_DOCENTETE.DO_Piece
+# WHERE dbo.F_DOCENTETE.DO_Type IN (6, 7)
+# GROUP BY dbo.F_DOCENTETE.DO_Piece
+        query = """
+        SELECT FORMAT(do_date, 'yyyy-MM-dd') as short_date, ct_intitule, do_ref, SUM(do_totalht) as do_totalht, do_statut,SUM(dbo.F_DOCENTETE.DO_TotalTTC) AS DO_TotalTTC, 
+        COALESCE(SUM(dbo.reglech.montant_regle), 0) AS montant_regle, 
+        SUM(dbo.F_DOCENTETE.DO_TotalTTC) - COALESCE(SUM(dbo.reglech.montant_regle), 0) AS reste, 
+        dbo.F_DOCENTETE.DO_Piece
+        FROM f_docentete
+        INNER JOIN f_comptet ON f_comptet.ct_num = f_docentete.do_tiers LEFT OUTER JOIN dbo.reglech ON dbo.reglech.DO_Piece = dbo.F_DOCENTETE.DO_Piece
+        WHERE do_type IN (6, 7) AND f_docentete.co_no = ? GROUP BY dbo.F_DOCENTETE.DO_Piece, do_date, ct_intitule, do_ref, do_statut
+        ORDER BY do_date DESC
+        """
+        params = (co_no)
+    elif co_no is None:
+        query = """
+        SELECT FORMAT(do_date, 'yyyy-MM-dd') as short_date, ct_intitule, do_ref, SUM(do_totalht) as do_totalht, do_statut,SUM(dbo.F_DOCENTETE.DO_TotalTTC) AS DO_TotalTTC,
+        COALESCE(SUM(dbo.reglech.montant_regle), 0) AS montant_regle,
+        SUM(dbo.F_DOCENTETE.DO_TotalTTC) - COALESCE(SUM(dbo.reglech.montant_regle), 0) AS reste,
+        dbo.F_DOCENTETE.DO_Piece
+        FROM f_docentete
+        INNER JOIN f_comptet ON f_comptet.ct_num = f_docentete.do_tiers LEFT OUTER JOIN dbo.reglech ON dbo.reglech.DO_Piece = dbo.F_DOCENTETE.DO_Piece
+        WHERE do_type IN (6, 7) GROUP BY dbo.F_DOCENTETE.DO_Piece, do_date, ct_intitule, do_ref, do_statut
+        ORDER BY do_date DESC
+        """
+        params = ()
+    data = fetch_all(query, params)
+    rounded_devis = []
+    for row in data:
+        devis = {
+            'do_date': row[0],
+            'ct_intitule': row[1],
+            'do_ref': row[2],
+            'do_totalht': f'{row[3]:,.2f}'.replace(',', ' '),
+            'do_statut': row[4],
+            'do_totalttc': f'{row[5]:,.2f}'.replace(',', ' '),
+            'montant_regle': f'{row[6]:,.2f}'.replace(',', ' '),
+            'reste': f'{row[7]:,.2f}'.replace(',', ' '),
+            'do_piece': row[8]
+        }
+        rounded_devis.append(devis)
+    return rounded_devis
 
 
 def get_devis_by_id(devis_id):

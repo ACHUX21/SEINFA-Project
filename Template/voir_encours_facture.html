@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 	<!--begin::Head-->
-	<head><base href="../../../">
-		<title>Détail {{ data.devis }}</title>
+	<head><base href="/">
+		<title>Voir les Factures - DATADEV</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta property="og:locale" content="en_US" />
@@ -57,7 +57,7 @@
 
             .quantity-selector button:active {
             background-color: #ddd;
-            }
+            } 
             .category-slider {
             overflow-x: auto;
             overflow-y: hidden;
@@ -71,7 +71,7 @@
             .category-slider .btn {
             white-space: normal; /* This ensures text within buttons doesn't get squeezed. */
             }
-
+                
 
     </style>
 	<!--end::Head-->
@@ -285,57 +285,6 @@
                                 </div>
                                 <!--end::Menu wrapper-->
                             </div>
-                            {% if error %}
-                        <!--begin::Alert-->
-                        <div class="alert alert-dismissible bg-danger d-flex flex-column flex-sm-row p-5 mb-10">
-                            <!--begin::Icon-->
-                            <span class="svg-icon svg-icon-2hx svg-icon-light me-4 mb-5 mb-sm-0"><i class="fa-solid fa-triangle-exclamation" style="color: #FFD43B;"></i></span>
-                            <!--end::Icon-->
-
-                            <!--begin::Wrapper-->
-                            <div class="d-flex flex-column pe-0 pe-sm-10">
-                                <!--begin::Title-->
-                                <h4 class="fw-bold">Ceci est une alerte</h4>
-                                <!--end::Title-->
-                                <!--begin::Content-->
-                                <span>{{error}}</span>
-                                <!--end::Content-->
-                            </div>
-                            <!--end::Wrapper-->
-
-                            <!--begin::Close-->
-                            <button type="button" class="position-absolute position-sm-relative m-2 m-sm-0 top-0 end-0 btn btn-icon ms-sm-auto" data-bs-dismiss="alert">
-                                <span class="svg-icon svg-icon-1 svg-icon-light">X</span>
-                            </button>
-                            <!--end::Close-->
-                        </div>
-                        {% endif %}
-
-                        {% if success %}
-                        <!--begin::Alert-->
-                        <div class="alert alert-dismissible bg-success d-flex flex-column flex-sm-row p-5 mb-10">
-                            <!--begin::Icon-->
-                            <span class="svg-icon svg-icon-2hx svg-icon-light me-4 mb-5 mb-sm-0"><i class="fa-solid fa-check" style="color: #FFD43B;"></i></span>
-                            <!--end::Icon-->
-
-                            <!--begin::Wrapper-->
-                            <div class="d-flex flex-column pe-0 pe-sm-10">
-                                <!--begin::Title-->
-                                <h4 class="fw-bold">Ceci est une alerte</h4>
-                                <!--end::Title-->
-                                <!--begin::Content-->
-                                <span>{{success}}</span>
-                                <!--end::Content-->
-                            </div>
-                            <!--end::Wrapper-->
-
-                            <!--begin::Close-->
-                            <button type="button" class="position-absolute position-sm-relative m-2 m-sm-0 top-0 end-0 btn btn-icon ms-sm-auto" data-bs-dismiss="alert">
-                                <span class="svg-icon svg-icon-1 svg-icon-light">X</span>
-                            </button>
-                            <!--end::Close-->
-                        </div>
-                        {% endif %}
                             <!--end::Navbar-->
                             <!--begin::Toolbar wrapper-->
                             <div class="d-flex align-items-stretch flex-shrink-0">
@@ -581,7 +530,7 @@
 								<!--begin::Page title-->
 								<div data-kt-swapper="true" data-kt-swapper-mode="prepend" data-kt-swapper-parent="{default: '#kt_content_container', 'lg': '#kt_toolbar_container'}" class="page-title d-flex align-items-center flex-wrap me-3 mb-5 mb-lg-0">
 									<!--begin::Title-->
-									<h1 class="d-flex text-dark fw-bolder fs-3 align-items-center my-1">Détail de Devis</h1>
+									<h1 class="d-flex text-dark fw-bolder fs-3 align-items-center my-1">Les devis</h1>
 									<!--end::Title-->
 									<!--begin::Separator-->
 									<span class="h-20px border-gray-300 border-start mx-4"></span>
@@ -590,331 +539,142 @@
 								<!--end::Page title-->
 							</div>
 						</div>
+                       
                         <!--end::Alert-->
                         
 						<!--end::Toolbar-->
 						<!--begin::Post-->
-						<div class="post d-flex flex-column-fluid" id="kt_post">
-							<!--begin::Container-->
-							<div id="kt_content_container" class="container-xxl">
-								<!--begin::Order details page-->
-								<div class="d-flex flex-column gap-7 gap-lg-10">
-									<div class="d-flex flex-wrap flex-stack gap-5 gap-lg-10">
-										<!--begin:::Tabs-->
-										<ul class="nav nav-custom nav-tabs nav-line-tabs nav-line-tabs-2x border-0 fs-4 fw-bold mb-lg-n2 me-auto">
-											<!--begin:::Tab item-->
-											<li class="nav-item">
-												<a class="nav-link text-active-primary pb-4 active" data-bs-toggle="tab" href="#kt_ecommerce_sales_order_summary">Détail de devis</a>
-											</li>
-											<!--end:::Tab item-->
-										</ul>
-										<!--end:::Tabs-->
-										<!--begin::Button-->
-										<a class="btn btn-icon btn-light-primary btn-sm ms-auto me-lg-n7">
-											<!--begin::Svg Icon | path: icons/duotune/arrows/arr074.svg-->
-											<span class="svg-icon svg-icon-2">
-												<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-													<path d="M11.2657 11.4343L15.45 7.25C15.8642 6.83579 15.8642 6.16421 15.45 5.75C15.0358 5.33579 14.3642 5.33579 13.95 5.75L8.40712 11.2929C8.01659 11.6834 8.01659 12.3166 8.40712 12.7071L13.95 18.25C14.3642 18.6642 15.0358 18.6642 15.45 18.25C15.8642 17.8358 15.8642 17.1642 15.45 16.75L11.2657 12.5657C10.9533 12.2533 10.9533 11.7467 11.2657 11.4343Z" fill="currentColor" />
-												</svg>
-											</span>
-											<!--end::Svg Icon-->
-										</a>
-										<a href="/commandes" class="btn btn-light-primary btn-sm">Créer un devis</a>
-                                        <a href="/voirdevis" class="btn btn-light-primary btn-sm">Voir les devis</a>
-										<!--end::Button-->
-									</div>
-									<!--begin::Order summary-->
-									<div class="d-flex flex-column flex-xl-row gap-7 gap-lg-10">
-										<!--begin::Order details-->
-										<div class="card card-flush py-4 flex-row-fluid">
-											<!--begin::Card header-->
-											<div class="card-header">
-												<div class="card-title">
-													<h2>N° Devis (# {{ data.devis }})</h2>
-												</div>
-											</div>
-											<!--end::Card header-->
-											<!--begin::Card body-->
-											<div class="card-body pt-0">
-												<div class="table-responsive">
-													<!--begin::Table-->
-													<table class="table align-middle table-row-bordered mb-0 fs-6 gy-5 min-w-300px">
-														<!--begin::Table body-->
-														<tbody class="fw-bold text-gray-600">
-															<!--begin::Date-->
-															<tr>
-																<td class="text-muted">
-																	<div class="d-flex align-items-center">
-																	<!--begin::Svg Icon | path: icons/duotune/files/fil002.svg-->
-																	<span class="svg-icon svg-icon-2 me-2">
-																		<svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" viewBox="0 0 20 21" fill="none">
-																			<path opacity="0.3" d="M19 3.40002C18.4 3.40002 18 3.80002 18 4.40002V8.40002H14V4.40002C14 3.80002 13.6 3.40002 13 3.40002C12.4 3.40002 12 3.80002 12 4.40002V8.40002H8V4.40002C8 3.80002 7.6 3.40002 7 3.40002C6.4 3.40002 6 3.80002 6 4.40002V8.40002H2V4.40002C2 3.80002 1.6 3.40002 1 3.40002C0.4 3.40002 0 3.80002 0 4.40002V19.4C0 20 0.4 20.4 1 20.4H19C19.6 20.4 20 20 20 19.4V4.40002C20 3.80002 19.6 3.40002 19 3.40002ZM18 10.4V13.4H14V10.4H18ZM12 10.4V13.4H8V10.4H12ZM12 15.4V18.4H8V15.4H12ZM6 10.4V13.4H2V10.4H6ZM2 15.4H6V18.4H2V15.4ZM14 18.4V15.4H18V18.4H14Z" fill="currentColor" />
-																			<path d="M19 0.400024H1C0.4 0.400024 0 0.800024 0 1.40002V4.40002C0 5.00002 0.4 5.40002 1 5.40002H19C19.6 5.40002 20 5.00002 20 4.40002V1.40002C20 0.800024 19.6 0.400024 19 0.400024Z" fill="currentColor" />
-																		</svg>
-																	</span>
-																	<!--end::Svg Icon-->Date devis</div>
-																</td>
-																<td class="fw-bolder text-end">{{ d_data.date }}</td>
-															</tr>
-                                                            <tr>
-																<td class="text-muted">
-																	<div class="d-flex align-items-center">
-																	<!--begin::Svg Icon | path: icons/duotune/files/fil002.svg-->
-																	<span class="svg-icon svg-icon-2 me-2">
-																		<svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" viewBox="0 0 20 21" fill="none">
-																			<path opacity="0.3" d="M19 3.40002C18.4 3.40002 18 3.80002 18 4.40002V8.40002H14V4.40002C14 3.80002 13.6 3.40002 13 3.40002C12.4 3.40002 12 3.80002 12 4.40002V8.40002H8V4.40002C8 3.80002 7.6 3.40002 7 3.40002C6.4 3.40002 6 3.80002 6 4.40002V8.40002H2V4.40002C2 3.80002 1.6 3.40002 1 3.40002C0.4 3.40002 0 3.80002 0 4.40002V19.4C0 20 0.4 20.4 1 20.4H19C19.6 20.4 20 20 20 19.4V4.40002C20 3.80002 19.6 3.40002 19 3.40002ZM18 10.4V13.4H14V10.4H18ZM12 10.4V13.4H8V10.4H12ZM12 15.4V18.4H8V15.4H12ZM6 10.4V13.4H2V10.4H6ZM2 15.4H6V18.4H2V15.4ZM14 18.4V15.4H18V18.4H14Z" fill="currentColor" />
-																			<path d="M19 0.400024H1C0.4 0.400024 0 0.800024 0 1.40002V4.40002C0 5.00002 0.4 5.40002 1 5.40002H19C19.6 5.40002 20 5.00002 20 4.40002V1.40002C20 0.800024 19.6 0.400024 19 0.400024Z" fill="currentColor" />
-																		</svg>
-																	</span>
-																	<!--end::Svg Icon-->Réference devis</div>
-																</td>
-																<td class="fw-bolder text-end">{{ d_data.ref }}</td>
-															</tr>
-															<!--end::Date-->
-															<!--begin::Payment method-->
-															<tr>
-																<td class="text-muted">
-																	<div class="d-flex align-items-center">
-																	<span class="svg-icon svg-icon-2 me-2">
-																		<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-																			<path opacity="0.3" d="M3.20001 5.91897L16.9 3.01895C17.4 2.91895 18 3.219 18.1 3.819L19.2 9.01895L3.20001 5.91897Z" fill="currentColor" />
-																			<path opacity="0.3" d="M13 13.9189C13 12.2189 14.3 10.9189 16 10.9189H21C21.6 10.9189 22 11.3189 22 11.9189V15.9189C22 16.5189 21.6 16.9189 21 16.9189H16C14.3 16.9189 13 15.6189 13 13.9189ZM16 12.4189C15.2 12.4189 14.5 13.1189 14.5 13.9189C14.5 14.7189 15.2 15.4189 16 15.4189C16.8 15.4189 17.5 14.7189 17.5 13.9189C17.5 13.1189 16.8 12.4189 16 12.4189Z" fill="currentColor" />
-																			<path d="M13 13.9189C13 12.2189 14.3 10.9189 16 10.9189H21V7.91895C21 6.81895 20.1 5.91895 19 5.91895H3C2.4 5.91895 2 6.31895 2 6.91895V20.9189C2 21.5189 2.4 21.9189 3 21.9189H19C20.1 21.9189 21 21.0189 21 19.9189V16.9189H16C14.3 16.9189 13 15.6189 13 13.9189Z" fill="currentColor" />
-																		</svg>
-																	</span>
-																	Statut de devis</div>
-																</td>
-																<td class="fw-bolder text-end">
-                                                                {% if d_data.status == 0 %}
-                                                                    <span class="badge badge-light-primary ">Saisie</span>
-                                                                {% elif d_data.status == 1 %}
-                                                                    <span class="badge badge-light-info">Déja valider</span>
-                                                                {% endif %}
-                                                                </td>
-															</tr>
-															<!--end::Payment method-->
-															<!--begin::Date-->
-															<!-- <tr>
-																<td class="text-muted">
-																	<div class="d-flex align-items-center">
-																	begin::Svg Icon | path: icons/duotune/ecommerce/ecm006.svg
-																	<span class="svg-icon svg-icon-2 me-2">
-																		<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-																			<path d="M20 8H16C15.4 8 15 8.4 15 9V16H10V17C10 17.6 10.4 18 11 18H16C16 16.9 16.9 16 18 16C19.1 16 20 16.9 20 18H21C21.6 18 22 17.6 22 17V13L20 8Z" fill="currentColor" />
-																			<path opacity="0.3" d="M20 18C20 19.1 19.1 20 18 20C16.9 20 16 19.1 16 18C16 16.9 16.9 16 18 16C19.1 16 20 16.9 20 18ZM15 4C15 3.4 14.6 3 14 3H3C2.4 3 2 3.4 2 4V13C2 13.6 2.4 14 3 14H15V4ZM6 16C4.9 16 4 16.9 4 18C4 19.1 4.9 20 6 20C7.1 20 8 19.1 8 18C8 16.9 7.1 16 6 16Z" fill="currentColor" />
-																		</svg>
-																	</span>
-																	end::Svg IconShipping Method</div>
-																</td>
-																<td class="fw-bolder text-end">Flat Shipping Rate</td>
-															</tr>-->
-															<!--end::Date-->
-														</tbody>
-														<!--end::Table body-->
-													</table>
-													<!--end::Table-->
-												</div>
-											</div>
-											<!--end::Card body-->
-										</div>
-										<!--end::Order details-->
-										<!--begin::Customer details-->
-										<div class="card card-flush py-4 flex-row-fluid">
-											<!--begin::Card header-->
-											<div class="card-header">
-												<div class="card-title">
-													<h2>Info Client</h2>
-												</div>
-											</div>
-											<!--end::Card header-->
-											<!--begin::Card body-->
-											<div class="card-body pt-0">
-												<div class="table-responsive">
-													<!--begin::Table-->
-													<table class="table align-middle table-row-bordered mb-0 fs-6 gy-5 min-w-300px">
-														<!--begin::Table body-->
-														<tbody class="fw-bold text-gray-600">
-															<!--begin::Customer name-->
-															<tr>
-																<td class="text-muted">
-																	<div class="d-flex align-items-center">
-																	<!--begin::Svg Icon | path: icons/duotune/communication/com006.svg-->
-																	<span class="svg-icon svg-icon-2 me-2">
-																		<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-																			<path opacity="0.3" d="M22 12C22 17.5 17.5 22 12 22C6.5 22 2 17.5 2 12C2 6.5 6.5 2 12 2C17.5 2 22 6.5 22 12ZM12 7C10.3 7 9 8.3 9 10C9 11.7 10.3 13 12 13C13.7 13 15 11.7 15 10C15 8.3 13.7 7 12 7Z" fill="currentColor" />
-																			<path d="M12 22C14.6 22 17 21 18.7 19.4C17.9 16.9 15.2 15 12 15C8.8 15 6.09999 16.9 5.29999 19.4C6.99999 21 9.4 22 12 22Z" fill="currentColor" />
-																		</svg>
-																	</span>
-																	<!--end::Svg Icon-->Client</div>
-																</td>
-																<td class="fw-bolder text-end">
-																	<div class="d-flex align-items-center justify-content-end">
-																		<!--begin:: Avatar -->
-																		<!--end::Avatar-->
-																		<!--begin::Name-->
-																		<a class="text-gray-600 text-hover-primary">{{ d_data.client_name }}</a>
-																		<!--end::Name-->
-																	</div>
-																</td>
-															</tr>
-															<!--end::Customer name-->
-															<!--begin::Customer email-->
-															<tr>
-																<td class="text-muted">
-																	<div class="d-flex align-items-center">
-																	<!--begin::Svg Icon | path: icons/duotune/communication/com006.svg-->
-																	<span class="svg-icon svg-icon-2 me-2">
-																		<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-																			<path opacity="0.3" d="M22 12C22 17.5 17.5 22 12 22C6.5 22 2 17.5 2 12C2 6.5 6.5 2 12 2C17.5 2 22 6.5 22 12ZM12 7C10.3 7 9 8.3 9 10C9 11.7 10.3 13 12 13C13.7 13 15 11.7 15 10C15 8.3 13.7 7 12 7Z" fill="currentColor" />
-																			<path d="M12 22C14.6 22 17 21 18.7 19.4C17.9 16.9 15.2 15 12 15C8.8 15 6.09999 16.9 5.29999 19.4C6.99999 21 9.4 22 12 22Z" fill="currentColor" />
-																		</svg>
-																	</span>
-																	<!--end::Svg Icon-->Code Client</div>
-																</td>
-																<td class="fw-bolder text-end">
-																	<div class="d-flex align-items-center justify-content-end">
-																		<!--end::Avatar-->
-																		<!--begin::Name-->
-																		<a class="text-gray-600 text-hover-primary">{{ d_data.client }}</a>
-																		<!--end::Name-->
-																	</div>
-																</td>
-															</tr>
-															<!--end::Payment method-->
-															<!--begin::Date-->
-															
-															<!--end::Date-->
-														</tbody>
-														<!--end::Table body-->
-													</table>
-													<!--end::Table-->
-												</div>
-											</div>
-											<!--end::Card body-->
-										</div>
-										<!--end::Documents-->
-									</div>
-									<!--end::Order summary-->
-									<!--begin::Tab content-->
-									<div class="tab-content">
-										<!--begin::Tab pane-->
-										<div class="tab-pane fade show active" id="kt_ecommerce_sales_order_summary" role="tab-panel">
-											<!--begin::Orders-->
-											<div class="d-flex flex-column gap-7 gap-lg-10">
-												
-												<!--begin::Product List-->
-												<div class="card card-flush py-4 flex-row-fluid overflow-hidden">
-													<!--begin::Card header-->
-													<div class="card-header">
-														<div class="card-title">
-															<h2>Détails du commande</h2>
-														</div>
-													</div>
-													<!--end::Card header-->
-													<!--begin::Card body-->
-													<div class="card-body pt-0">
-														<div class="table-responsive">
-															<!--begin::Table-->
-															<table class="table align-middle table-row-dashed fs-6 gy-5 mb-0">
-																<!--begin::Table head-->
-																<thead>
-																	<tr class="text-start text-gray-400 fw-bolder fs-7 text-uppercase gs-0">
-																		<th class="min-w-175px">Produit</th>
-																		<th class="min-w-100px text-end">Réference</th>
-																		<th class="min-w-70px text-end">Quantité</th>
-																		<th class="min-w-100px text-end">Prix unitaire</th>
-																		<th class="min-w-100px text-end">Montant TTC</th>
-																	</tr>
-																</thead>
-																<!--end::Table head-->
-																<!--begin::Table body-->
-																<tbody class="fw-bold text-gray-600">
-                                                                {% for produit in data %}
-																	<!--begin::Products-->
-																	<tr>
-																		<!--begin::Product-->
-																		<td>
-																			<div class="d-flex align-items-center">
-																				<!--end::Thumbnail-->
-																				<!--begin::Title-->
-																				<div class="ms-5">
-																					<a href="{{url_for('commandes')}}" class="fw-bolder text-gray-600 text-hover-primary">{{ produit.productDescription }}</a>
-																				</div>
-																				<!--end::Title-->
-																			</div>
-																		</td>
-																		<!--end::Product-->
-																		<!--begin::SKU-->
-																		<td class="text-end">{{ produit.ar_ref }}</td>
-																		<!--end::SKU-->
-																		<!--begin::Quantity-->
-																		<td class="text-end">{{ produit.quantity }}</td>
-																		<!--end::Quantity-->
-																		<!--begin::Price-->
-																		<td class="text-end">{{ "%.2f" % (produit.price) }}</td>
-																		<!--end::Price-->
-																		<!--begin::Total-->
-																		<td class="text-end">{{ "%.2f" % (produit.total) }}</td>
-																		<!--end::Total-->
-																	</tr>
-                                                                    {% endfor %}
-																	<!--end::Products-->
-																	<!--begin::Subtotal-->
-																	<tr>
-																		<td colspan="4" class="text-end">Total HT</td>
-																		<td class="text-end">{{ "%.2f" % (d_data.total) }}</td>
-																	</tr>
-																	<!--end::VAT-->
-																	<!--begin::Shipping-->
-																	<tr>
-																		<td colspan="4" class="text-end">Montant TTC</td>
-                                                                        {% if d_data.total %}
-                                                                            <td class="text-end"><b>{{ "%.2f" % (d_data.total * 1.2) }}</b></td>
-                                                                        {% else %}
-                                                                            <td class="text-end"><b>0</b></td>
-                                                                        {% endif %}
-                                                                    </tr>
-																	<!--end::Grand total-->
-																</tbody>
-																<!--end::Table head-->
-															</table>
-															<!--end::Table-->
-														</div>
-
-										                
-                                                        
-													</div>
-                                                    
-                                                    
-													<!--end::Card body-->
-												</div>
-                                                {% if d_data.status == 0 %}
-                                                <div class="d-flex justify-content-end">
-                                                    <!--begin::Button-->
-                                                    <a href="{{ url_for('commandes') }}" id="kt_ecommerce_edit_order_cancel" class="btn btn-light me-5">Annuler</a>
-                                                    <button type="button" id="submitFormBtn" class="btn btn-primary">
-
-                                                        <span class="indicator-label"><a href="/api/validerdraft/{{ d_data.devis }}" style="color:white;">Valider</a></span>
-                                                
-
-                                                        <span class="indicator-progress">S'il vous plaît, attendez...
-                                                        <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
-                                                    </button>
-                                                </div>
-                                                {% endif %}
-
-												<!--end::Product List-->
-											</div>
-											<!--end::Orders-->
-										</div>
-										<!--end::Tab pane-->
-									</div>
-									<!--end::Tab content-->
-								</div>
-								<!--end::Order details page-->
-							</div>
-							<!--end::Container-->
-						</div>
+                        <div class="card mb-5 mb-xl-8">
+                            <!--begin::Header-->
+                            <div class="card-header border-0 pt-5">
+                                <h3 class="card-title align-items-start flex-column">
+                                    <span class="card-label fw-bolder fs-3 mb-1">Voir les devis</span>
+                                </h3>
+                                <div class="card-toolbar">
+                                    <a href="{{ url_for('commandes') }}" class="btn btn-sm btn-light-primary">
+                                    <!--begin::Svg Icon | path: icons/duotune/arrows/arr075.svg-->
+                                    <span class="svg-icon svg-icon-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                            <rect opacity="0.5" x="11.364" y="20.364" width="16" height="2" rx="1" transform="rotate(-90 11.364 20.364)" fill="currentColor" />
+                                            <rect x="4.36396" y="11.364" width="16" height="2" rx="1" fill="currentColor" />
+                                        </svg>
+                                    </span>
+                                    <!--end::Svg Icon-->Créer un devis</a>
+                                </div>
+                            </div>
+                            <!--end::Header-->
+                            <!--begin::Body-->
+                            <div class="card-body py-3">
+                                <!--begin::Table container-->
+                                <div class="table-responsive">
+                                    <!--begin::Table-->
+                                    <table class="table align-middle gs-0 gy-4">
+                                        <!--begin::Table head-->
+                                        <thead>
+                                            <tr class="fw-bolder text-muted bg-light">
+                                                <th class="ps-4 min-w-325px rounded-start">Client</th>
+                                                <th class="min-w-125px">Date</th>
+                                                <th class="min-w-125px">N° Devis</th>
+                                                <th class="min-w-125px">Prix TTC</th>
+                                                <th class="min-w-125px">Montant Régler</th>
+                                                <th class="min-w-125px">Reste = Régler</th>
+                                                <th class="min-w-150px">Statut</th>
+                                                <th class="min-w-200px text-end rounded-end"></th>
+                                            </tr>
+                                        </thead>
+                                        <!--end::Table head-->
+                                        <!--begin::Table body-->
+                                        <tbody>
+                                         {% for fac in fa_no_r %}
+                                            <tr>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <!-- <div class="symbol symbol-50px me-5">
+                                                            <img src="static/assets/media/stock/600x400/img-26.jpg" class="" alt="" />
+                                                        </div> -->
+                                                        <div class="d-flex justify-content-start flex-column">
+                                                            <a href="/api/voirbl/{{ fac.do_piece }}" class="text-dark fw-bolder text-hover-primary mb-1 fs-6">{{ "- " + fac.ct_intitule }}</a>
+                                                            <!-- <span class="text-muted fw-bold text-muted d-block fs-7">HTML, JS, ReactJS</span> -->
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <a href="/api/voirbl/{{ fac.do_piece }}" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6">{{ fac.do_date }} DH</a>
+                                                    <!-- <span class="text-muted fw-bold text-muted d-block fs-7">Paid</span> -->
+                                                </td>
+                                                <td>
+                                                    <a href="/api/voirbl/{{ fac.do_piece }}" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6">{{ fac.do_piece }}</a>
+                                                    <!-- <span class="text-muted fw-bold text-muted d-block fs-7">Rejected</span> -->
+                                                </td>
+                                                <td>
+                                                    <a href="/api/voirbl/{{ fac.do_piece }}" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6">{{ fac.do_totalttc }} DH</a>
+                                                    <!-- <span class="text-muted fw-bold text-muted d-block fs-7">Insurance</span> -->
+                                                </td>
+                                                <td>
+                                                    <a href="/api/voirbl/{{ fac.do_piece }}" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6">{{ fac.montant_regle }} DH</a>
+                                                    <!-- <span class="text-muted fw-bold text-muted d-block fs-7">Insurance</span> -->
+                                                </td>
+                                                <td>
+                                                    <a href="/api/voirbl/{{ fac.do_piece }}" class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6">{{ fac.reste }} DH</a>
+                                                    <!-- <span class="text-muted fw-bold text-muted d-block fs-7">Insurance</span> -->
+                                                </td>
+                                                <td>
+                                                    {% if fac.do_statut == 0 %}
+                                                        <span class="badge badge-light-primary ">Saisie</span>
+                                                    {% elif fac.do_statut == 1 %}
+                                                        <span class="badge badge-light-info">Confirmé</span>
+                                                    {% elif fac.do_statut == 2 %}
+                                                        <span class="badge badge-light-success">Accepté</span>
+                                                    {% elif fac.do_statut == 3 %}
+                                                        <span class="badge badge-light-danger">Perdu</span>
+                                                    {% elif fac.do_statut == 4 %}
+                                                        <span class="badge badge-light-dark">Archivé</span>
+                                                    {% endif %}
+                                                </td>
+                                                <td class="text-end">
+                                                    <a href="/api/voirbl/{{ fac.do_piece }}" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1">
+                                                        <!--begin::Svg Icon | path: icons/duotune/general/gen019.svg-->
+                                                        <span class="svg-icon svg-icon-3">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                                <path d="M17.5 11H6.5C4 11 2 9 2 6.5C2 4 4 2 6.5 2H17.5C20 2 22 4 22 6.5C22 9 20 11 17.5 11ZM15 6.5C15 7.9 16.1 9 17.5 9C18.9 9 20 7.9 20 6.5C20 5.1 18.9 4 17.5 4C16.1 4 15 5.1 15 6.5Z" fill="currentColor" />
+                                                                <path opacity="0.3" d="M17.5 22H6.5C4 22 2 20 2 17.5C2 15 4 13 6.5 13H17.5C20 13 22 15 22 17.5C22 20 20 22 17.5 22ZM4 17.5C4 18.9 5.1 20 6.5 20C7.9 20 9 18.9 9 17.5C9 16.1 7.9 15 6.5 15C5.1 15 4 16.1 4 17.5Z" fill="currentColor" />
+                                                            </svg>
+                                                        </span>
+                                                        <!--end::Svg Icon-->
+                                                    </a>
+                                                    <a href="/api/voirbl/{{ fac.do_piece }}" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1">
+                                                        <!--begin::Svg Icon | path: icons/duotune/art/art005.svg-->
+                                                        <span class="svg-icon svg-icon-3">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                                <path opacity="0.3" d="M21.4 8.35303L19.241 10.511L13.485 4.755L15.643 2.59595C16.0248 2.21423 16.5426 1.99988 17.0825 1.99988C17.6224 1.99988 18.1402 2.21423 18.522 2.59595L21.4 5.474C21.7817 5.85581 21.9962 6.37355 21.9962 6.91345C21.9962 7.45335 21.7817 7.97122 21.4 8.35303ZM3.68699 21.932L9.88699 19.865L4.13099 14.109L2.06399 20.309C1.98815 20.5354 1.97703 20.7787 2.03189 21.0111C2.08674 21.2436 2.2054 21.4561 2.37449 21.6248C2.54359 21.7934 2.75641 21.9115 2.989 21.9658C3.22158 22.0201 3.4647 22.0084 3.69099 21.932H3.68699Z" fill="currentColor" />
+                                                                <path d="M5.574 21.3L3.692 21.928C3.46591 22.0032 3.22334 22.0141 2.99144 21.9594C2.75954 21.9046 2.54744 21.7864 2.3789 21.6179C2.21036 21.4495 2.09202 21.2375 2.03711 21.0056C1.9822 20.7737 1.99289 20.5312 2.06799 20.3051L2.696 18.422L5.574 21.3ZM4.13499 14.105L9.891 19.861L19.245 10.507L13.489 4.75098L4.13499 14.105Z" fill="currentColor" />
+                                                            </svg>
+                                                        </span>
+                                                        <!--end::Svg Icon-->
+                                                    </a>
+                                                    <a href="/api/voirbl/{{ fac.do_piece }}" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm">
+                                                        <!--begin::Svg Icon | path: icons/duotune/general/gen027.svg-->
+                                                        <span class="svg-icon svg-icon-3">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                                <path d="M5 9C5 8.44772 5.44772 8 6 8H18C18.5523 8 19 8.44772 19 9V18C19 19.6569 17.6569 21 16 21H8C6.34315 21 5 19.6569 5 18V9Z" fill="currentColor" />
+                                                                <path opacity="0.5" d="M5 5C5 4.44772 5.44772 4 6 4H18C18.5523 4 19 4.44772 19 5V5C19 5.55228 18.5523 6 18 6H6C5.44772 6 5 5.55228 5 5V5Z" fill="currentColor" />
+                                                                <path opacity="0.5" d="M9 4C9 3.44772 9.44772 3 10 3H14C14.5523 3 15 3.44772 15 4V4H9V4Z" fill="currentColor" />
+                                                            </svg>
+                                                        </span>
+                                                        <!--end::Svg Icon-->
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                        <!--end::Table body-->
+                                    </table>
+                                    <!--end::Table-->
+                                </div>
+                                <!--end::Table container-->
+                            </div>
+                            <!--begin::Body-->
+                        </div>
 						<!--end::Post-->
 					</div>
 					<!--end::Content-->
