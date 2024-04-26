@@ -125,7 +125,7 @@ def auth():
     auth = authen(username, password, request.remote_addr)
     if not username or not password or not auth:
         return render_template('login.html', error='Nom d\'utilisateur ou mot de passe incorrect')
-    response = make_response(redirect(url_for('dashboard')))
+    response = make_response(redirect(url_for('newandpromotions')))
     response.set_cookie('token', auth)
     return response
 
