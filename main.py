@@ -54,7 +54,7 @@ from dash import (
     
 )
 
-conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=196.115.56.212,1433;DATABASE=ASZPROD;UID=sa;PWD=90901504Data;Encrypt=no;TrustServerCertificate=yes;MARS_Connection=Yes;MultipleActiveResultSets=True;')
+conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=192.168.2.196,1433;DATABASE=ASZPROD;UID=sa;PWD=90901504Data;Encrypt=no;TrustServerCertificate=yes;MARS_Connection=Yes;MultipleActiveResultSets=True;')
 
 app = Flask(__name__, static_folder='static', template_folder='Template')
 

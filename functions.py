@@ -3,7 +3,7 @@ from flask import jsonify
 import hashlib
 
 def get_cursor():
-    return pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=196.115.56.212,1433;DATABASE=ASZPROD;UID=sa;PWD=90901504Data;Encrypt=no;TrustServerCertificate=yes;MARS_Connection=Yes;MultipleActiveResultSets=True;').cursor()
+    return pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=192.168.2.196,1433;DATABASE=ASZPROD;UID=sa;PWD=90901504Data;Encrypt=no;TrustServerCertificate=yes;MARS_Connection=Yes;MultipleActiveResultSets=True;').cursor()
 
 def fetch_first(query, params=None):
     try:
@@ -322,10 +322,10 @@ def get_devis_by_id(devis_id):
     FROM F_DOCLIGNE
     INNER JOIN F_COMPTET ON F_COMPTET.CT_Num = F_DOCLIGNE.CT_Num
     INNER JOIN F_DOCENTETE ON F_DOCENTETE.do_piece = F_DOCLIGNE.DO_Piece
-    WHERE F_DOCLIGNE.DO_Type = 3 AND F_DOCLIGNE.DO_Piece = ?
+    WHERE F_DOCLIGNE.DO_Type = 0 AND F_DOCLIGNE.DO_Piece = ?
     """
     data = fetch_all(query, (devis_id,))
-
+    print(data)
     if not data:
         return []
 
@@ -354,7 +354,6 @@ def get_devis_by_id(devis_id):
         'DO_TotalTTC': float(row[15]),
         'products': products
     }
-
     return [details]
 
 def Search_Function(q=None, cat=None):
