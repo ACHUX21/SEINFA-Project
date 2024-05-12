@@ -54,8 +54,25 @@ from dash import (
     
 )
 
-conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=196.115.7.4,1433;DATABASE=ASZPROD;UID=sa;PWD=90901504Data;Encrypt=no;TrustServerCertificate=yes;MARS_Connection=Yes;MultipleActiveResultSets=True;')
 
+# ip_sage
+# db_name_sage
+# user_sa_sage
+# pass_sa_sage
+
+
+# check connection
+# execute queries
+
+# ip_mysql
+# db_name_mysql
+# user_sa_mysql
+# pass_sa_mysql
+
+# check connection
+# execute queries
+
+conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=.;DATABASE=ASZPROD;UID=sa;PWD=90901504Data;Encrypt=no;TrustServerCertificate=yes;MARS_Connection=Yes;MultipleActiveResultSets=True;')
 app = Flask(__name__, static_folder='static', template_folder='Template')
 
 def fetch_config():

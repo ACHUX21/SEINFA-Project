@@ -3,7 +3,7 @@ from flask import jsonify
 import hashlib
 
 def get_cursor():
-    return pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=196.115.7.4,1433;DATABASE=ASZPROD;UID=sa;PWD=90901504Data;Encrypt=no;TrustServerCertificate=yes;MARS_Connection=Yes;MultipleActiveResultSets=True;').cursor()
+    return pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=.;DATABASE=ASZPROD;UID=sa;PWD=90901504Data;Encrypt=no;TrustServerCertificate=yes;MARS_Connection=Yes;MultipleActiveResultSets=True;').cursor()
 
 def fetch_first(query, params=None):
     try:
