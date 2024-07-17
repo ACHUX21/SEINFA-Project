@@ -616,12 +616,11 @@
                                                     </div>
                                                     <div class="fv-row">
                                                         <label class="required form-label">Date de devis</label>
-                                                        <input id="kt_ecommerce_edit_order_date" name="date" placeholder="Select a date" class="form-control mb-2" value="" readonly />
+                                                        <input id="kt_ecommerce_edit_order_date" name="date" placeholder="Select a date" class="form-control mb-2" value="" />
                                                         <div class="text-muted fs-7">Fixez la date de le devis à traiter.</div>
                                                     </div>
-                                                    
                                                     <div class="fv-row">
-                                                        <label class="form-label">Commentaire</label>
+                                                        <label class="required form-label">Commentaire</label>
                                                         <div class="mb-10">
                                                             <input name="ref" id="refInput" type="text" class="form-control form-control-solid" placeholder="Taper la Référence" maxlength="17">
                                                         </div>
@@ -952,14 +951,6 @@
               fetchTotal();
             });
           </script>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        var today = new Date();
-        var dateString = today.toISOString().split('T')[0];
-        document.getElementById('kt_ecommerce_edit_order_date').value = dateString;
-    });
-</script>
           
 		<!--end::Page Custom Javascript-->
 		<!--end::Javascript-->

@@ -384,8 +384,6 @@ def submit():
     date = request.form['date']
     date = '-'.join(date.split('-')[::-1])  # Reformatting date if necessary
     ref = request.form['ref']
-    if not ref:
-        ref = ''
     if not client or not date:
         return render_template('commande.html', last_dev=last_dev(), products=fetch_products(20), categories=get_categories(), tmpCart=select_tmpCart(payload['id']), error="S'il vous plaît remplir tous les champs")
 
